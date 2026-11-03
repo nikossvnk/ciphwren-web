@@ -112,7 +112,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
       this.state.end = endDate.convertToZone(ICAL.Timezone.localTimezone).toJSDate();
       this.state.location = event.location ? event.location : "";
       this.state.description = event.description ? event.description : "";
-      this.state.timezone = event.timezone;
+      this.state.timezone = (event.timezone === "Z") ? "UTC" : event.timezone;
       const rruleProp = this.props.item?.component.getFirstPropertyValue("rrule") as ICAL.Recur | null | undefined;
       if (rruleProp) {
         this.state.rrule = rruleProp.toJSON() as any;

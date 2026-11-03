@@ -32,6 +32,10 @@ it("loads time zones by their name and by their aliases", () => {
   expect(timezoneLoadFromName("Europe/Berlin")?.tzid).toBe("Europe/Berlin");
   // An alias of Australia/Darwin
   expect(timezoneLoadFromName("AUS Central Standard Time")).not.toBeNull();
+  // UTC isn't in the list of zones
+  expect(timezoneLoadFromName("UTC")?.tzid).toBe("UTC");
+  expect(timezoneLoadFromName("Z")?.tzid).toBe("UTC");
+  expect(timezoneLoadFromName("Etc/UTC")?.tzid).toBe("UTC");
   expect(timezoneLoadFromName("Not/A_Zone")).toBeNull();
   expect(timezoneLoadFromName(null)).toBeNull();
 });

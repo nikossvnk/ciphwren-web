@@ -75,7 +75,7 @@ run(async () => {
   check("and from the list", !(await page.getByText(title).isVisible()));
 
   // Completing a repeating task (in its editor) adds its next occurrence, as long as the task was
-  // (Times in a time zone, the way the app saves them: times in UTC are moved when edited, an older bug)
+  // (Times in a time zone, the way the app saves them)
   const repeating = `Water the plants ${id}`;
   await api.addItem("etebase.vtodo", [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//e2e//EN", "BEGIN:VTODO", `UID:e2e-${unique()}`,
@@ -126,6 +126,27 @@ run(async () => {
   const listItem = page.getByText(listed, { exact: true });
   check("and it's in the list, not completed", (await listItem.count()) === 1 &&
     !(await listItem.locator("xpath=ancestor::*[.//input[@type='checkbox']][1]").locator("input[type=checkbox]").isChecked()));
+
+  // A task with its times in UTC keeps them when edited
+  const utc = `Call the bank ${id}`;
+  await api.addItem("etebase.vtodo", [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//e2e//EN", "BEGIN:VTODO", `UID:e2e-${unique()}`,
+    `SUMMARY:${utc}`, "STATUS:NEEDS-ACTION", `DTSTART:${icalDay(-1)}T080000Z`, `DUE:${icalDay(2)}T150000Z`,
+    "END:VTODO", "END:VCALENDAR", "",
+  ].join("\r\n"));
+  await app.sync();
+  await page.getByText(utc, { exact: true }).click();
+  await page.waitForURL(/\/pim\/tasks\/[^/]+$/);
+  await page.getByRole("button", { name: "Edit" }).click();
+  await page.waitForURL(/\/edit$/);
+  await page.locator("input[name=title]").fill(`${utc} (renamed)`);
+  await page.getByRole("button", { name: "Save" }).click();
+  await page.waitForURL((url) => !url.pathname.endsWith("/edit"));
+  await app.synced();
+  saved = await itemsWith("etebase.vtodo", utc);
+  check("the renamed task is on the server", saved.length === 1 && saved[0].includes(`SUMMARY:${utc} (renamed)`), saved);
+  check("still starting at 08:00 UTC", new RegExp(`^DTSTART:${icalDay(-1)}T080000Z\\r?$`, "m").test(saved[0] || ""), saved[0]);
+  check("and due at 15:00 UTC", new RegExp(`^DUE:${icalDay(2)}T150000Z\\r?$`, "m").test(saved[0] || ""), saved[0]);
 
   check("no sync errors", (await app.syncErrors()) === "", await app.syncErrors());
   await app.close(check);

@@ -24,6 +24,10 @@ export function timezoneLoadFromName(timezone: string | null): ICAL.Timezone | n
 
   const allZones: { [key: string]: { ics: string[] } } = zones.zones;
   const aliases: { [key: string]: { aliasTo: string } } = zones.aliases;
+  // UTC (and its aliases, like "Z") isn't in the list of zones, ical.js has it
+  if ((timezone === "UTC") || (aliases[timezone]?.aliasTo === "UTC")) {
+    return ICAL.Timezone.utcTimezone;
+  }
   let zone = allZones[timezone];
   if (!zone && aliases[timezone]) {
     zone = allZones[aliases[timezone].aliasTo];

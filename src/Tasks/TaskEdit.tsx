@@ -113,7 +113,7 @@ export default class TaskEdit extends React.PureComponent<PropsType> {
       }
       this.state.location = task.location ? task.location : "";
       this.state.description = task.description ? task.description : "";
-      this.state.timezone = task.timezone;
+      this.state.timezone = (task.timezone === "Z") ? "UTC" : task.timezone;
       this.state.tags = task.tags;
     } else {
       this.state.uid = uuid.v4();

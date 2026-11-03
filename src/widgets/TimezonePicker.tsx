@@ -7,7 +7,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 
 import * as zones from "../data/zones.json";
-const zonelist = Object.keys(zones.zones).sort();
+const zonelist = ["UTC", ...Object.keys(zones.zones).sort()];
 
 interface PropsType {
   value: string | null;

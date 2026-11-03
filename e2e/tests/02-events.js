@@ -76,6 +76,25 @@ run(async () => {
   await page.getByRole("button", { name: "Agenda" }).click();
   check("an event added elsewhere is shown after syncing", await page.getByText(remote).isVisible());
 
+  // Its times are in UTC: editing it keeps them, and shows them in UTC with the local time below
+  await page.getByText(remote).click();
+  await page.getByRole("button", { name: "Edit" }).click();
+  await page.waitForURL(/\/edit$/);
+  check("the editor shows the start in UTC", (await dates.nth(0).inputValue()) === `${day(1)} 12:00`, await dates.nth(0).inputValue());
+  check("and the time zone as UTC", (await page.getByLabel("Timezone").inputValue()) === "UTC", await page.getByLabel("Timezone").inputValue());
+  const editor = await page.innerText("body");
+  // The tests run in Europe/Berlin, an hour ahead of UTC in winter
+  check("and the local time below it", /13:00:00 GMT\+0100/.test(editor), editor);
+  await page.locator("input[name=title]").fill(`${remote} (renamed)`);
+  await page.getByRole("button", { name: "Save" }).click();
+  await page.waitForURL((url) => !url.pathname.endsWith("/edit"));
+  await app.synced();
+  saved = await itemsWith("etebase.vevent", remote);
+  check("the renamed event is on the server", saved.length === 1 && saved[0].includes(`SUMMARY:${remote} (renamed)`), saved);
+  check("still starting at 12:00 UTC", new RegExp(`^DTSTART:${icalDay(1)}T120000Z\\r?$`, "m").test(saved[0] || ""), saved[0]);
+  check("and ending at 13:00 UTC", new RegExp(`^DTEND:${icalDay(1)}T130000Z\\r?$`, "m").test(saved[0] || ""), saved[0]);
+  await page.getByRole("tab", { name: "Calendar" }).click();
+
   // Deleting the edited event
   await page.getByText(renamed).click();
   await page.getByRole("button", { name: "Edit" }).click();
