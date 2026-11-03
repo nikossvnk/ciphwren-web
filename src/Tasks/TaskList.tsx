@@ -126,6 +126,7 @@ export default function TaskList(props: PropsType) {
     try {
       await props.onItemSave(clonedTask, task.collectionUid!, task);
       if (nextTask) {
+        await props.onItemSave(nextTask, task.collectionUid!);
         dispatch(pushMessage({ message: `${nextTask.title} rescheduled for ${formatDate(nextTask.startDate ?? nextTask.dueDate)}`, severity: "success" }));
       }
     } catch (_e) {

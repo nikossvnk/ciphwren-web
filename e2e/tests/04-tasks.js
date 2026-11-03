@@ -103,6 +103,30 @@ run(async () => {
   check("and still an hour long", !!start && !!due && due[1] === start[1] && due[2] === "100000", next);
   check("with one occurrence less to go", /^RRULE:FREQ=DAILY;COUNT=99\r?$/m.test(next), next);
 
+  // Completing a repeating task in the list adds its next occurrence too
+  const listed = `Take out the bins ${id}`;
+  await api.addItem("etebase.vtodo", [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//e2e//EN", "BEGIN:VTODO", `UID:e2e-${unique()}`,
+    `SUMMARY:${listed}`, "STATUS:NEEDS-ACTION", `DUE;TZID=Europe/Berlin:${icalDay(-2)}T200000`,
+    "RRULE:FREQ=WEEKLY;COUNT=10", "END:VTODO", "END:VCALENDAR", "",
+  ].join("\r\n"));
+  await page.getByRole("tab", { name: "Tasks" }).click();
+  await page.waitForURL(/\/pim\/tasks$/);
+  await app.sync();
+  await page.getByText(listed).locator("xpath=ancestor::*[.//input[@type='checkbox']][1]").locator("input[type=checkbox]").click();
+  await app.synced();
+  await page.waitForTimeout(500);
+  saved = await itemsWith("etebase.vtodo", `SUMMARY:${listed}`);
+  check("the task completed in the list is completed on the server", saved.some((x) => /^STATUS:COMPLETED\r?$/m.test(x)), saved);
+  const nextListed = saved.find((x) => /^STATUS:NEEDS-ACTION\r?$/m.test(x)) || "";
+  check("and its next occurrence is on the server", saved.length === 2 && nextListed !== "", saved);
+  check("due a week later", new RegExp(`^DUE;TZID=Europe/Berlin:${icalDay(5)}T200000\\r?$`, "m").test(nextListed), nextListed);
+  check("with one occurrence less to go", /^RRULE:FREQ=WEEKLY;COUNT=9\r?$/m.test(nextListed), nextListed);
+  // (Exactly the title: the message that it was rescheduled has it too)
+  const listItem = page.getByText(listed, { exact: true });
+  check("and it's in the list, not completed", (await listItem.count()) === 1 &&
+    !(await listItem.locator("xpath=ancestor::*[.//input[@type='checkbox']][1]").locator("input[type=checkbox]").isChecked()));
+
   check("no sync errors", (await app.syncErrors()) === "", await app.syncErrors());
   await app.close(check);
 });
