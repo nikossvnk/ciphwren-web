@@ -19,7 +19,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import { CachedCollection } from "../Pim/helpers";
 
 import * as uuid from "uuid";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 
 import { ContactType } from "../pim-types";
 

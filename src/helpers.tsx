@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 import moment from "moment";
 import { TaskPriorityType } from "./pim-types";
 
@@ -176,7 +176,7 @@ export function usePromiseMemo<T>(promise: Promise<T> | undefined | null, deps: 
 }
 
 export function parseDate(prop: ICAL.Property) {
-  const value = prop.getFirstValue();
+  const value = prop.getFirstValue() as ICAL.VCardTime;
   if ((value.day !== null) && (value.day !== undefined)) {
     return {
       day: value.day,

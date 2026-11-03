@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: © 2017 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 import * as zones from "./data/zones.json";
 import moment from "moment";
 import * as uuid from "uuid";
@@ -17,7 +17,7 @@ export interface PimType {
   lastModified: ICAL.Time | undefined;
 }
 
-export function timezoneLoadFromName(timezone: string | null) {
+export function timezoneLoadFromName(timezone: string | null): ICAL.Timezone | null {
   if (!timezone) {
     return null;
   }
@@ -48,7 +48,7 @@ export function timezoneLoadFromName(timezone: string | null) {
     tzid: timezone,
   });
 
-  ICAL.TimezoneService.register(timezone, retZone);
+  ICAL.TimezoneService.register(retZone, timezone);
 
   return retZone;
 }
@@ -65,10 +65,12 @@ export class EventType extends ICAL.Event implements PimType {
   // itself, so this replaces the accessor of ical.js, which sets the COLOR property of the event.
   private _color?: string;
 
+  // @ts-expect-error ical.js declares color as always a string, but this one can be unset
   get color(): string | undefined {
     return this._color;
   }
 
+  // @ts-expect-error see the getter
   set color(value: string | undefined) {
     this._color = value;
   }
@@ -78,7 +80,7 @@ export class EventType extends ICAL.Event implements PimType {
   }
 
   public static fromVCalendar(comp: ICAL.Component) {
-    const event = new EventType(comp.getFirstSubcomponent("vevent"));
+    const event = new EventType(comp.getFirstSubcomponent("vevent") ?? undefined);
     // FIXME: we need to clone it so it loads the correct timezone and applies it
     timezoneLoadFromName(event.timezone);
     return event.clone();
@@ -88,11 +90,12 @@ export class EventType extends ICAL.Event implements PimType {
     return EventType.fromVCalendar(parseString(content));
   }
 
-  get timezone() {
+  get timezone(): string | null {
+    // `timezone` (the TZID the time was parsed with) is set by ical.js but missing from its type declarations
     if (this.startDate) {
-      return this.startDate.timezone;
+      return (this.startDate as ICAL.Time & { timezone?: string }).timezone ?? null;
     } else if (this.endDate) {
-      return this.endDate.timezone;
+      return (this.endDate as ICAL.Time & { timezone?: string }).timezone ?? null;
     }
 
     return null;
@@ -123,15 +126,15 @@ export class EventType extends ICAL.Event implements PimType {
   }
 
   get lastModified() {
-    return this.component.getFirstPropertyValue("last-modified");
+    return (this.component.getFirstPropertyValue("last-modified") ?? undefined) as ICAL.Time | undefined;
   }
 
-  set lastModified(time: ICAL.Time) {
+  set lastModified(time: ICAL.Time | undefined) {
     this.component.updatePropertyWithValue("last-modified", time);
   }
 
   get rrule() {
-    return this.component.getFirstPropertyValue("rrule");
+    return this.component.getFirstPropertyValue("rrule") as ICAL.Recur;
   }
 
   set rrule(rule: ICAL.Recur) {
@@ -206,7 +209,7 @@ export class TaskType extends EventType {
   }
 
   get status(): TaskStatusType {
-    return this.component.getFirstPropertyValue("status");
+    return this.component.getFirstPropertyValue("status") as TaskStatusType;
   }
 
   set priority(priority: TaskPriorityType) {
@@ -214,7 +217,7 @@ export class TaskType extends EventType {
   }
 
   get priority() {
-    return this.component.getFirstPropertyValue("priority");
+    return this.component.getFirstPropertyValue("priority") as unknown as TaskPriorityType;
   }
 
   set tags(tags: string[]) {
@@ -246,7 +249,7 @@ export class TaskType extends EventType {
   }
 
   get dueDate() {
-    return this.component.getFirstPropertyValue("due");
+    return (this.component.getFirstPropertyValue("due") ?? undefined) as ICAL.Time | undefined;
   }
 
   set completionDate(date: ICAL.Time | undefined) {
@@ -258,7 +261,7 @@ export class TaskType extends EventType {
   }
 
   get completionDate() {
-    return this.component.getFirstPropertyValue("completed");
+    return (this.component.getFirstPropertyValue("completed") ?? undefined) as ICAL.Time | undefined;
   }
 
   set relatedTo(parentUid: string | undefined) {
@@ -270,7 +273,7 @@ export class TaskType extends EventType {
   }
 
   get relatedTo(): string | undefined {
-    return this.component.getFirstPropertyValue("related-to");
+    return (this.component.getFirstPropertyValue("related-to") ?? undefined) as string | undefined;
   }
 
   get endDate() {
@@ -387,7 +390,7 @@ export class ContactType implements PimType {
   }
 
   get uid() {
-    return this.comp.getFirstPropertyValue("uid");
+    return this.comp.getFirstPropertyValue("uid") as string;
   }
 
   set uid(uid: string) {
@@ -395,27 +398,27 @@ export class ContactType implements PimType {
   }
 
   get fn() {
-    return this.comp.getFirstPropertyValue("fn");
+    return this.comp.getFirstPropertyValue("fn") as string;
   }
 
   get n() {
-    return this.comp.getFirstPropertyValue("n");
+    return this.comp.getFirstPropertyValue("n") as string[] | null;
   }
 
   get bday() {
-    return this.comp.getFirstPropertyValue("bday");
+    return this.comp.getFirstPropertyValue("bday") as ICAL.VCardTime | null;
   }
 
   get lastModified() {
-    return this.comp.getFirstPropertyValue("rev");
+    return (this.comp.getFirstPropertyValue("rev") ?? undefined) as ICAL.Time | undefined;
   }
 
   get group() {
-    const kind = this.comp.getFirstPropertyValue("kind");
-    return ["group", "organization"].includes(kind);
+    const kind = this.comp.getFirstPropertyValue("kind") as string | null;
+    return !!kind && ["group", "organization"].includes(kind);
   }
 
   get members() {
-    return this.comp.getAllProperties("member").map((prop) => prop.getFirstValue<string>().replace("urn:uuid:", ""));
+    return this.comp.getAllProperties("member").map((prop) => (prop.getFirstValue() as string).replace("urn:uuid:", ""));
   }
 }

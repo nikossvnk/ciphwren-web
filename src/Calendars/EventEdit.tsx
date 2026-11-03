@@ -27,12 +27,12 @@ import TimezonePicker from "../widgets/TimezonePicker";
 import Toast from "../widgets/Toast";
 
 import * as uuid from "uuid";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 
 import { getCurrentTimezone } from "../helpers";
 
 import { EventType, timezoneLoadFromName } from "../pim-types";
-import RRule, { RRuleOptions } from "../widgets/RRule";
+import RRule, { RRuleOptions, rruleToRecur } from "../widgets/RRule";
 
 import { History } from "history";
 import { CachedCollection } from "../Pim/helpers";
@@ -113,7 +113,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
       this.state.location = event.location ? event.location : "";
       this.state.description = event.description ? event.description : "";
       this.state.timezone = event.timezone;
-      const rruleProp = this.props.item?.component.getFirstPropertyValue<ICAL.Recur>("rrule");
+      const rruleProp = this.props.item?.component.getFirstPropertyValue("rrule") as ICAL.Recur | null | undefined;
       if (rruleProp) {
         this.state.rrule = rruleProp.toJSON() as any;
         if (this.state.rrule && rruleProp.until) {
@@ -228,7 +228,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
       }
     }
     if (this.state.rrule) {
-      event.component.updatePropertyWithValue("rrule", new ICAL.Recur(this.state.rrule!));
+      event.component.updatePropertyWithValue("rrule", rruleToRecur(this.state.rrule));
     }
 
     event.component.updatePropertyWithValue("last-modified", ICAL.Time.now());

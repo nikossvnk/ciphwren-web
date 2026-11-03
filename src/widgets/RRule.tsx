@@ -4,9 +4,33 @@
 import * as React from "react";
 import { TextField, Select, MenuItem, InputLabel, FormControl } from "@material-ui/core";
 import DateTimePicker from "../widgets/DateTimePicker";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 
-export type RRuleOptions = ICAL.RecurData;
+export type FrequencyValues = "YEARLY" | "MONTHLY" | "WEEKLY" | "DAILY" | "HOURLY" | "MINUTELY" | "SECONDLY";
+
+// The rule's parts, as ICAL.Recur takes them (ical.js doesn't export a type for these)
+export interface RRuleOptions {
+  freq?: FrequencyValues;
+  interval?: number;
+  wkst?: number;
+  until?: ICAL.Time;
+  count?: number;
+  bysecond?: number[] | number;
+  byminute?: number[] | number;
+  byhour?: number[] | number;
+  byday?: string[] | string;
+  bymonthday?: number[] | number;
+  byyearday?: number[] | number;
+  byweekno?: number[] | number;
+  bymonth?: number[] | number;
+  bysetpos?: number[] | number;
+}
+
+// ICAL.Recur also takes single values for the by* parts (it puts them in an array), but its type
+// declarations only allow arrays
+export function rruleToRecur(rrule: RRuleOptions): ICAL.Recur {
+  return new ICAL.Recur(rrule as ConstructorParameters<typeof ICAL.Recur>[0]);
+}
 
 enum Ends {
   Forever,
@@ -149,7 +173,7 @@ export default function RRule(props: PropsType) {
           value={options.freq}
           style={{ marginLeft: "0.5em" }}
           onChange={(event: React.FormEvent<{ value: unknown }>) => {
-            const freq = (event.target as HTMLSelectElement).value as ICAL.FrequencyValues;
+            const freq = (event.target as HTMLSelectElement).value as FrequencyValues;
             updateRule({ freq: freq }, true);
           }}
         >

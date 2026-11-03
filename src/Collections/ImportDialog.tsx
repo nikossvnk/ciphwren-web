@@ -17,7 +17,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import { arrayToChunkIterator } from "../helpers";
 
 import * as uuid from "uuid";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 import { ContactType, EventType, TaskType, PimType } from "../pim-types";
 import { useCredentials } from "../credentials";
 import { CachedCollection } from "../Pim/helpers";
@@ -106,7 +106,7 @@ export default function ImportDialog(props: PropsType) {
   function onFileDropContact(acceptedFiles: File[], rejectedFiles: FileRejection[]) {
     const itemsCreator = (fileText: string) => {
       const mainComp = ICAL.parse(fileText);
-      return mainComp.map((comp) => {
+      return mainComp.map((comp: any[]) => {
         const ret = new ContactType(new ICAL.Component(comp));
         if (!ret.uid) {
           ret.uid = uuid.v4();

@@ -22,7 +22,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import { CachedCollection } from "../Pim/helpers";
 
 import * as uuid from "uuid";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 
 import { ContactType } from "../pim-types";
 
@@ -211,7 +211,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
         comp.getAllProperties(propName).map((prop) => (
           new ValueType(
             prop.toJSON()[1].type,
-            prop.getFirstValue()
+            prop.getFirstValue() as string
           )
         ))
       );
@@ -225,7 +225,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
       ));
 
       const propToStringType = (comp: ICAL.Component, propName: string) => {
-        const val = comp.getFirstPropertyValue(propName);
+        const val = comp.getFirstPropertyValue(propName) as string | null;
         return val ? val : "";
       };
 

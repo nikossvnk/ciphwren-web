@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import moment from "moment";
+import ICAL from "ical.js";
 
 import { List, ListItem, ListDivider as Divider } from "../widgets/List";
 import IconHome from "@material-ui/icons/Home";
@@ -32,7 +33,7 @@ class Contact extends React.PureComponent {
 
     const revProp = contact.comp.getFirstProperty("rev");
     const lastModified = (revProp) ?
-      "Modified: " + moment(revProp.getFirstValue().toJSDate()).format("LLLL") : undefined;
+      "Modified: " + moment((revProp.getFirstValue() as ICAL.Time).toJSDate()).format("LLLL") : undefined;
 
     const lists = [];
 
@@ -178,7 +179,7 @@ class Contact extends React.PureComponent {
       }
     }
 
-    const contactImageSrc = contact.comp.getFirstProperty("photo")?.getFirstValue();
+    const contactImageSrc = contact.comp.getFirstProperty("photo")?.getFirstValue() as string | undefined;
 
     return (
       <div>

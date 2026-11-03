@@ -31,7 +31,7 @@ import TimezonePicker from "../widgets/TimezonePicker";
 import Toast from "../widgets/Toast";
 
 import * as uuid from "uuid";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 
 import { getCurrentTimezone, mapPriority } from "../helpers";
 
@@ -40,7 +40,7 @@ import { TaskType, TaskStatusType, timezoneLoadFromName, TaskPriorityType, TaskT
 import { History } from "history";
 
 import ColoredRadio from "../widgets/ColoredRadio";
-import RRule, { RRuleOptions } from "../widgets/RRule";
+import RRule, { RRuleOptions, rruleToRecur } from "../widgets/RRule";
 import { CachedCollection } from "../Pim/helpers";
 
 interface PropsType {
@@ -219,7 +219,7 @@ export default class TaskEdit extends React.PureComponent<PropsType> {
     }
     task.dueDate = dueDate;
     if (this.state.rrule) {
-      task.rrule = new ICAL.Recur(this.state.rrule);
+      task.rrule = rruleToRecur(this.state.rrule);
     }
     task.location = this.state.location;
     task.description = this.state.description;

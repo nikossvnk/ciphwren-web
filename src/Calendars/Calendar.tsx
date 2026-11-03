@@ -5,7 +5,7 @@ import * as React from "react";
 import { Calendar as BigCalendar, momentLocalizer, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import * as ICAL from "ical.js";
+import ICAL from "ical.js";
 import { store } from "../store";
 import { appendError } from "../store/actions";
 

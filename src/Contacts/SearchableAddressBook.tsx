@@ -43,7 +43,7 @@ export default function SearchableAddressBook(props: PropsType) {
   function filterFunc(ent: ContactType) {
     return (
       (!group || (group.members.includes(ent.uid))) &&
-      ent.fn?.match(reg)
+      !!ent.fn?.match(reg)
     );
   }
 
