@@ -32,6 +32,12 @@ it("reads the time zone of an event and keeps it when saving", () => {
   expect(ics).toMatch(/^BEGIN:VTIMEZONE\r?$/m);
 });
 
+it("names the time zone of times in UTC and of floating times", () => {
+  const event = (start: string) => EventType.parse(vcalendar("BEGIN:VEVENT", "UID:e", `DTSTART:${start}`, "END:VEVENT"));
+  expect(event("20261012T100000Z").timezone).toBe("Z");
+  expect(event("20261012T100000").timezone).toBeNull();
+});
+
 it("saves the repeat rule the way the editor reads it", () => {
   const event = EventType.parse(vcalendar(
     "BEGIN:VEVENT",

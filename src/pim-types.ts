@@ -53,6 +53,16 @@ export function timezoneLoadFromName(timezone: string | null): ICAL.Timezone | n
   return retZone;
 }
 
+// The name of the time zone of a time: its TZID, "Z" for UTC (as ical.js 1 had it), or null if floating
+function timezoneOf(time: ICAL.Time): string | null {
+  // `timezone` (the TZID the time was parsed with) is set by ical.js but missing from its type declarations
+  const tzid = (time as ICAL.Time & { timezone?: string }).timezone;
+  if (tzid) {
+    return tzid;
+  }
+  return (time.zone === ICAL.Timezone.utcTimezone) ? "Z" : null;
+}
+
 export function parseString(content: string) {
   content = content.replace(/^[a-zA-Z0-9]*\./gm, ""); // FIXME: ugly hack to ignore item groups.
   return new ICAL.Component(ICAL.parse(content));
@@ -91,11 +101,10 @@ export class EventType extends ICAL.Event implements PimType {
   }
 
   get timezone(): string | null {
-    // `timezone` (the TZID the time was parsed with) is set by ical.js but missing from its type declarations
     if (this.startDate) {
-      return (this.startDate as ICAL.Time & { timezone?: string }).timezone ?? null;
+      return timezoneOf(this.startDate);
     } else if (this.endDate) {
-      return (this.endDate as ICAL.Time & { timezone?: string }).timezone ?? null;
+      return timezoneOf(this.endDate);
     }
 
     return null;
