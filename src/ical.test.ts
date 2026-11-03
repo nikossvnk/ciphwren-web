@@ -81,10 +81,11 @@ it("creates the next occurrence of a repeating task", () => {
   expect(next.uid).not.toBe(task.uid);
   expect(next.status).toBe(TaskStatusType.NeedsAction);
   expect(next.summary).toBe("Water the plants");
-  // The next one after now, with one occurrence less to go
+  // The next one after now, still an hour long, with one occurrence less to go
   const start = next.startDate.toJSDate();
   expect(start.getTime()).toBeGreaterThan(Date.now());
   expect(start.getTime() - Date.now()).toBeLessThanOrEqual(24 * 60 * 60 * 1000);
+  expect(next.dueDate!.toJSDate().getTime() - start.getTime()).toBe(60 * 60 * 1000);
   expect(next.rrule.count).toBe(9999);
   expect(next.lastModified).toBeDefined();
 

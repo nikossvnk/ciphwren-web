@@ -1,5 +1,5 @@
 // Tasks: quick adding, adding with details, completing, searching and deleting tasks
-const { check, day, icalDay, itemsWith, open, run, unique } = require("../lib");
+const { api, check, day, icalDay, itemsWith, open, run, unique } = require("../lib");
 
 run(async () => {
   const app = await open();
@@ -73,6 +73,35 @@ run(async () => {
   saved = await itemsWith("etebase.vtodo", `SUMMARY:${title}`);
   check("the deleted task is gone from the server", saved.length === 0, saved);
   check("and from the list", !(await page.getByText(title).isVisible()));
+
+  // Completing a repeating task (in its editor) adds its next occurrence, as long as the task was
+  // (Times in a time zone, the way the app saves them: times in UTC are moved when edited, an older bug)
+  const repeating = `Water the plants ${id}`;
+  await api.addItem("etebase.vtodo", [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//e2e//EN", "BEGIN:VTODO", `UID:e2e-${unique()}`,
+    `SUMMARY:${repeating}`, "STATUS:NEEDS-ACTION", `DTSTART;TZID=Europe/Berlin:${icalDay(-3)}T090000`,
+    `DUE;TZID=Europe/Berlin:${icalDay(-3)}T100000`,
+    "RRULE:FREQ=DAILY;COUNT=100", "END:VTODO", "END:VCALENDAR", "",
+  ].join("\r\n"));
+  await app.sync();
+  await page.getByText(repeating).click();
+  await page.waitForURL(/\/pim\/tasks\/[^/]+$/);
+  await page.getByRole("button", { name: "Edit" }).click();
+  await page.getByRole("button", { name: "Needs action" }).click();
+  await page.getByRole("option", { name: "Completed" }).click();
+  await page.getByRole("button", { name: "Save" }).click();
+  // Back to the task's page
+  await page.waitForURL(/\/pim\/tasks\/[^/]+$/);
+  await app.synced();
+  saved = await itemsWith("etebase.vtodo", `SUMMARY:${repeating}`);
+  check("the repeating task is completed on the server", saved.some((x) => /^STATUS:COMPLETED\r?$/m.test(x)), saved);
+  const next = saved.find((x) => /^STATUS:NEEDS-ACTION\r?$/m.test(x)) || "";
+  check("and its next occurrence is on the server", saved.length === 2 && next !== "", saved);
+  const start = /^DTSTART;TZID=Europe\/Berlin:(\d{8})T(\d{6})\r?$/m.exec(next);
+  const due = /^DUE;TZID=Europe\/Berlin:(\d{8})T(\d{6})\r?$/m.exec(next);
+  check("starting at the same time of a later day", !!start && start[2] === "090000" && start[1] > icalDay(-3), next);
+  check("and still an hour long", !!start && !!due && due[1] === start[1] && due[2] === "100000", next);
+  check("with one occurrence less to go", /^RRULE:FREQ=DAILY;COUNT=99\r?$/m.test(next), next);
 
   check("no sync errors", (await app.syncErrors()) === "", await app.syncErrors());
   await app.close(check);

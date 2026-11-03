@@ -349,7 +349,8 @@ export class TaskType extends EventType {
     }
 
     const nextStartDate = this.startDate ? nextRecurrence : undefined;
-    const nextDueDate = this.dueDate ? nextRecurrence : undefined;
+    // A copy, so moving the due date by the task's length doesn't move the start too
+    const nextDueDate = this.dueDate ? nextRecurrence.clone() : undefined;
     if (nextStartDate && nextDueDate) {
       const offset = this.dueDate!.subtractDateTz(this.startDate);
       nextDueDate.addDuration(offset);
