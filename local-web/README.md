@@ -37,13 +37,13 @@ Options (environment variables):
 
 | Variable | Default | |
 |---|---|---|
-| `SERVER` | the one of the last install, otherwise EteSync's | The server the login page uses, unless another one is entered under "Advanced settings". It's kept for later updates |
+| `SERVER` | the one of the last install, otherwise none | The server the login page uses, unless another one is entered under "Advanced settings". Without one, the login page asks for it. It's kept for later updates |
 | `PORT` | `8091` | The port on localhost |
 | `BROWSER` | the first one found of Chromium, Chrome, Brave, Edge, Firefox | The browser the shortcut opens. Chromium-based browsers open it in an app window, Firefox in a new window |
 | `LOW_MEMORY` | `1` | Chromium-based browsers get flags that make them use a bit less memory (no spare page process, at most two, no background downloads, updates or sync); `0` leaves them out |
 
 Then open "EteSync" from the applications menu or the desktop and log in. Without `SERVER`, enter
-your server's URL under "Advanced settings". With an account that has no calendar, address book and
+your server's URL in the "Server" field. With an account that has no calendar, address book and
 task list yet, the app offers to create them.
 
 ## What the script sets up
@@ -61,7 +61,7 @@ To do the same by hand:
 
 1. In the root of the repository: `npm ci` (if `node_modules` isn't there), then
 2. `REACT_APP_DEFAULT_API_PATH=https://your.server/ npx vite build --outDir ~/.local/share/etesync-web/site --emptyOutDir`
-   (without `REACT_APP_DEFAULT_API_PATH` for EteSync's server), and remove the `*.map` files in it if you like
+   (without `REACT_APP_DEFAULT_API_PATH` the login page asks for the server), and remove the `*.map` files in it if you like
 3. Copy `serve.py` to `~/.local/share/etesync-web/`, and create
    `~/.config/systemd/user/etesync-web.service`:
 

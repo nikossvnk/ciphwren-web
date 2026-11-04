@@ -23,7 +23,7 @@ interface FormErrors {
 }
 
 interface PropsType {
-  onSubmit: (username: string, password: string, serviceApiUrl?: string) => void;
+  onSubmit: (username: string, password: string, serverUrl: string) => void;
   loading?: boolean;
   error?: Error;
 }
@@ -34,6 +34,8 @@ export default function LoginForm(props: PropsType) {
   const [server, setServer] = React.useState("");
   const [showAdvanced, setShowAdvanced] = React.useState(false);
   const [errors, setErrors] = React.useState<FormErrors>({});
+  // Without a default server the server has to be entered
+  const showServer = showAdvanced || !C.defaultServerUrl;
 
   function generateEncryption(e: React.FormEvent<any>) {
     e.preventDefault();
@@ -48,8 +50,10 @@ export default function LoginForm(props: PropsType) {
       errors.errorPassword = fieldRequired;
     }
 
-    if (!import.meta.env.DEV) {
-      if (showAdvanced && !server.startsWith("https://")) {
+    if (showServer && !server) {
+      errors.errorServer = fieldRequired;
+    } else if (!import.meta.env.DEV) {
+      if (showServer && !server.startsWith("https://")) {
         errors.errorServer = "Server URI must start with https://";
       }
     }
@@ -61,7 +65,7 @@ export default function LoginForm(props: PropsType) {
       setErrors({});
     }
 
-    props.onSubmit(username, password, (showAdvanced) ? server : undefined);
+    props.onSubmit(username, password, (showAdvanced || !C.defaultServerUrl) ? server : C.defaultServerUrl);
   }
 
   const styles = {
@@ -90,7 +94,7 @@ export default function LoginForm(props: PropsType) {
   }
 
   let advancedSettings = null;
-  if (showAdvanced) {
+  if (showServer) {
     advancedSettings = (
       <React.Fragment>
         <TextField
@@ -141,18 +145,20 @@ export default function LoginForm(props: PropsType) {
         <div style={styles.forgotPassword}>
           <ExternalLink href={C.forgotPassword}>Forgot password?</ExternalLink>
         </div>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                color="primary"
-                checked={showAdvanced}
-                onChange={() => setShowAdvanced(!showAdvanced)}
-              />
-            }
-            label="Advanced settings"
-          />
-        </FormGroup>
+        {C.defaultServerUrl && (
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  color="primary"
+                  checked={showAdvanced}
+                  onChange={() => setShowAdvanced(!showAdvanced)}
+                />
+              }
+              label="Advanced settings"
+            />
+          </FormGroup>
+        )}
         {advancedSettings}
 
         {props.error && (

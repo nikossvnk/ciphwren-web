@@ -46,6 +46,8 @@ export default function SignupPage() {
   const [showAdvanced, setShowAdvanced] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<FormErrors>({});
+  // Without a default server the server has to be entered
+  const showServer = showAdvanced || !C.defaultServerUrl;
 
   if (credentials) {
     return (
@@ -74,8 +76,10 @@ export default function SignupPage() {
         }
       }
 
-      if (!import.meta.env.DEV) {
-        if (showAdvanced && !server.startsWith("https://")) {
+      if (showServer && !server) {
+        errors.server = fieldRequired;
+      } else if (!import.meta.env.DEV) {
+        if (showServer && !server.startsWith("https://")) {
           errors.server = "Server URI must start with https://";
         }
       }
@@ -87,7 +91,7 @@ export default function SignupPage() {
         setErrors({});
       }
 
-      const serverUrl = (showAdvanced) ? server : C.defaultServerUrl;
+      const serverUrl = (showAdvanced || !C.defaultServerUrl) ? server : C.defaultServerUrl;
       const user: Etebase.User = {
         username,
         email,
@@ -149,7 +153,7 @@ export default function SignupPage() {
   }
 
   let advancedSettings = null;
-  if (showAdvanced) {
+  if (showServer) {
     advancedSettings = (
       <React.Fragment>
         <TextField
@@ -224,18 +228,20 @@ export default function SignupPage() {
           onChange={handleInputChange(setPassword)}
         />
 
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                color="primary"
-                checked={showAdvanced}
-                onChange={() => setShowAdvanced(!showAdvanced)}
-              />
-            }
-            label="Advanced settings"
-          />
-        </FormGroup>
+        {C.defaultServerUrl && (
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  color="primary"
+                  checked={showAdvanced}
+                  onChange={() => setShowAdvanced(!showAdvanced)}
+                />
+              }
+              label="Advanced settings"
+            />
+          </FormGroup>
+        )}
         {advancedSettings}
         {errors.general && (
           <Alert severity="error" style={styles.infoAlert}>{errors.general}</Alert>

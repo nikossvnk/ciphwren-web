@@ -56,10 +56,11 @@ Then it's recommended you run `npm run build` to build a production ready client
 (even if run locally!) and then just serve the `build` directory from a web server.
 For development, `npm start` runs the app on http://localhost:3000 and reloads it on changes.
 
-The URL of the EteSync API the web app connects to defaults to `api.etebase.com`, but can be changed on
-the login page. You can change this default by setting the environment variable `REACT_APP_DEFAULT_API_PATH`
+The web app has no default EteSync server: without one set at build time, the login and signup pages ask
+for the server's URL. You can set a default by setting the environment variable `REACT_APP_DEFAULT_API_PATH`
 during the build. This can be useful for self-hosting. You can set the default URL to the address
-of your self-hosted EteSync server so you don't have to change the address for every login, e.g.:
+of your self-hosted EteSync server so you don't have to enter the address for every login (another one
+can still be entered under "Advanced settings"), e.g.:
 
 ```
 REACT_APP_DEFAULT_API_PATH=https://etebase.example.com/ npm run build

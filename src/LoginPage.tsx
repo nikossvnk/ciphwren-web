@@ -36,12 +36,12 @@ export default function LoginPage() {
     );
   }
 
-  async function onFormSubmit(username: string, password: string, serviceApiUrl?: string) {
+  async function onFormSubmit(username: string, password: string, serverUrl: string) {
     try {
       setLoading(true);
       setFetchError(undefined);
       const etebase = await startTask((async () => {
-        return await Etebase.Account.login(username, password, serviceApiUrl ?? C.defaultServerUrl);
+        return await Etebase.Account.login(username, password, serverUrl);
       }));
       dispatch(login(etebase));
     } catch (e) {
