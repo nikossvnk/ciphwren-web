@@ -1,9 +1,19 @@
 // Staying logged in, the settings (dark mode and the date format) and logging out
 const { check, day, icalDay, itemsWith, open, run, unique } = require("../lib");
 
+// Chooses an option of a setting, and waits until the app has saved it: the settings are saved
+// to IndexedDB shortly after the change, and loading a page before that brings back the old value.
 async function choose(page, name, option) {
   await page.locator(`input[name=${name}]`).locator("xpath=..").getByRole("button").click();
   await page.getByRole("option", { name: option }).click();
+  await page.waitForFunction((name) => new Promise((resolve) => {
+    const chosen = document.querySelector(`input[name=${name}]`).value;
+    const open = indexedDB.open("localforage");
+    open.onsuccess = () => {
+      const get = open.result.transaction("keyvaluepairs").objectStore("keyvaluepairs").get("persist:settings");
+      get.onsuccess = () => resolve(Boolean(get.result) && JSON.parse(JSON.parse(get.result)[name]) === chosen);
+    };
+  }), name);
 }
 
 run(async () => {
