@@ -6,7 +6,7 @@
     "test": "node run.js"
   },
   "dependencies": {
-    "etebase": "0.43.1",
+    "etebase": "https://github.com/nikossvnk/etebase-js/releases/download/v0.44.2/etebase-0.44.2.tgz",
     "playwright-core": "^1.63.0"
   }
 }
