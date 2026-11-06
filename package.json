@@ -11,7 +11,7 @@
     "@material-ui/styles": "^4.11.5",
     "@types/color": "^4.2.1",
     "color": "^4.2.3",
-    "etebase": "https://github.com/nikossvnk/etebase-js/releases/download/v0.44.2/etebase-0.44.2.tgz",
+    "etebase": "https://github.com/nikossvnk/etebase-js/releases/download/v0.44.3/etebase-0.44.3.tgz",
     "fuse.js": "^7.5.0",
     "ical.js": "^2.2.1",
     "immutable": "^4.3.7",
