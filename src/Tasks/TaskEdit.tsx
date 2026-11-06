@@ -37,8 +37,6 @@ import { getCurrentTimezone, mapPriority } from "../helpers";
 
 import { TaskType, TaskStatusType, timezoneLoadFromName, TaskPriorityType, TaskTags } from "../pim-types";
 
-import { History } from "history";
-
 import ColoredRadio from "../widgets/ColoredRadio";
 import RRule, { RRuleOptions, rruleToRecur } from "../widgets/RRule";
 import { CachedCollection } from "../Pim/helpers";
@@ -50,7 +48,7 @@ interface PropsType {
   onSave: (item: TaskType, collectionUid: string, originalItem?: TaskType) => Promise<void>;
   onDelete: (item: TaskType, collectionUid: string) => void;
   onCancel: () => void;
-  history: History<any>;
+  goBack: () => void;
 }
 
 export default class TaskEdit extends React.PureComponent<PropsType> {
@@ -250,7 +248,7 @@ export default class TaskEdit extends React.PureComponent<PropsType> {
         }
       })
       .then(() => {
-        this.props.history.goBack();
+        this.props.goBack();
       })
       .catch(() => {
         this.setState({ error: "Could not save task" });

@@ -1,7 +1,8 @@
 // SPDX-FileCopyrightText: © 2017 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Route, Switch, Redirect, RouteProps } from "react-router";
+import * as React from "react";
+import { Route, Routes, Navigate, useLocation } from "react-router";
 import { useCredentials } from "./credentials";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import SyncGate from "./SyncGate";
@@ -19,31 +20,24 @@ import { popMessage } from "./store/actions";
 export default function MainRouter() {
   return (
     <>
-      <Switch>
+      <Routes>
         <Route
           path={routeResolver.getRoute("signup")}
-          exact
-        >
-          <SignupPage />
-        </Route>
+          element={<SignupPage />}
+        />
         <Route
           path={routeResolver.getRoute("login")}
-          exact
-        >
-          <LoginPage />
-        </Route>
-        <PrivateRoute
+          element={<LoginPage />}
+        />
+        <Route
           path={routeResolver.getRoute("wizard")}
-          exact
-        >
-          <WizardPage />
-        </PrivateRoute>
-        <PrivateRoute
+          element={<PrivateRoute><WizardPage /></PrivateRoute>}
+        />
+        <Route
           path="*"
-        >
-          <SyncGate />
-        </PrivateRoute>
-      </Switch>
+          element={<PrivateRoute><SyncGate /></PrivateRoute>}
+        />
+      </Routes>
       <GlobalMessages />
     </>
   );
@@ -72,29 +66,21 @@ function GlobalMessages() {
   );
 }
 
-function PrivateRoute(props: Omit<RouteProps, "render">) {
+function PrivateRoute(props: { children: React.ReactElement }) {
   const credentials = useCredentials();
-  const { children, ...rest } = props;
+  const location = useLocation();
 
   if (credentials === undefined) {
     return (<LoadingIndicator style={{ display: "block", margin: "40px auto" }} />);
   }
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) => (
-        (credentials) ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location },
-            }}
-          />
-        )
-      )}
+  return (credentials) ? (
+    props.children
+  ) : (
+    <Navigate
+      to="/login"
+      state={{ from: location }}
+      replace
     />
   );
 }

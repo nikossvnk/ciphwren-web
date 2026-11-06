@@ -19,7 +19,7 @@ import SignedPagesBadge from "./images/signed-pages-badge.svg";
 import { useCredentials } from "./credentials";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import { startTask } from "./helpers";
-import { Redirect, useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { routeResolver } from "./App";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   if (credentials) {
     return (
-      <Redirect to={{ pathname: routeResolver.getRoute("wizard"), state: location.state }} />
+      <Navigate to={routeResolver.getRoute("wizard")} state={location.state} replace />
     );
   }
 

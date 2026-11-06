@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import IconButton from "@material-ui/core/IconButton";
 import IconAdd from "@material-ui/icons/Add";
@@ -24,7 +24,7 @@ interface PropsType {
 }
 
 export default function CollectionList(props: PropsType) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const collectionMap: { [key: string]: React.ReactNode[] } = {
     "etebase.vcard": [],
@@ -33,7 +33,7 @@ export default function CollectionList(props: PropsType) {
   };
 
   function colClicked(colUid: string) {
-    history.push(routeResolver.getRoute("collections._id", { colUid }));
+    navigate(routeResolver.getRoute("collections._id", { colUid }));
   }
 
   for (const col of props.collections) {

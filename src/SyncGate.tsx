@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Route, Switch, Redirect, useHistory } from "react-router";
+import { Route, Routes, Navigate, Outlet, useLocation } from "react-router";
 
 import moment from "moment";
 // From the ES module build of moment, which is the one that the app gets (the locale in moment/locale/
@@ -29,7 +29,7 @@ import { StoreState } from "./store";
 import { performSync } from "./store/actions";
 import { useCredentials } from "./credentials";
 import PimNavigationTabs from "./Pim/NavigationTabs";
-import { PageNotFoundRoute } from "./PageNotFound";
+import PageNotFound from "./PageNotFound";
 
 export default function SyncGate() {
   const etebase = useCredentials();
@@ -38,7 +38,7 @@ export default function SyncGate() {
   const [loading, setLoading] = React.useState(true);
 
   // Doing this so we refresh on route changes
-  useHistory();
+  useLocation();
 
   React.useEffect(() => {
     (async () => {
@@ -58,72 +58,73 @@ export default function SyncGate() {
   moment.locale(settings.locale);
 
   return (
-    <Switch>
+    <Routes>
       <Route
         path={routeResolver.getRoute("home")}
-        exact
-        render={() => (
-          <Redirect to={routeResolver.getRoute("pim")} />
-        )}
+        element={<Navigate to={routeResolver.getRoute("pim")} replace />}
       />
       <Route
         path={routeResolver.getRoute("pim")}
+        element={<><AppBarOverride title="EteSync" /><Outlet /></>}
       >
-        <AppBarOverride title="EteSync" />
-        <Switch>
-          <Route
-            path={routeResolver.getRoute("pim")}
-            exact
-          >
-            <Redirect to={routeResolver.getRoute("pim.events")} />
-          </Route>
-          <Route
-            path={routeResolver.getRoute("pim.contacts")}
-          >
-            <PimNavigationTabs value="contacts" />
-            <Container>
-              <ContactsMain />
-            </Container>
-          </Route>
-          <Route
-            path={routeResolver.getRoute("pim.events")}
-          >
-            <PimNavigationTabs value="events" />
-            <Container>
-              <CalendarsMain />
-            </Container>
-          </Route>
-          <Route
-            path={routeResolver.getRoute("pim.tasks")}
-          >
-            <PimNavigationTabs value="tasks" />
-            <Container>
-              <TasksMain />
-            </Container>
-          </Route>
-          <PageNotFoundRoute container />
-        </Switch>
+        <Route
+          index
+          element={<Navigate to={routeResolver.getRoute("pim.events")} replace />}
+        />
+        <Route
+          path={routeResolver.getRoute("pim.contacts") + "/*"}
+          element={
+            <>
+              <PimNavigationTabs value="contacts" />
+              <Container>
+                <ContactsMain />
+              </Container>
+            </>
+          }
+        />
+        <Route
+          path={routeResolver.getRoute("pim.events") + "/*"}
+          element={
+            <>
+              <PimNavigationTabs value="events" />
+              <Container>
+                <CalendarsMain />
+              </Container>
+            </>
+          }
+        />
+        <Route
+          path={routeResolver.getRoute("pim.tasks") + "/*"}
+          element={
+            <>
+              <PimNavigationTabs value="tasks" />
+              <Container>
+                <TasksMain />
+              </Container>
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={<Container><PageNotFound /></Container>}
+        />
       </Route>
       <Route
-        path={routeResolver.getRoute("collections")}
-      >
-        <CollectionsMain />
-      </Route>
+        path={routeResolver.getRoute("collections") + "/*"}
+        element={<CollectionsMain />}
+      />
       <Route
         path={routeResolver.getRoute("settings")}
-        exact
-        render={() => (
-          <Settings />
-        )}
+        element={<Settings />}
       />
       <Route
         path={routeResolver.getRoute("debug")}
-        exact
-        render={() => (
-          <Debug />
-        )}
+        element={<Debug />}
       />
-      <PageNotFoundRoute container />
-    </Switch>
+      <Route
+        path="*"
+        element={<Container><PageNotFound /></Container>}
+      />
+    </Routes>
   );
 }

@@ -34,7 +34,6 @@ import { getCurrentTimezone } from "../helpers";
 import { EventType, timezoneLoadFromName } from "../pim-types";
 import RRule, { RRuleOptions, rruleToRecur } from "../widgets/RRule";
 
-import { History } from "history";
 import { CachedCollection } from "../Pim/helpers";
 
 interface PropsType {
@@ -44,7 +43,8 @@ interface PropsType {
   onSave: (event: EventType, collectionUid: string, originalEvent?: EventType) => Promise<void>;
   onDelete: (event: EventType, collectionUid: string) => void;
   onCancel: () => void;
-  history: History;
+  goBack: () => void;
+  locationState?: unknown;
   duplicate?: boolean;
 }
 
@@ -79,7 +79,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
       showDeleteDialog: false,
     };
 
-    const locState = this.props.history.location.state as EventType;
+    const locState = this.props.locationState as EventType;
     if (locState) {
       // FIXME: Hack to determine if all day. Should be passed as a proper state.
       this.state.allDay = (locState.start &&
@@ -235,7 +235,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
 
     this.props.onSave(event, this.state.collectionUid, this.props.item)
       .then(() => {
-        this.props.history.goBack();
+        this.props.goBack();
       });
   }
 

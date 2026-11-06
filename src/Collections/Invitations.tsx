@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { Switch, Route, Redirect } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 
 import * as Etebase from "etebase";
 
@@ -38,21 +38,19 @@ async function loadInvitations(etebase: Etebase.Account) {
 
 export default function Invitations() {
   return (
-    <Switch>
+    <Routes>
       <Route
-        path={routeResolver.getRoute("collections.invitations")}
-        exact
-      >
-        <Redirect to={routeResolver.getRoute("collections.invitations.incoming")} />
-      </Route>
+        index
+        element={<Navigate to={routeResolver.getRoute("collections.invitations.incoming")} replace />}
+      />
       <Route
-        path={routeResolver.getRoute("collections.invitations.incoming")}
-        exact
-      >
-        <InvitationsIncoming
-        />
-      </Route>
-    </Switch>
+        path={routeResolver.getRelativeRoute("collections.invitations.incoming", "collections.invitations")}
+        element={
+          <InvitationsIncoming
+          />
+        }
+      />
+    </Routes>
   );
 }
 

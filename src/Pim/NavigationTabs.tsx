@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import { Tabs, Tab, useTheme } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { routeResolver } from "../App";
 
 export type TabValue = "contacts" | "events" | "tasks";
@@ -13,7 +13,7 @@ interface PropsType {
 
 export default function PimNavigationTabs(props: PropsType) {
   const theme = useTheme();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const tabs = [
     { title: "Address Book", linkValue: "contacts" },
@@ -42,7 +42,7 @@ export default function PimNavigationTabs(props: PropsType) {
       variant="fullWidth"
       style={{ backgroundColor: theme.palette.primary.main }}
       value={selected}
-      onChange={(_event, value) => history.push(
+      onChange={(_event, value) => navigate(
         routeResolver.getRoute(`pim.${tabs[value].linkValue}`)
       )}
     >

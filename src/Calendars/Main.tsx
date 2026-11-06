@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { Switch, Route, useHistory } from "react-router";
+import { Routes, Route, useNavigate, useLocation } from "react-router";
 
 import * as Etebase from "etebase";
 
@@ -15,11 +15,12 @@ import { EventType, PimType } from "../pim-types";
 import { useCredentials } from "../credentials";
 import { useItems, useCollections } from "../etebase-helpers";
 import { routeResolver } from "../App";
+import { RouteParams } from "../routes";
 import Calendar from "./Calendar";
 import Event from "./Event";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import EventEdit from "./EventEdit";
-import PageNotFound, { PageNotFoundRoute } from "../PageNotFound";
+import PageNotFound from "../PageNotFound";
 
 import { CachedCollection, getItemNavigationUid, getDecryptCollectionsFunction, getDecryptItemsFunction, PimFab, itemDelete, itemSave, defaultColor } from "../Pim/helpers";
 import { historyPersistor } from "../persist-state-history";
@@ -36,7 +37,8 @@ export default function CalendarsMain() {
   const [entries, setEntries] = React.useState<Map<string, Map<string, EventType>>>();
   const [cachedCollections, setCachedCollections] = React.useState<CachedCollection[]>();
   const theme = useTheme();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const etebase = useCredentials()!;
   const collections = useCollections(etebase, colType);
   const items = useItems(etebase, colType);
@@ -77,11 +79,11 @@ export default function CalendarsMain() {
     const collection = collections!.find((x) => x.uid === collectionUid)!;
     await itemDelete(etebase, collection, items!, item, collectionUid);
 
-    history.push(routeResolver.getRoute("pim.events"));
+    navigate(routeResolver.getRoute("pim.events"));
   }
 
-  function onCancel() {
-    history.goBack();
+  function goBack() {
+    navigate(-1);
   }
 
   const flatEntries = [];
@@ -101,151 +103,171 @@ export default function CalendarsMain() {
   };
 
   return (
-    <Switch>
+    <Routes>
       <Route
-        path={routeResolver.getRoute("pim.events")}
-        exact
-      >
-        <PersistCalendar
-          entries={flatEntries}
-          onItemClick={(item: EventType) => history.push(
-            routeResolver.getRoute("pim.events._id", { itemUid: getItemNavigationUid(item) })
-          )}
-          onSlotClick={(start?: Date, end?: Date) => history.push(
-            routeResolver.getRoute("pim.events.new"),
-            { start, end }
-          )}
-        />
-        <PimFab
-          onClick={() => history.push(
-            routeResolver.getRoute("pim.events.new")
-          )}
-        />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("pim.events.new")}
-        exact
-      >
-        <EventEdit
-          collections={cachedCollections}
-          onSave={onItemSave}
-          onDelete={onItemDelete}
-          onCancel={onCancel}
-          history={history}
-        />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("pim.events._id.log")}
-        render={({ match }) => {
-          // We have this path outside because we don't want the item existing check
-          const [colUid, itemUid] = match.params.itemUid!.split("|");
-          const cachedCollection = cachedCollections!.find((x) => x.collection.uid === colUid)!;
-          if (!cachedCollection) {
-            return (<PageNotFound />);
-          }
-
-          return (
-            <ItemChangeHistory collection={cachedCollection} itemUid={itemUid} />
-          );
-        }}
+        index
+        element={
+          <>
+            <PersistCalendar
+              entries={flatEntries}
+              onItemClick={(item: EventType) => navigate(
+                routeResolver.getRoute("pim.events._id", { itemUid: getItemNavigationUid(item) })
+              )}
+              onSlotClick={(start?: Date, end?: Date) => navigate(
+                routeResolver.getRoute("pim.events.new"),
+                { state: { start, end } }
+              )}
+            />
+            <PimFab
+              onClick={() => navigate(
+                routeResolver.getRoute("pim.events.new")
+              )}
+            />
+          </>
+        }
       />
       <Route
-        path={routeResolver.getRoute("pim.events._id")}
-        render={({ match }) => {
-          const [colUid, itemUid] = match.params.itemUid!.split("|");
-          const item = entries.get(colUid)?.get(itemUid);
-          if (!item) {
-            return (<PageNotFound />);
-          }
-
-          const collection = collections!.find((x) => x.uid === colUid)!;
-          const readOnly = collection.accessLevel === Etebase.CollectionAccessLevel.ReadOnly;
-
-          return (
-            <Switch>
-              <Route
-                path={routeResolver.getRoute("pim.events._id.edit")}
-                exact
-              >
-                <EventEdit
-                  key={itemUid}
-                  initialCollection={item.collectionUid}
-                  item={item}
-                  collections={cachedCollections}
-                  onSave={onItemSave}
-                  onDelete={onItemDelete}
-                  onCancel={onCancel}
-                  history={history}
-                />
-              </Route>
-              <Route
-                path={routeResolver.getRoute("pim.events._id.duplicate")}
-                exact
-              >
-                <EventEdit
-                  key={itemUid}
-                  initialCollection={item.collectionUid}
-                  item={item}
-                  collections={cachedCollections}
-                  onSave={onItemSave}
-                  onDelete={onItemDelete}
-                  onCancel={onCancel}
-                  history={history}
-                  duplicate
-                />
-              </Route>
-              <Route
-                path={routeResolver.getRoute("pim.events._id")}
-                exact
-              >
-                <div style={{ textAlign: "right", marginBottom: 15 }}>
-                  <Button
-                    variant="contained"
-                    style={styles.button}
-                    onClick={() =>
-                      history.push(routeResolver.getRoute("pim.events._id.log", { itemUid: getItemNavigationUid(item) }))
-                    }
-                  >
-                    <IconChangeHistory style={styles.leftIcon} />
-                    Change History
-                  </Button>
-
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    disabled={readOnly}
-                    style={{ ...styles.button, marginLeft: 15 }}
-                    onClick={() =>
-                      history.push(routeResolver.getRoute("pim.events._id.edit", { itemUid: getItemNavigationUid(item) }))
-                    }
-                  >
-                    <IconEdit style={styles.leftIcon} />
-                    Edit
-                  </Button>
-
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    disabled={readOnly}
-                    style={{ ...styles.button, marginLeft: 15 }}
-                    onClick={() =>
-                      history.push(routeResolver.getRoute("pim.events._id.duplicate", { itemUid: getItemNavigationUid(item) }))
-                    }
-                  >
-                    <IconDuplicate style={styles.leftIcon} />
-                    Duplicate
-                  </Button>
-
-                </div>
-                <Event item={item} />
-              </Route>
-              <PageNotFoundRoute />
-            </Switch>
-          );
-        }}
+        path={routeResolver.getRelativeRoute("pim.events.new", "pim.events")}
+        element={
+          <EventEdit
+            collections={cachedCollections}
+            onSave={onItemSave}
+            onDelete={onItemDelete}
+            onCancel={goBack}
+            goBack={goBack}
+            locationState={location.state}
+          />
+        }
       />
-      <PageNotFoundRoute />
-    </Switch>
+      <Route
+        path={routeResolver.getRelativeRoute("pim.events._id.log", "pim.events") + "/*"}
+        element={
+          <RouteParams>
+            {(params) => {
+              // We have this path outside because we don't want the item existing check
+              const [colUid, itemUid] = params.itemUid!.split("|");
+              const cachedCollection = cachedCollections!.find((x) => x.collection.uid === colUid)!;
+              if (!cachedCollection) {
+                return (<PageNotFound />);
+              }
+
+              return (
+                <ItemChangeHistory collection={cachedCollection} itemUid={itemUid} />
+              );
+            }}
+          </RouteParams>
+        }
+      />
+      <Route
+        path={routeResolver.getRelativeRoute("pim.events._id", "pim.events") + "/*"}
+        element={
+          <RouteParams>
+            {(params) => {
+              const [colUid, itemUid] = params.itemUid!.split("|");
+              const item = entries.get(colUid)?.get(itemUid);
+              if (!item) {
+                return (<PageNotFound />);
+              }
+
+              const collection = collections!.find((x) => x.uid === colUid)!;
+              const readOnly = collection.accessLevel === Etebase.CollectionAccessLevel.ReadOnly;
+
+              return (
+                <Routes>
+                  <Route
+                    path={routeResolver.getRelativeRoute("pim.events._id.edit", "pim.events._id")}
+                    element={
+                      <EventEdit
+                        key={itemUid}
+                        initialCollection={item.collectionUid}
+                        item={item}
+                        collections={cachedCollections}
+                        onSave={onItemSave}
+                        onDelete={onItemDelete}
+                        onCancel={goBack}
+                        goBack={goBack}
+                        locationState={location.state}
+                      />
+                    }
+                  />
+                  <Route
+                    path={routeResolver.getRelativeRoute("pim.events._id.duplicate", "pim.events._id")}
+                    element={
+                      <EventEdit
+                        key={itemUid}
+                        initialCollection={item.collectionUid}
+                        item={item}
+                        collections={cachedCollections}
+                        onSave={onItemSave}
+                        onDelete={onItemDelete}
+                        onCancel={goBack}
+                        goBack={goBack}
+                        locationState={location.state}
+                        duplicate
+                      />
+                    }
+                  />
+                  <Route
+                    index
+                    element={
+                      <>
+                        <div style={{ textAlign: "right", marginBottom: 15 }}>
+                          <Button
+                            variant="contained"
+                            style={styles.button}
+                            onClick={() =>
+                              navigate(routeResolver.getRoute("pim.events._id.log", { itemUid: getItemNavigationUid(item) }))
+                            }
+                          >
+                            <IconChangeHistory style={styles.leftIcon} />
+                            Change History
+                          </Button>
+
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            disabled={readOnly}
+                            style={{ ...styles.button, marginLeft: 15 }}
+                            onClick={() =>
+                              navigate(routeResolver.getRoute("pim.events._id.edit", { itemUid: getItemNavigationUid(item) }))
+                            }
+                          >
+                            <IconEdit style={styles.leftIcon} />
+                            Edit
+                          </Button>
+
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            disabled={readOnly}
+                            style={{ ...styles.button, marginLeft: 15 }}
+                            onClick={() =>
+                              navigate(routeResolver.getRoute("pim.events._id.duplicate", { itemUid: getItemNavigationUid(item) }))
+                            }
+                          >
+                            <IconDuplicate style={styles.leftIcon} />
+                            Duplicate
+                          </Button>
+
+                        </div>
+                        <Event item={item} />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={<PageNotFound />}
+                  />
+                </Routes>
+              );
+            }}
+          </RouteParams>
+        }
+      />
+      <Route
+        path="*"
+        element={<PageNotFound />}
+      />
+    </Routes>
   );
 }
-

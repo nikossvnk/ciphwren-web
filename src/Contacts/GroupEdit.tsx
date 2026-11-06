@@ -23,8 +23,6 @@ import ICAL from "ical.js";
 
 import { ContactType } from "../pim-types";
 
-import { History } from "history";
-
 class ValueType {
   public type: string;
   public value: string;
@@ -42,7 +40,7 @@ interface PropsType {
   onSave: (contact: ContactType, collectionUid: string, originalContact?: ContactType) => Promise<void>;
   onDelete: (contact: ContactType, collectionUid: string) => void;
   onCancel: () => void;
-  history: History<any>;
+  goBack: () => void;
   allGroups: ContactType[];
 }
 
@@ -182,7 +180,7 @@ class GroupEdit extends React.PureComponent<PropsType> {
 
     this.props.onSave(group, this.state.collectionUid, this.props.item)
       .then(() => {
-        this.props.history.goBack();
+        this.props.goBack();
       });
   }
 

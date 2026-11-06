@@ -10,7 +10,7 @@ import { useItems } from "../etebase-helpers";
 import { CachedCollection, getRawItemNavigationUid } from "../Pim/helpers";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import GenericChangeHistory from "../components/GenericChangeHistory";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { routeResolver } from "../App";
 
 export interface CachedItem {
@@ -44,7 +44,7 @@ interface PropsType {
 
 export default function CollectionChangeEntries(props: PropsType) {
   const [entries, setEntries] = React.useState<Map<string, CachedItem>>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const etebase = useCredentials()!;
 
   const { collection, collectionType } = props.collection;
@@ -90,7 +90,7 @@ export default function CollectionChangeEntries(props: PropsType) {
       <GenericChangeHistory
         items={entriesList}
         onItemClick={(item) =>
-          history.push(routeResolver.getRoute(changelogRoute, { itemUid: getRawItemNavigationUid(collection.uid, item.item.uid) }))
+          navigate(routeResolver.getRoute(changelogRoute, { itemUid: getRawItemNavigationUid(collection.uid, item.item.uid) }))
         }
       />
     </div>

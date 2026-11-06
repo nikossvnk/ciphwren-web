@@ -231,7 +231,11 @@ export default function App() {
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      {/* Without the trailing slash of BASE_URL, so that the base path without a trailing slash also matches */}
+      <BrowserRouter
+        basename={import.meta.env.BASE_URL.replace(/\/$/, "")}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <div style={styles.main} className={darkMode ? "theme-dark" : "theme-light"}>
           <AppBarWitHistory
             toggleDrawerIcon={<IconButton onClick={toggleDrawer}><NavigationMenu /></IconButton>}

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { withRouter } from "react-router";
+import { useLocation } from "react-router";
 
 // FIXME: Should probably tie this to the history object, or at least based on the depth of the history
 const stateCache: { [key: string]: any } = {};
@@ -11,7 +11,7 @@ type Constructor<T> = new(...args: any[]) => T;
 
 export function historyPersistor(tag: string) {
   return <T extends Constructor<React.Component>>(Base: T) => {
-    return withRouter(class extends Base {
+    const Persisted: React.ComponentType<any> = class extends Base {
       constructor(...rest: any[]) {
         const props = rest[0];
         super(...rest);
@@ -31,6 +31,11 @@ export function historyPersistor(tag: string) {
       public getKeyForTag(props: any, tagName: string) {
         return props.location.pathname + ":" + tagName;
       }
-    });
+    };
+
+    return function HistoryPersistor(props: Omit<InstanceType<T>["props"], "location">) {
+      const location = useLocation();
+      return (<Persisted {...props} location={location} />);
+    };
   };
 }

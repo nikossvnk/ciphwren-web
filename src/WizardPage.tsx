@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { Redirect, useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 
@@ -166,6 +166,6 @@ export default function WizardPage() {
 
   const { from } = location.state as LocationState || { from: { pathname: routeResolver.getRoute("home") } };
   return (
-    <Redirect to={from.pathname} />
+    <Navigate to={from.pathname} replace />
   );
 }

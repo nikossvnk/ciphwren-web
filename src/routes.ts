@@ -1,6 +1,14 @@
 // SPDX-FileCopyrightText: © 2017 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import * as React from "react";
+import { Params, useParams } from "react-router";
+
+// Calls `children` with the params of the enclosing route, for building a route's `element` from its params.
+export function RouteParams(props: { children: (params: Params) => React.ReactElement }) {
+  return props.children(useParams());
+}
+
 export interface RouteKeysType {
   [Identifier: string]: any;
 }
@@ -48,5 +56,18 @@ export class RouteResolver {
     }
 
     return "/" + path.join("/");
+  }
+
+  // The path of route `name` relative to the route `parentName`, for the routes of a descendant <Routes>
+  // rendered under `parentName`.
+  public getRelativeRoute(name: string, parentName: string): string {
+    const path = this.getRoute(name);
+    const parentPath = this.getRoute(parentName);
+    const prefix = parentPath.endsWith("/") ? parentPath : parentPath + "/";
+    if (!path.startsWith(prefix)) {
+      throw new Error(`Route ${name} is not under ${parentName}.`);
+    }
+
+    return path.slice(prefix.length);
   }
 }

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { Switch, Route, useHistory } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 
 import * as Etebase from "etebase";
 
 import { useCredentials } from "../credentials";
 import { useCollections, getCollectionManager } from "../etebase-helpers";
 import { routeResolver } from "../App";
+import { RouteParams } from "../routes";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 
 import { CachedCollection, getDecryptCollectionsFunction, PimFab } from "../Pim/helpers";
@@ -26,7 +27,7 @@ const decryptCollections = getDecryptCollectionsFunction();
 
 export default function CollectionsMain() {
   const [cachedCollections, setCachedCollections] = React.useState<CachedCollection[]>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const etebase = useCredentials()!;
   const collections = useCollections(etebase);
   const dispatch = useAsyncDispatch();
@@ -50,7 +51,7 @@ export default function CollectionsMain() {
     await dispatch(collectionUpload(colMgr, collection));
     dispatch(pushMessage({ message: "Collection saved", severity: "success" }));
 
-    history.push(routeResolver.getRoute("collections"));
+    navigate(routeResolver.getRoute("collections"));
   }
 
   async function onDelete(collection: Etebase.Collection) {
@@ -62,90 +63,90 @@ export default function CollectionsMain() {
     await dispatch(collectionUpload(colMgr, collection));
     dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
 
-    history.push(routeResolver.getRoute("collections"));
+    navigate(routeResolver.getRoute("collections"));
   }
 
   function onCancel() {
-    history.goBack();
+    navigate(-1);
   }
 
   return (
-    <Switch>
+    <Routes>
       <Route
-        path={routeResolver.getRoute("collections")}
-        exact
-      >
-        <CollectionList
-          collections={cachedCollections}
-        />
-        <PimFab
-          onClick={() => history.push(
-            routeResolver.getRoute("collections.new")
-          )}
-        />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("collections.import")}
-        exact
-      >
-        <CollectionImport
-          collections={cachedCollections}
-        />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("collections.new")}
-        exact
-      >
-        <CollectionEdit
-          onSave={onSave}
-          onDelete={onDelete}
-          onCancel={onCancel}
-        />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("collections.invitations")}
-      >
-        <Invitations />
-      </Route>
-      <Route
-        path={routeResolver.getRoute("collections._id")}
-        render={({ match }) => {
-          const colUid = match.params.colUid;
-          const collection = cachedCollections.find((x) => x.collection.uid === colUid);
-          if (!collection) {
-            return (<PageNotFound />);
-          }
-
-          return (
-            <Switch>
-              <Route
-                path={routeResolver.getRoute("collections._id.edit")}
-                exact
-              >
-                <CollectionEdit
-                  collection={collection}
-                  onSave={onSave}
-                  onDelete={onDelete}
-                  onCancel={onCancel}
-                />
-              </Route>
-              <Route
-                path={routeResolver.getRoute("collections._id.members")}
-                exact
-              >
-                <CollectionMembers collection={collection} />
-              </Route>
-              <Route
-                path={routeResolver.getRoute("collections._id")}
-                exact
-              >
-                <Collection collection={collection} />
-              </Route>
-            </Switch>
-          );
-        }}
+        index
+        element={
+          <>
+            <CollectionList
+              collections={cachedCollections}
+            />
+            <PimFab
+              onClick={() => navigate(
+                routeResolver.getRoute("collections.new")
+              )}
+            />
+          </>
+        }
       />
-    </Switch>
+      <Route
+        path={routeResolver.getRelativeRoute("collections.import", "collections")}
+        element={
+          <CollectionImport
+            collections={cachedCollections}
+          />
+        }
+      />
+      <Route
+        path={routeResolver.getRelativeRoute("collections.new", "collections")}
+        element={
+          <CollectionEdit
+            onSave={onSave}
+            onDelete={onDelete}
+            onCancel={onCancel}
+          />
+        }
+      />
+      <Route
+        path={routeResolver.getRelativeRoute("collections.invitations", "collections") + "/*"}
+        element={<Invitations />}
+      />
+      <Route
+        path={routeResolver.getRelativeRoute("collections._id", "collections") + "/*"}
+        element={
+          <RouteParams>
+            {(params) => {
+              const colUid = params.colUid;
+              const collection = cachedCollections.find((x) => x.collection.uid === colUid);
+              if (!collection) {
+                return (<PageNotFound />);
+              }
+
+              return (
+                <Routes>
+                  <Route
+                    path={routeResolver.getRelativeRoute("collections._id.edit", "collections._id")}
+                    element={
+                      <CollectionEdit
+                        collection={collection}
+                        onSave={onSave}
+                        onDelete={onDelete}
+                        onCancel={onCancel}
+                      />
+                    }
+                  />
+                  <Route
+                    path={routeResolver.getRelativeRoute("collections._id.members", "collections._id")}
+                    element={<CollectionMembers collection={collection} />}
+                  />
+                  <Route
+                    index
+                    element={<Collection collection={collection} />}
+                  />
+                </Routes>
+              );
+            }}
+          </RouteParams>
+        }
+      />
+    </Routes>
   );
 }
-

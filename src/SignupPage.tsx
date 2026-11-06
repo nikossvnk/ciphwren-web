@@ -17,7 +17,7 @@ import PasswordField from "./widgets/PasswordField";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import Alert from "@material-ui/lab/Alert";
 import { CircularProgress } from "@material-ui/core";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router";
 import { useCredentials } from "./credentials";
 import { useDispatch } from "react-redux";
 import { startTask, PASSWORD_MIN_LENGTH, enforcePasswordRules } from "./helpers";
@@ -51,7 +51,7 @@ export default function SignupPage() {
 
   if (credentials) {
     return (
-      <Redirect to={routeResolver.getRoute("wizard")} />
+      <Navigate to={routeResolver.getRoute("wizard")} replace />
     );
   }
 

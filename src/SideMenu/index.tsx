@@ -23,7 +23,7 @@ import { logout } from "../store/actions";
 import * as C from "../constants";
 import { useTheme } from "@material-ui/core";
 import { useCredentials } from "../credentials";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 interface PropsType {
   onCloseDrawerRequest: () => void;
@@ -33,7 +33,7 @@ export default function SideMenu(props: PropsType) {
   const theme = useTheme();
   const etebase = useCredentials();
   const username = etebase?.user.username ?? C.appName;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   function logoutDo() {
     store.dispatch(logout(etebase!));
@@ -49,7 +49,7 @@ export default function SideMenu(props: PropsType) {
           leftIcon={<ActionJournals />}
           onClick={() => {
             props.onCloseDrawerRequest();
-            history.push(routeResolver.getRoute("collections"));
+            navigate(routeResolver.getRoute("collections"));
           }}
         />
         <ListItem
@@ -57,7 +57,7 @@ export default function SideMenu(props: PropsType) {
           leftIcon={<IconInvitation />}
           onClick={() => {
             props.onCloseDrawerRequest();
-            history.push(routeResolver.getRoute("collections.invitations"));
+            navigate(routeResolver.getRoute("collections.invitations"));
           }}
         />
         <ListItem
@@ -65,7 +65,7 @@ export default function SideMenu(props: PropsType) {
           leftIcon={<IconImport />}
           onClick={() => {
             props.onCloseDrawerRequest();
-            history.push(routeResolver.getRoute("collections.import"));
+            navigate(routeResolver.getRoute("collections.import"));
           }}
         />
         <ListItem
@@ -73,7 +73,7 @@ export default function SideMenu(props: PropsType) {
           leftIcon={<ActionSettings />}
           onClick={() => {
             props.onCloseDrawerRequest();
-            history.push(routeResolver.getRoute("settings"));
+            navigate(routeResolver.getRoute("settings"));
           }}
         />
         <ListItem primaryText="Log Out" leftIcon={<LogoutIcon />} onClick={logoutDo} />
@@ -95,7 +95,7 @@ export default function SideMenu(props: PropsType) {
           leftIcon={<ActionHome />}
           onClick={() => {
             props.onCloseDrawerRequest();
-            history.push(routeResolver.getRoute("home"));
+            navigate(routeResolver.getRoute("home"));
           }}
         />
         {loggedInItems}

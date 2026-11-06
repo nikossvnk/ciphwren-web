@@ -26,7 +26,6 @@ import ICAL from "ical.js";
 
 import { ContactType } from "../pim-types";
 
-import { History } from "history";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const telTypes = [
@@ -124,7 +123,7 @@ interface PropsType {
   onSave: (contact: ContactType, collectionUid: string, originalContact?: ContactType) => Promise<void>;
   onDelete: (contact: ContactType, collectionUid: string) => void;
   onCancel: () => void;
-  history: History<any>;
+  goBack: () => void;
   allGroups: ContactType[];
 }
 
@@ -449,7 +448,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
         await save();
       }
       await this.props.onSave(contact, this.state.collectionUid, this.props.item);
-      this.props.history.goBack();
+      this.props.goBack();
     })();
   }
 

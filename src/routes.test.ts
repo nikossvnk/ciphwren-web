@@ -62,3 +62,17 @@ it("translating routes", () => {
     routeResolver.getRoute("post._id.comment", { postId: 3 });
   }).toThrow();
 });
+
+it("relative routes", () => {
+  expect(routeResolver.getRelativeRoute("post", "home")).toBe("post");
+  expect(routeResolver.getRelativeRoute("post._id", "post")).toBe(":postId");
+  expect(routeResolver.getRelativeRoute("post._id.comment", "post")).toBe(":postId/comment/:commentId");
+  expect(routeResolver.getRelativeRoute("post._id.revision", "post._id")).toBe("history/:revisionId/:someOtherVar/test");
+
+  expect(() => {
+    routeResolver.getRelativeRoute("post", "post._id");
+  }).toThrow();
+  expect(() => {
+    routeResolver.getRelativeRoute("post", "post");
+  }).toThrow();
+});
