@@ -1,6 +1,6 @@
 # Browser tests
 
-These tests use the EteSync web app in a headless Chromium, against an Etebase test server, the way a
+These tests use Ciphwren Web in a headless Chromium, against an Etebase test server, the way a
 person would: the first-run setup, adding, editing and deleting events, contacts (with groups) and
 tasks, importing files, the settings and logging out. What the app saves is checked on the server
 itself, through the Etebase client, not only on the page. Every check prints `ok` or `FAIL`, and a
@@ -15,7 +15,7 @@ point them at a real server or account.
    (`docker/test-server` in its repository), on `http://127.0.0.1:3735`:
 
    ```
-   docker build -t etebase-test-server -f docker/test-server/Dockerfile https://github.com/nikossvnk/etesync-server.git
+   docker build -t etebase-test-server -f docker/test-server/Dockerfile https://github.com/nikossvnk/ciphwren-server.git
    docker run -d --name etebase-test -p 127.0.0.1:3735:3735 etebase-test-server
    ```
 

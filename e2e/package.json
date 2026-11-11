@@ -1,7 +1,7 @@
 {
-  "name": "etesync-web-e2e",
+  "name": "ciphwren-web-e2e",
   "private": true,
-  "description": "Browser tests of the EteSync web app against an Etebase test server",
+  "description": "Browser tests of Ciphwren Web against an Etebase test server",
   "scripts": {
     "test": "node run.js"
   },

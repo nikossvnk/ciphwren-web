@@ -1,6 +1,6 @@
-# The EteSync web app as a local app
+# The Ciphwren Web as a local app
 
-Runs the EteSync web app (contacts, calendars and tasks) on your own computer, at
+Runs the Ciphwren Web (contacts, calendars and tasks) on your own computer, at
 `http://localhost:8091`, with an entry in the applications menu and a shortcut on the desktop.
 
 Why locally instead of on a server: the app's code then comes from your own computer, built from
@@ -8,7 +8,7 @@ this repository (the one this directory is in), so the server only ever sees enc
 with the apps on a phone. A web app served by the server could be changed to capture the password
 if the server was taken over. It's only reachable from this computer.
 
-It goes well with [EteSync Notes](https://github.com/etesync/etesync-notes)' local web app, which
+It goes well with [Ciphwren Notes](https://github.com/nikossvnk/ciphwren-notes)' local web app, which
 uses port 8090 (they don't share a login, as the browser keeps them apart by port).
 
 ## Installing (and updating)
@@ -42,7 +42,7 @@ Options (environment variables):
 | `BROWSER` | the first one found of Chromium, Chrome, Brave, Edge, Firefox | The browser the shortcut opens. Chromium-based browsers open it in an app window, Firefox in a new window |
 | `LOW_MEMORY` | `1` | Chromium-based browsers get flags that make them use a bit less memory (no spare page process, at most two, no background downloads, updates or sync); `0` leaves them out |
 
-Then open "EteSync" from the applications menu or the desktop and log in. Without `SERVER`, enter
+Then open "Ciphwren Web" from the applications menu or the desktop and log in. Without `SERVER`, enter
 your server's URL in the "Server" field. With an account that has no calendar, address book and
 task list yet, the app offers to create them.
 
@@ -52,41 +52,44 @@ Everything is in your home directory, nothing needs root:
 
 | What | Where |
 |---|---|
-| The app | `~/.local/share/etesync-web/site` |
-| The server (`serve.py` from this directory), on 127.0.0.1 only | `~/.local/share/etesync-web/serve.py` |
-| The service, started when you log in | `~/.config/systemd/user/etesync-web.service` |
-| The menu entry and the desktop shortcut | `~/.local/share/applications/etesync-web.desktop`, `~/Desktop/etesync-web.desktop` |
+| The app | `~/.local/share/ciphwren-web/site` |
+| The server (`serve.py` from this directory), on 127.0.0.1 only | `~/.local/share/ciphwren-web/serve.py` |
+| The service, started when you log in | `~/.config/systemd/user/ciphwren-web.service` |
+| The menu entry and the desktop shortcut | `~/.local/share/applications/ciphwren-web.desktop`, `~/Desktop/ciphwren-web.desktop` |
+
+An install made before the app was renamed (in `~/.local/share/etesync-web`, with the service
+`etesync-web`) is moved to these names the next time `install.sh` runs, with its default server.
 
 To do the same by hand:
 
 1. In the root of the repository: `npm ci` (if `node_modules` isn't there), then
-2. `REACT_APP_DEFAULT_API_PATH=https://your.server/ npx vite build --outDir ~/.local/share/etesync-web/site --emptyOutDir`
+2. `REACT_APP_DEFAULT_API_PATH=https://your.server/ npx vite build --outDir ~/.local/share/ciphwren-web/site --emptyOutDir`
    (without `REACT_APP_DEFAULT_API_PATH` the login page asks for the server), and remove the `*.map` files in it if you like
-3. Copy `serve.py` to `~/.local/share/etesync-web/`, and create
-   `~/.config/systemd/user/etesync-web.service`:
+3. Copy `serve.py` to `~/.local/share/ciphwren-web/`, and create
+   `~/.config/systemd/user/ciphwren-web.service`:
 
    ```
    [Unit]
-   Description=EteSync web app, served on http://localhost:8091 (this computer only)
+   Description=Ciphwren Web, served on http://localhost:8091 (this computer only)
 
    [Service]
-   ExecStart=/usr/bin/python3 %h/.local/share/etesync-web/serve.py --port 8091 --dir %h/.local/share/etesync-web/site
+   ExecStart=/usr/bin/python3 %h/.local/share/ciphwren-web/serve.py --port 8091 --dir %h/.local/share/ciphwren-web/site
    Restart=on-failure
 
    [Install]
    WantedBy=default.target
    ```
 
-   then `systemctl --user daemon-reload && systemctl --user enable --now etesync-web`
-4. Create `~/.local/share/applications/etesync-web.desktop` (and a copy on the desktop, made
+   then `systemctl --user daemon-reload && systemctl --user enable --now ciphwren-web`
+4. Create `~/.local/share/applications/ciphwren-web.desktop` (and a copy on the desktop, made
    executable):
 
    ```
    [Desktop Entry]
    Type=Application
-   Name=EteSync
+   Name=Ciphwren Web
    Exec=chromium --app=http://localhost:8091
-   Icon=/home/<you>/.local/share/etesync-web/icon.svg
+   Icon=/home/<you>/.local/share/ciphwren-web/icon.svg
    Categories=Office;Calendar;ContactManagement;
    ```
 
@@ -100,13 +103,13 @@ To do the same by hand:
   while it's open, and with the refresh button at the top.
 - Changing `PORT` later means a new origin for the browser, so you have to log in again.
 - To use the calendars and contacts in other apps (Thunderbird, GNOME Calendar, ...) rather than in
-  the browser, there's [EteSync DAV](https://github.com/etesync/etesync-dav).
+  the browser, there's [Ciphwren DAV](https://github.com/nikossvnk/ciphwren-dav).
 
 ## Removing it
 
 ```
-systemctl --user disable --now etesync-web
-rm -rf ~/.local/share/etesync-web ~/.config/systemd/user/etesync-web.service \
-       ~/.local/share/applications/etesync-web.desktop ~/Desktop/etesync-web.desktop
+systemctl --user disable --now ciphwren-web
+rm -rf ~/.local/share/ciphwren-web ~/.config/systemd/user/ciphwren-web.service \
+       ~/.local/share/applications/ciphwren-web.desktop ~/Desktop/ciphwren-web.desktop
 systemctl --user daemon-reload
 ```

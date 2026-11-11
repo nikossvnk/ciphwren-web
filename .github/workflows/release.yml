@@ -1,7 +1,7 @@
 name: Release
 
 # Pushing a version tag (e.g. v0.7.0) checks and builds the app, and publishes the build as a
-# release: etesync-web-<version>.tgz, to serve from any web server, with its checksum.
+# release: ciphwren-web-<version>.tgz, to serve from any web server, with its checksum.
 on:
   push:
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
@@ -50,7 +50,7 @@ jobs:
 
       - name: Package
         run: |
-          name="etesync-web-${TAG#v}"
+          name="ciphwren-web-${TAG#v}"
           # Without the source maps, which are only of use for development
           find build -name '*.map' -delete
           mv build "$name"

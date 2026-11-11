@@ -6,7 +6,7 @@ import * as zones from "./data/zones.json";
 import moment from "moment";
 import * as uuid from "uuid";
 
-export const PRODID = "-//iCal.js EteSync iOS";
+export const PRODID = "-//iCal.js Ciphwren Web";
 
 export interface PimType {
   uid: string;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serves the web build of EteSync on this computer only (127.0.0.1).
+"""Serves the web build of Ciphwren Web on this computer only (127.0.0.1).
 
 Paths that aren't files are answered with index.html, so that the app's own URLs (e.g. /pim/events)
 also work when they are loaded directly. Installed and started by install.sh."""

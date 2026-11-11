@@ -6,7 +6,7 @@ run(async () => {
   const app = await open();
   const { page } = app;
   await app.login();
-  await page.getByText("Welcome to EteSync!").waitFor();
+  await page.getByText("Welcome to Ciphwren!").waitFor();
   check("the setup is shown for an account without collections", page.url().endsWith("/wizard"), page.url());
   await page.getByRole("button", { name: "Next" }).click();
   await page.getByRole("button", { name: "Finish" }).click();
