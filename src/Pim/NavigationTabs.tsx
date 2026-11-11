@@ -44,14 +44,14 @@ export default function PimNavigationTabs(props: PropsType) {
       textColor="inherit"
       style={{ backgroundColor: theme.palette.primary.main }}
       value={selected}
-      onChange={(_event, value) => navigate(
-        routeResolver.getRoute(`pim.${tabs[value].linkValue}`)
-      )}
     >
       {tabs.map((x) => (
         <Tab
           key={x.linkValue}
           label={x.title}
+          // Not Tabs' onChange: since MUI 5 it doesn't fire for the selected tab, and clicking that
+          // one has to go back to its list (e.g. from an event to the calendar)
+          onClick={() => navigate(routeResolver.getRoute(`pim.${x.linkValue}`))}
         />
       ))}
     </Tabs>

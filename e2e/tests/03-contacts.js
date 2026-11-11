@@ -20,7 +20,7 @@ run(async () => {
   await page.getByPlaceholder("Email").fill("jane@example.invalid");
   await page.locator("input[name=org]").fill("Acme");
   await page.locator("textarea[name=note]").fill("Met at the conference");
-  const groups = page.getByRole("textbox", { name: "Groups" });
+  const groups = page.getByRole("combobox", { name: "Groups" });
   await groups.fill(group);
   await groups.press("Enter");
   await page.getByRole("button", { name: "Save" }).click();
