@@ -171,7 +171,7 @@ class GroupEdit extends React.PureComponent<PropsType> {
       ;
 
     const comp = group.comp;
-    comp.updatePropertyWithValue("prodid", "-//iCal.js EteSync Web");
+    comp.updatePropertyWithValue("prodid", "-//iCal.js Ciphwren Web");
     comp.updatePropertyWithValue("version", "4.0");
     comp.updatePropertyWithValue("uid", this.state.uid);
     comp.updatePropertyWithValue("rev", ICAL.Time.now());

@@ -31,7 +31,7 @@ const wizardPages = [
   (props: PagePropsType) => (
     <>
       <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <h2 style={{ textAlign: "center" }}>Welcome to EteSync!</h2>
+        <h2 style={{ textAlign: "center" }}>Welcome to Ciphwren!</h2>
         <p style={{ textAlign: "center" }}>
           Please follow these few quick steps to help you get started.
         </p>
@@ -81,7 +81,7 @@ function SetupCollectionsPage(props: PagePropsType) {
       <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center" }}>
         <h2 style={{ textAlign: "center" }}>Setup Collections</h2>
         <p style={{ textAlign: "center", maxWidth: "50em" }}>
-          In order to start using EteSync you need to create collections to store your data. Clicking <i>Finish</i> below will create a default calendar, address book and a task list for you.
+          In order to start using Ciphwren you need to create collections to store your data. Clicking <i>Finish</i> below will create a default calendar, address book and a task list for you.
         </p>
         {(loading) ? (
           <LoadingIndicator style={{ display: "block", margin: "40px auto" }} />
