@@ -28,7 +28,7 @@ run(async () => {
   await page.locator("input[name=title]").fill(title);
   await page.getByLabel("High").check();
   // The date fields: hide until, and due
-  await app.typeDate(page.locator("input[type=text]:not([name])").nth(1), day(5));
+  await app.typeDate(app.dateFields().nth(1), day(5));
   await page.locator("textarea[name=description]").fill("Before the deadline");
   await page.getByRole("textbox", { name: "Tags" }).fill("home");
   await page.getByRole("textbox", { name: "Tags" }).press("Enter");

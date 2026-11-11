@@ -3,11 +3,11 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 import { routeResolver } from "./App";
 
@@ -15,8 +15,8 @@ import Container from "./widgets/Container";
 import PasswordField from "./widgets/PasswordField";
 
 import LoadingIndicator from "./widgets/LoadingIndicator";
-import Alert from "@material-ui/lab/Alert";
-import { CircularProgress } from "@material-ui/core";
+import Alert from "@mui/material/Alert";
+import { CircularProgress } from "@mui/material";
 import { Navigate } from "react-router";
 import { useCredentials } from "./credentials";
 import { useDispatch } from "react-redux";

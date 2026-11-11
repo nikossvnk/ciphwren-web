@@ -4,7 +4,7 @@
 import * as React from "react";
 
 import ColorBox from "./ColorBox";
-import { TextField, ButtonBase } from "@material-ui/core";
+import { TextField, ButtonBase } from "@mui/material";
 
 interface PropsType {
   color: string;

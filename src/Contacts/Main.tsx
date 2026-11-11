@@ -6,9 +6,9 @@ import { Routes, Route, useNavigate } from "react-router";
 
 import * as Etebase from "etebase";
 
-import { Button, useTheme } from "@material-ui/core";
-import IconEdit from "@material-ui/icons/Edit";
-import IconChangeHistory from "@material-ui/icons/ChangeHistory";
+import { Button, useTheme } from "@mui/material";
+import IconEdit from "@mui/icons-material/Edit";
+import IconChangeHistory from "@mui/icons-material/ChangeHistory";
 
 import { ContactType, PimType } from "../pim-types";
 import { useCredentials } from "../credentials";

@@ -7,7 +7,7 @@ import ICAL from "ical.js";
 
 import * as uuid from "uuid";
 
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 
 import { TaskType, PimType, TaskStatusType } from "../pim-types";
 import { CachedCollection } from "../Pim/helpers";

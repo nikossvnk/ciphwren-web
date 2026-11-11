@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: © 2020 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Tabs, Tab, useTheme } from "@material-ui/core";
+import { Tabs, Tab, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
 import { routeResolver } from "../App";
 
@@ -40,6 +40,8 @@ export default function PimNavigationTabs(props: PropsType) {
   return (
     <Tabs
       variant="fullWidth"
+      indicatorColor="secondary"
+      textColor="inherit"
       style={{ backgroundColor: theme.palette.primary.main }}
       value={selected}
       onChange={(_event, value) => navigate(

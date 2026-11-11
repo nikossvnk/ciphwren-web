@@ -7,9 +7,9 @@ import * as Etebase from "etebase";
 
 import { List, ListItem } from "../widgets/List";
 
-import IconMemberAdd from "@material-ui/icons/PersonAdd";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import AdminIcon from "@material-ui/icons/SupervisedUserCircle";
+import IconMemberAdd from "@mui/icons-material/PersonAdd";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AdminIcon from "@mui/icons-material/SupervisedUserCircle";
 
 import AppBarOverride from "../widgets/AppBarOverride";
 import Container from "../widgets/Container";
@@ -21,7 +21,7 @@ import { getCollectionManager } from "../etebase-helpers";
 import { CachedCollection } from "../Pim/helpers";
 
 import CollectionMemberAddDialog from "./CollectionMemberAddDialog";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import { pushMessage } from "../store/actions";
 import { useDispatch } from "react-redux";
 

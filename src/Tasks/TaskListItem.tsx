@@ -6,10 +6,10 @@ import * as React from "react";
 import { TaskType, TaskPriorityType } from "../pim-types";
 import { ListItem } from "../widgets/List";
 
-import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import * as colors from "@material-ui/core/colors";
-import Chip from "@material-ui/core/Chip";
+import Checkbox from "@mui/material/Checkbox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import * as colors from "@mui/material/colors";
+import Chip from "@mui/material/Chip";
 
 import { mapPriority, formatDate } from "../helpers";
 

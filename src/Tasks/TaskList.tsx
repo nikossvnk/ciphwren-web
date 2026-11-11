@@ -6,9 +6,9 @@ import * as React from "react";
 import { List } from "../widgets/List";
 
 import { TaskType, PimType, TaskStatusType } from "../pim-types";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import { useTheme, makeStyles } from "@material-ui/core/styles";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -92,11 +92,9 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  topBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
+// The spacing of MUI 4's Grid: padded items in a container with negative margins
+const containerSx = { m: -2, width: "calc(100% + 32px)" };
+const topBarSx = { p: 2, bgcolor: "primary.main" };
 
 interface PropsType {
   entries: TaskType[];
@@ -113,7 +111,6 @@ export default function TaskList(props: PropsType) {
   const { filterBy, sortBy } = settings;
   const dispatch = useDispatch();
   const theme = useTheme();
-  const classes = useStyles();
 
   const { onItemClick } = props;
 
@@ -198,12 +195,12 @@ export default function TaskList(props: PropsType) {
   const itemList = sortedEntries.map(taskListItemFromTask);
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={3} className={classes.topBar}>
+    <Grid container sx={containerSx}>
+      <Grid size={3} sx={topBarSx}>
         {/* spacer */}
       </Grid>
 
-      <Grid item xs={9} className={classes.topBar}>
+      <Grid size={9} sx={topBarSx}>
         <Toolbar
           defaultCollection={props.collections?.[0]}
           onItemSave={props.onItemSave}
@@ -216,11 +213,11 @@ export default function TaskList(props: PropsType) {
         />
       </Grid>
 
-      <Grid item xs={3} style={{ borderRight: `1px solid ${theme.palette.divider}` }}>
+      <Grid size={3} sx={{ p: 2 }} style={{ borderRight: `1px solid ${theme.palette.divider}` }}>
         <Sidebar tasks={potentialEntries} />
       </Grid>
 
-      <Grid item xs>
+      <Grid size="grow" sx={{ p: 2 }}>
 
         {props.collections?.[0] && <QuickAdd style={{ flexGrow: 1, marginRight: "0.75em" }} onSubmit={props.onItemSave} defaultCollection={props.collections?.[0]} />}
 

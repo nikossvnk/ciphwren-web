@@ -41,7 +41,7 @@ run(async () => {
   await page.goto(new URL("/pim/events/new", page.url()).toString());
   const title = `Tea ${unique()}`;
   await page.locator("input[name=title]").fill(title);
-  const dates = page.locator("input[type=text]:not([name])");
+  const dates = app.dateFields();
   await app.typeDate(dates.nth(0), `${day(8, true)} 16:00`);
   await app.typeDate(dates.nth(1), `${day(8, true)} 17:00`);
   await page.getByRole("button", { name: "Save" }).click();

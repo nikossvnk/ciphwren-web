@@ -3,9 +3,9 @@
 
 import * as React from "react";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
+import { useTheme } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 
 import { ContactType } from "../pim-types";
 
@@ -13,11 +13,9 @@ import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import AddressBook from "./AddressBook";
 
-const useStyles = makeStyles((theme) => ({
-  topBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
+// The spacing of MUI 4's Grid: padded items in a container with negative margins
+const containerSx = { m: -2, width: "calc(100% + 32px)" };
+const topBarSx = { p: 2, bgcolor: "primary.main" };
 
 interface PropsType {
   entries: ContactType[];
@@ -29,7 +27,6 @@ export default function SearchableAddressBook(props: PropsType) {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filterByGroup, setFilterByGroup] = React.useState<string>();
   const theme = useTheme();
-  const classes = useStyles();
 
   const groups = React.useMemo(
     (() => props.entries.filter((x) => x.group)),
@@ -50,19 +47,19 @@ export default function SearchableAddressBook(props: PropsType) {
   const reg = new RegExp(searchQuery, "i");
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={3} className={classes.topBar}>
+    <Grid container sx={containerSx}>
+      <Grid size={3} sx={topBarSx}>
         {/* spacer */}
       </Grid>
 
-      <Grid item xs={9} className={classes.topBar}>
+      <Grid size={9} sx={topBarSx}>
         <Toolbar
           searchTerm={searchQuery}
           setSearchTerm={setSearchQuery}
         />
       </Grid>
 
-      <Grid item xs={3} style={{ borderRight: `1px solid ${theme.palette.divider}` }}>
+      <Grid size={3} sx={{ p: 2 }} style={{ borderRight: `1px solid ${theme.palette.divider}` }}>
         <Sidebar
           groups={groups}
           filterByGroup={filterByGroup}
@@ -72,7 +69,7 @@ export default function SearchableAddressBook(props: PropsType) {
         />
       </Grid>
 
-      <Grid item xs>
+      <Grid size="grow" sx={{ p: 2 }}>
         <Divider style={{ marginTop: "1em" }} />
 
         <AddressBook filter={filterFunc} {...props} />

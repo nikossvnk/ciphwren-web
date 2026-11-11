@@ -4,8 +4,8 @@
 import * as React from "react";
 import * as Etebase from "etebase";
 import { Navigate, useLocation } from "react-router";
-import Button from "@material-ui/core/Button";
-import Alert from "@material-ui/lab/Alert";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 
 import { routeResolver } from "./App";
 

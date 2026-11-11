@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: © 2020 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Fab } from "@material-ui/core";
-import ContentAdd from "@material-ui/icons/Add";
+import { Fab } from "@mui/material";
+import ContentAdd from "@mui/icons-material/Add";
 
 import memoize from "memoizee";
 

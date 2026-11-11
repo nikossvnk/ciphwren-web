@@ -4,11 +4,12 @@
 import * as React from "react";
 import Color from "color";
 
-import { Theme, withTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 
-export default withTheme((props: { text: string, backgroundColor?: string, children?: any, rightItem?: React.ReactNode, theme: Theme }) => {
-  const backgroundColor = props.backgroundColor ?? props.theme.palette.secondary.main;
-  const foregroundColor = props.theme.palette.getContrastText(Color(backgroundColor).rgb().string());
+export default function PimItemHeader(props: { text: string, backgroundColor?: string, children?: any, rightItem?: React.ReactNode }) {
+  const theme = useTheme();
+  const backgroundColor = props.backgroundColor ?? theme.palette.secondary.main;
+  const foregroundColor = theme.palette.getContrastText(Color(backgroundColor).rgb().string());
   const style = {
     header: {
       backgroundColor,
@@ -32,4 +33,4 @@ export default withTheme((props: { text: string, backgroundColor?: string, child
       {props.rightItem}
     </div>
   );
-});
+}

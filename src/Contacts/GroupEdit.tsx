@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import * as colors from "@material-ui/core/colors";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import * as colors from "@mui/material/colors";
 
-import IconDelete from "@material-ui/icons/Delete";
-import IconCancel from "@material-ui/icons/Clear";
-import IconSave from "@material-ui/icons/Save";
+import IconDelete from "@mui/icons-material/Delete";
+import IconCancel from "@mui/icons-material/Clear";
+import IconSave from "@mui/icons-material/Save";
 
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 
