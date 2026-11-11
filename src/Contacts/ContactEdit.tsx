@@ -335,7 +335,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
 
   public addMetadata(item: ContactType, uid: string, isGroup: boolean) {
     const comp = item.comp;
-    comp.updatePropertyWithValue("prodid", "-//iCal.js EteSync Web");
+    comp.updatePropertyWithValue("prodid", "-//iCal.js Ciphwren Web");
     comp.updatePropertyWithValue("version", "4.0");
     comp.updatePropertyWithValue("uid", uid);
     comp.updatePropertyWithValue("rev", ICAL.Time.now());

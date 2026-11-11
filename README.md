@@ -1,6 +1,6 @@
 <p align="center">
   <img width="120" src="src/images/logo.svg" />
-  <h1 align="center">EteSync - Encrypt Everything</h1>
+  <h1 align="center">Ciphwren Web</h1>
 </p>
 
 > [!NOTE]
@@ -10,13 +10,13 @@
 > with its authors, and the changes of this fork follow it. The hosted instance and the links to etesync.com
 > below are of the original project. Like the original, it's licensed under the AGPL-3.0.
 
-The EteSync Web App - Use EteSync from the browser!
+Ciphwren Web: your contacts, calendars and tasks on an Etebase server, from the browser.
 
 
-![GitHub tag](https://img.shields.io/github/tag/etesync/etesync-web.svg)
+![GitHub tag](https://img.shields.io/github/tag/nikossvnk/ciphwren-web.svg)
 [![Chat with us](https://img.shields.io/badge/chat-IRC%20|%20Matrix%20|%20Web-blue.svg)](https://www.etebase.com/community-chat/)
 
-For notes, please refer to [the EteSync Notes](https://github.com/etesync/etesync-notes/) repository.
+For notes, see [Ciphwren Notes](https://github.com/nikossvnk/ciphwren-notes) (Android) and [Ciphwren Desktop](https://github.com/nikossvnk/ciphwren-desktop).
 
 # Usage
 
@@ -33,8 +33,8 @@ More info is available on the [FAQ](https://www.etesync.com/faq/#web-client).
 You can either self-host your own client to be served from your own server, or
 better yet, just run an instance locally.
 
-The builds of this fork are on its [releases page](https://github.com/nikossvnk/etesync-web/releases)
-(`etesync-web-<version>.tgz`, with its SHA-256 checksum), and [local-web/](local-web/) builds and runs it on
+The builds of this fork are on its [releases page](https://github.com/nikossvnk/ciphwren-web/releases)
+(`ciphwren-web-<version>.tgz`, with its SHA-256 checksum), and [local-web/](local-web/) builds and runs it on
 your own computer. The original project's version of the web client is at https://pim.etesync.com/etesync-web.tgz. This
 file is automatically generated on each deploy and is exactly the same as the deployed version.
 After fetching this file you need to extract it by e.g. running `tar -xzf etesync-web.tgz`, and then
@@ -42,7 +42,7 @@ you can serve the files using your favourite web server. Please keep in mind tha
 directly in the browser is not supported.
 
 If you are just serving the app locally, you could, for example, use the python built-in web server by
-running `python3 -m http.server` from inside the extracted `etesync-web` directory. If you plan on
+running `python3 -m http.server` from inside the extracted `ciphwren-web` directory. If you plan on
 serving it from a server, please use a proper web server such as nginx.
 
 ## Building it yourself
@@ -56,10 +56,10 @@ Then it's recommended you run `npm run build` to build a production ready client
 (even if run locally!) and then just serve the `build` directory from a web server.
 For development, `npm start` runs the app on http://localhost:3000 and reloads it on changes.
 
-The web app has no default EteSync server: without one set at build time, the login and signup pages ask
+The web app has no default server: without one set at build time, the login and signup pages ask
 for the server's URL. You can set a default by setting the environment variable `REACT_APP_DEFAULT_API_PATH`
 during the build. This can be useful for self-hosting. You can set the default URL to the address
-of your self-hosted EteSync server so you don't have to enter the address for every login (another one
+of your self-hosted Etebase server so you don't have to enter the address for every login (another one
 can still be entered under "Advanced settings"), e.g.:
 
 ```

@@ -149,7 +149,7 @@ exports.open = async () => {
     async loginToPim() {
       await this.login();
       // After logging in the app goes to the setup, which goes on to the app if there are collections
-      const welcome = page.getByText("Welcome to EteSync!");
+      const welcome = page.getByText("Welcome to Ciphwren!");
       await Promise.race([page.waitForURL(/\/pim/), welcome.waitFor()]);
       if (!page.url().includes("/pim")) {
         await page.getByRole("button", { name: "Next" }).click();

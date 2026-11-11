@@ -11,6 +11,7 @@ import moment from "moment";
 import "moment/dist/locale/en-gb";
 
 import { routeResolver } from "./App";
+import * as C from "./constants";
 
 import AppBarOverride from "./widgets/AppBarOverride";
 import LoadingIndicator from "./widgets/LoadingIndicator";
@@ -65,7 +66,7 @@ export default function SyncGate() {
       />
       <Route
         path={routeResolver.getRoute("pim")}
-        element={<><AppBarOverride title="EteSync" /><Outlet /></>}
+        element={<><AppBarOverride title={C.appName} /><Outlet /></>}
       >
         <Route
           index
