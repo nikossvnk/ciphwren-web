@@ -25,7 +25,6 @@ import { login } from "./store/actions";
 import { Link } from "react-router-dom";
 
 import * as C from "./constants";
-import ExternalLink from "./widgets/ExternalLink";
 
 interface FormErrors {
   username?: string;
@@ -184,16 +183,6 @@ export default function SignupPage() {
       <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
       <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
 
-      <Alert
-        style={styles.infoAlert}
-        severity="info"
-      >
-        <a href={C.pricing} style={{ color: "inherit", textDecoration: "inherit", display: "block" }}>
-          You are signing up for a free trial. Click here for pricing information.
-        </a>
-      </Alert>
-
-
       <form style={styles.form} onSubmit={signup}>
         <TextField
           type="text"
@@ -250,10 +239,6 @@ export default function SignupPage() {
         <Alert severity="warning" style={styles.infoAlert}>
           Please make sure you remember your password, as it <em>can't</em> be recovered if lost!
         </Alert>
-
-        <p style={styles.infoAlert}>
-          By signing up you agree to our <ExternalLink href={C.terms}>terms of service</ExternalLink>.
-        </p>
 
         <div style={styles.submit}>
           <Button
