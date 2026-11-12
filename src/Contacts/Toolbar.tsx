@@ -1,9 +1,8 @@
-
-import SearchIcon from "@material-ui/icons/Search";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import * as React from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
 import { Transition } from "react-transition-group";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import InputAdornment from "@mui/material/InputAdornment";
 
 const transitionTimeout = 300;
 
@@ -14,15 +13,10 @@ const transitionStyles: { [key: string]: React.CSSProperties } = {
   exited: { visibility: "hidden", width: "0%" },
 };
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    marginRight: theme.spacing(1),
-  },
-  textField: {
-    transition: `width ${transitionTimeout}ms`,
-    marginRight: theme.spacing(1),
-  },
-}));
+const textFieldSx = {
+  transition: `width ${transitionTimeout}ms`,
+  mr: 1,
+};
 
 interface PropsType {
   searchTerm: string;
@@ -33,27 +27,30 @@ export default function Toolbar(props: PropsType) {
   const { searchTerm, setSearchTerm } = props;
 
   const showSearchField = true;
-  const classes = useStyles();
+  const nodeRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-      <Transition in={showSearchField} timeout={transitionTimeout}>
+      <Transition nodeRef={nodeRef} in={showSearchField} timeout={transitionTimeout}>
         {(state) => (
           <TextField
+            ref={nodeRef}
             fullWidth
             placeholder="Search"
             value={searchTerm}
             color="secondary"
             variant="standard"
-            className={classes.textField}
+            sx={textFieldSx}
             style={transitionStyles[state]}
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
         )}

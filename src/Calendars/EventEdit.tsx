@@ -3,22 +3,22 @@
 
 import * as React from "react";
 
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import InputLabel from "@material-ui/core/InputLabel";
-import * as colors from "@material-ui/core/colors";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import * as colors from "@mui/material/colors";
 
-import IconDelete from "@material-ui/icons/Delete";
-import IconCancel from "@material-ui/icons/Clear";
-import IconSave from "@material-ui/icons/Save";
+import IconDelete from "@mui/icons-material/Delete";
+import IconCancel from "@mui/icons-material/Clear";
+import IconSave from "@mui/icons-material/Save";
 
 import DateTimePicker from "../widgets/DateTimePicker";
 
@@ -311,9 +311,9 @@ export default class EventEdit extends React.PureComponent<PropsType> {
               placeholder="Start"
               value={this.state.start}
               onChange={(date?: Date) => {
-                // If end is unset, set it to start + 30 minutes
+                // If end is unset, set it to start + 30 minutes (once the start is complete)
                 const end = this.state.end ?? (
-                  new Date(date!.getTime() + 30 * 60 * 1000)
+                  date && new Date(date.getTime() + 30 * 60 * 1000)
                 );
                 this.setState({ start: date, end });
               }}

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 
 import Container from "./Container";
 

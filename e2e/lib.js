@@ -181,11 +181,17 @@ exports.open = async () => {
       await page.getByRole("button", { name: "OK" }).click();
       return text;
     },
-    // Types into a date field of the date pickers, which only take the input when typed key by key
+    // The date fields of the date pickers, in the order of the page. Each is the field's hidden
+    // input, whose value is the date as text (as shown in the field).
+    dateFields() {
+      return page.locator("input.MuiPickersInputBase-input");
+    },
+    // Types into one of dateFields(). The field is made of sections (day, month, ...) that only take
+    // the input when typed key by key, and go on to the next one when full, so only the digits are typed.
     async typeDate(input, text) {
-      await input.click();
-      await input.press("Control+a");
-      await input.pressSequentially(text);
+      await input.locator("xpath=..").locator("[role=spinbutton]").first().click();
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type(text.replace(/\D/g, ""));
     },
     async close(check) {
       check("no errors on the page", errors.length === 0, errors);

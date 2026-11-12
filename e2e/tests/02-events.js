@@ -13,7 +13,7 @@ run(async () => {
   await page.locator("button[class*=Fab]").click();
   await page.waitForURL(/\/events\/new/);
   await page.locator("input[name=title]").fill(title);
-  const dates = page.locator("input[type=text]:not([name])");
+  const dates = app.dateFields();
   await app.typeDate(dates.nth(0), `${day(2)} 10:00`);
   await app.typeDate(dates.nth(1), `${day(2)} 11:30`);
   check("the start date is taken as typed", (await dates.nth(0).inputValue()) === `${day(2)} 10:00`, await dates.nth(0).inputValue());

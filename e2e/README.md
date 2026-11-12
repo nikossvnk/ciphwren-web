@@ -56,5 +56,5 @@ the page is saved as `failed-<test>.png`.
 The helpers are in `lib.js`. `open()` starts a browser with the app and collects the errors on the
 page; `loginToPim()` logs in (and goes through the setup when the account has no collections). Tests
 check the server's side with `itemsWith(type, text)`, which returns the content of the items that
-include the text, and add items with `api.addItem()`. Dates are typed in the default format of the
-app, DD/MM/YYYY (`day()`).
+include the text, and add items with `api.addItem()`. Dates are typed into the date fields
+(`dateFields()`) with `typeDate()`, in the default format of the app, DD/MM/YYYY (`day()`).

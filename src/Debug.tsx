@@ -3,8 +3,8 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 import Container from "./widgets/Container";
 import { useSelector } from "react-redux";

@@ -10,9 +10,9 @@ import * as Etebase from "etebase";
 import { AutoSizer, List as VirtualizedList } from "react-virtualized";
 
 import { List, ListItem } from "../widgets/List";
-import IconEdit from "@material-ui/icons/Edit";
-import IconDelete from "@material-ui/icons/Delete";
-import IconError from "@material-ui/icons/Error";
+import IconEdit from "@mui/icons-material/Edit";
+import IconDelete from "@mui/icons-material/Delete";
+import IconError from "@mui/icons-material/Error";
 
 import { TaskType, EventType, ContactType, parseString } from "../pim-types";
 

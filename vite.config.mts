@@ -30,5 +30,12 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    server: {
+      deps: {
+        // MUI's ES modules import react/jsx-runtime, which Node can't resolve on its own in React 17
+        // (it has no "exports" map), so Vite resolves them instead
+        inline: [/@mui\//],
+      },
+    },
   },
 });

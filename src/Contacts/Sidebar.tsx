@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import InboxIcon from "@material-ui/icons/Inbox";
-import LabelIcon from "@material-ui/icons/LabelOutlined";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/EditOutlined";
+import InboxIcon from "@mui/icons-material/Inbox";
+import LabelIcon from "@mui/icons-material/LabelOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/EditOutlined";
 
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 
 import { List, ListItem, ListSubheader } from "../widgets/List";
 import { ContactType } from "../pim-types";
