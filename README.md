@@ -34,8 +34,7 @@ You can either self-host your own client to be served from your own server, or
 better yet, just run an instance locally.
 
 The builds of this fork are on its [releases page](https://github.com/nikossvnk/ciphwren-web/releases)
-(`ciphwren-web-<version>.tgz`, with its SHA-256 checksum), and [local-web/](local-web/) builds and runs it on
-your own computer. The original project's version of the web client is at https://pim.etesync.com/etesync-web.tgz. This
+(`ciphwren-web-<version>.tgz`, with its SHA-256 checksum). The original project's version of the web client is at https://pim.etesync.com/etesync-web.tgz. This
 file is automatically generated on each deploy and is exactly the same as the deployed version.
 After fetching this file you need to extract it by e.g. running `tar -xzf etesync-web.tgz`, and then
 you can serve the files using your favourite web server. Please keep in mind that opening the HTML files
@@ -70,11 +69,6 @@ REACT_APP_DEFAULT_API_PATH=https://etebase.example.com/ npm run build
 
 In order to run your own version and serve it from a subdirectory rather than the top level of the domain,
 set the environment variable `PUBLIC_URL` during the build, e.g. `PUBLIC_URL=/subdir-name/ npm run build`.
-
-### Running it locally as a desktop app
-
-[local-web/](local-web/) has a script that builds the app and serves it on http://localhost:8091 for your
-user only, with a menu entry that opens it in its own window. See [local-web/README.md](local-web/README.md).
 
 ## Checks
 
