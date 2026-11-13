@@ -8,7 +8,6 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
-import ExternalLink from "../widgets/ExternalLink";
 import PasswordField from "../widgets/PasswordField";
 
 import * as C from "../constants";
@@ -70,9 +69,6 @@ export default function LoginForm(props: PropsType) {
 
   const styles = {
     form: {
-    },
-    forgotPassword: {
-      paddingTop: 20,
     },
     infoAlert: {
       marginTop: 20,
@@ -142,9 +138,6 @@ export default function LoginForm(props: PropsType) {
           value={password}
           onChange={handleInputChange(setPassword)}
         />
-        <div style={styles.forgotPassword}>
-          <ExternalLink href={C.forgotPassword}>Forgot password?</ExternalLink>
-        </div>
         {C.defaultServerUrl && (
           <FormGroup>
             <FormControlLabel

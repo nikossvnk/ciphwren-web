@@ -7,26 +7,19 @@
 > **This is an independent fork** of the [EteSync Web App](https://github.com/etesync/etesync-web), the original
 > project of the EteSync authors. This fork is not affiliated with, endorsed by or supported by EteSync or
 > [etesync.com](https://www.etesync.com) in any way. The history of the original project is kept as it is,
-> with its authors, and the changes of this fork follow it. The hosted instance and the links to etesync.com
-> below are of the original project. Like the original, it's licensed under the AGPL-3.0.
+> with its authors, and the changes of this fork follow it. Like the original, it's licensed under the AGPL-3.0.
 
 Ciphwren Web: your contacts, calendars and tasks on an Etebase server, from the browser.
 
 
 ![GitHub tag](https://img.shields.io/github/tag/nikossvnk/ciphwren-web.svg)
-[![Chat with us](https://img.shields.io/badge/chat-IRC%20|%20Matrix%20|%20Web-blue.svg)](https://www.etebase.com/community-chat/)
 
 For notes, see [Ciphwren Notes](https://github.com/nikossvnk/ciphwren-notes) (Android) and [Ciphwren Desktop](https://github.com/nikossvnk/ciphwren-desktop).
 
 # Usage
 
-A live instance is available on: https://pim.etesync.com
-
-Please be advised that while it's probably safe enough to use the hosted client
-in many cases, it's generally not preferable. It's recommended that you use signed
-releases which's signature you manually verify and are run locally!
-
-More info is available on the [FAQ](https://www.etesync.com/faq/#web-client).
+There's no hosted instance of this fork. It's recommended that you run a release locally, after
+checking its SHA-256 checksum.
 
 ## Running your own
 
@@ -34,9 +27,8 @@ You can either self-host your own client to be served from your own server, or
 better yet, just run an instance locally.
 
 The builds of this fork are on its [releases page](https://github.com/nikossvnk/ciphwren-web/releases)
-(`ciphwren-web-<version>.tgz`, with its SHA-256 checksum). The original project's version of the web client is at https://pim.etesync.com/etesync-web.tgz. This
-file is automatically generated on each deploy and is exactly the same as the deployed version.
-After fetching this file you need to extract it by e.g. running `tar -xzf etesync-web.tgz`, and then
+(`ciphwren-web-<version>.tgz`, with its SHA-256 checksum).
+After fetching this file you need to extract it by e.g. running `tar -xzf ciphwren-web-<version>.tgz`, and then
 you can serve the files using your favourite web server. Please keep in mind that opening the HTML files
 directly in the browser is not supported.
 

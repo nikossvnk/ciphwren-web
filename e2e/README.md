@@ -2,7 +2,7 @@
 
 These tests use Ciphwren Web in a headless Chromium, against an Etebase test server, the way a
 person would: the first-run setup, adding, editing and deleting events, contacts (with groups) and
-tasks, importing files, the settings and logging out. What the app saves is checked on the server
+tasks, importing files, the settings, logging out and the links to other sites. What the app saves is checked on the server
 itself, through the Etebase client, not only on the page. Every check prints `ok` or `FAIL`, and a
 test fails when any of its checks does, or when there are errors on the page.
 
