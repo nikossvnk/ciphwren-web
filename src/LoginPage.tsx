@@ -15,7 +15,6 @@ import * as Etebase from "etebase";
 
 import * as C from "./constants";
 
-import SignedPagesBadge from "./images/signed-pages-badge.svg";
 import { useCredentials } from "./credentials";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import { startTask } from "./helpers";
@@ -82,13 +81,7 @@ export default function LoginPage() {
           error={fetchError}
         />
         <hr style={style.divider} />
-        <ExternalLink style={style.isSafe} href="https://www.etesync.com/faq/#signed-pages">
-          <img alt="SignedPgaes badge" src={SignedPagesBadge} />
-        </ExternalLink>
         <ul>
-          <li><ExternalLink style={style.isSafe} href={C.faq + "#web-client"}>
-            Is the web client safe to use?
-          </ExternalLink></li>
           <li><ExternalLink style={style.isSafe} href={C.sourceCode}>Source code</ExternalLink></li>
         </ul>
       </Container>

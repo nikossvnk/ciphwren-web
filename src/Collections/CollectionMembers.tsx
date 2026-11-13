@@ -140,7 +140,7 @@ export default function CollectionMembers(props: PropsType) {
         ) : (
           <p>
             Would you like to revoke {revokeUser?.username}'s access?<br />
-            Please be advised that a malicious user would potentially be able to retain access to encryption keys. Please refer to the FAQ for more information.
+            Please be advised that a malicious user would potentially be able to retain access to encryption keys.
           </p>
         )}
       </ConfirmationDialog>
