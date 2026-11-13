@@ -4,7 +4,7 @@ const { check, day, icalDay, itemsWith, open, run, unique } = require("../lib");
 // Chooses an option of a setting, and waits until the app has saved it: the settings are saved
 // to IndexedDB shortly after the change, and loading a page before that brings back the old value.
 async function choose(page, name, option) {
-  await page.locator(`input[name=${name}]`).locator("xpath=..").getByRole("button").click();
+  await page.locator(`input[name=${name}]`).locator("xpath=..").getByRole("combobox").click();
   await page.getByRole("option", { name: option }).click();
   await page.waitForFunction((name) => new Promise((resolve) => {
     const chosen = document.querySelector(`input[name=${name}]`).value;
@@ -41,7 +41,7 @@ run(async () => {
   await page.goto(new URL("/pim/events/new", page.url()).toString());
   const title = `Tea ${unique()}`;
   await page.locator("input[name=title]").fill(title);
-  const dates = page.locator("input[type=text]:not([name])");
+  const dates = app.dateFields();
   await app.typeDate(dates.nth(0), `${day(8, true)} 16:00`);
   await app.typeDate(dates.nth(1), `${day(8, true)} 17:00`);
   await page.getByRole("button", { name: "Save" }).click();
@@ -56,7 +56,8 @@ run(async () => {
   await page.locator("header button").first().click();
   await page.getByText("Log Out").click();
   await page.waitForURL(/\/login/);
-  check("logging out goes to the login page", await page.getByRole("button", { name: "Log In" }).isVisible());
+  // The drawer hides the page from the accessibility tree until its closing animation ends
+  check("logging out goes to the login page", await page.getByRole("button", { name: "Log In" }).waitFor({ timeout: 5000 }).then(() => true, () => false));
   await page.goto(new URL("/pim/events", page.url()).toString());
   await page.waitForTimeout(1000);
   check("the app isn't shown anymore after logging out", !(await page.getByRole("tab", { name: "Calendar" }).isVisible()) && !(await page.innerText("body")).includes(title));
@@ -70,6 +71,6 @@ run(async () => {
   await page.locator("header button").first().click();
   await page.getByText("Log Out").click();
   await page.waitForURL(/\/login/);
-  check("logging out from the calendar goes to the login page", await page.getByRole("button", { name: "Log In" }).isVisible());
+  check("logging out from the calendar goes to the login page", await page.getByRole("button", { name: "Log In" }).waitFor({ timeout: 5000 }).then(() => true, () => false));
   await app.close(check);
 });

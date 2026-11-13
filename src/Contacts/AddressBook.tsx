@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { createSelector } from "reselect";
 
-import * as colors from "@material-ui/core/colors";
+import * as colors from "@mui/material/colors";
 import { AutoSizer, List as VirtualizedList } from "react-virtualized";
 
 import { Avatar } from "../widgets/Avatar";

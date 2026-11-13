@@ -13,9 +13,9 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import AppBarOverride from "../widgets/AppBarOverride";
 import { List, ListItem } from "../widgets/List";
 import Container from "../widgets/Container";
-import { IconButton } from "@material-ui/core";
-import IconAccept from "@material-ui/icons/Done";
-import IconReject from "@material-ui/icons/Close";
+import { IconButton } from "@mui/material";
+import IconAccept from "@mui/icons-material/Done";
+import IconReject from "@mui/icons-material/Close";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import PrettyFingerprint from "../widgets/PrettyFingerprint";
 

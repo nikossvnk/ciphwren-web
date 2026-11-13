@@ -4,18 +4,17 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { MuiThemeProvider as ThemeProvider, createMuiTheme } from "@material-ui/core/styles"; // v1.x
-import amber from "@material-ui/core/colors/amber";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { amber, grey, lightBlue } from "@mui/material/colors";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
 
-import NavigationMenu from "@material-ui/icons/Menu";
-import NavigationRefresh from "@material-ui/icons/Refresh";
-import ErrorsIcon from "@material-ui/icons/Error";
+import NavigationMenu from "@mui/icons-material/Menu";
+import NavigationRefresh from "@mui/icons-material/Refresh";
+import ErrorsIcon from "@mui/icons-material/Error";
 
 import "react-virtualized/styles.css"; // only needs to be imported once
 
@@ -206,9 +205,9 @@ export default function App() {
 
   const fetching = fetchCount > 0;
 
-  const muiTheme = createMuiTheme({
+  const muiTheme = createTheme({
     palette: {
-      type: darkMode ? "dark" : undefined,
+      mode: darkMode ? "dark" : "light",
       primary: amber,
       secondary: {
         light: lightBlue.A200,
@@ -216,6 +215,41 @@ export default function App() {
         dark: lightBlue.A700,
         contrastText: "#fff",
       },
+      // The background colors of MUI 4
+      background: darkMode ? { default: "#303030", paper: grey[800] } : { default: grey[50] },
+    },
+    // Keeps the look of MUI 4 where newer versions changed the defaults
+    components: {
+      MuiAppBar: {
+        defaultProps: { enableColorOnDark: true },
+        // Also when static, so that its shadow is over what comes below it
+        styleOverrides: { root: ({ theme }) => ({ zIndex: theme.zIndex.appBar }) },
+      },
+      // No lighter surfaces with elevation in the dark theme
+      MuiPaper: { styleOverrides: { root: { backgroundImage: "none" } } },
+      MuiListItemIcon: { styleOverrides: { root: { minWidth: 56 } } },
+      // Grey instead of the primary color for selected items
+      MuiListItemButton: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: theme.palette.action.selected } }) } },
+      MuiMenuItem: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: theme.palette.action.selected } }) } },
+      // Grey buttons when no color is set, also in the dark theme
+      MuiButton: {
+        defaultProps: { color: "inherit" },
+        styleOverrides: {
+          root: {
+            variants: [{
+              props: { variant: "contained", color: "inherit" },
+              style: { color: "rgba(0, 0, 0, 0.87)", backgroundColor: grey[300], "&:hover": { backgroundColor: grey.A100 } },
+            }],
+          },
+        },
+      },
+      MuiIconButton: { defaultProps: { size: "large" } },
+      MuiCheckbox: { defaultProps: { color: "secondary" } },
+      MuiRadio: { defaultProps: { color: "secondary" } },
+      MuiSwitch: { defaultProps: { color: "secondary" } },
+      MuiTextField: { defaultProps: { variant: "standard" } },
+      MuiFormControl: { defaultProps: { variant: "standard" } },
+      MuiSelect: { defaultProps: { variant: "standard" } },
     },
   });
 

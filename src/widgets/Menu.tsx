@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 
-import MuiMenu, { MenuProps } from "@material-ui/core/Menu";
-import { PopoverOrigin } from "@material-ui/core/Popover";
+import MuiMenu, { MenuProps } from "@mui/material/Menu";
+import { PopoverOrigin } from "@mui/material/Popover";
 
 const anchorOrigin: PopoverOrigin = {
   vertical: "bottom",
@@ -18,7 +18,6 @@ const transferOrigin: PopoverOrigin = {
 export default function Menu(props: MenuProps) {
   return (
     <MuiMenu
-      getContentAnchorEl={null}
       anchorOrigin={anchorOrigin}
       transformOrigin={transferOrigin}
       {...props}

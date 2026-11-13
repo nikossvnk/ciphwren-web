@@ -3,15 +3,14 @@
 
 import * as React from "react";
 import { List, ListItem, ListSubheader, ListDivider } from "../widgets/List";
-import ActionCode from "@material-ui/icons/Code";
-import ActionHome from "@material-ui/icons/Home";
-import ActionSettings from "@material-ui/icons/Settings";
-import ActionJournals from "@material-ui/icons/LibraryBooks";
-import ActionBugReport from "@material-ui/icons/BugReport";
-import ActionQuestionAnswer from "@material-ui/icons/QuestionAnswer";
-import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
-import IconImport from "@material-ui/icons/ImportExport";
-import IconInvitation from "@material-ui/icons/MailOutline";
+import ActionCode from "@mui/icons-material/Code";
+import ActionHome from "@mui/icons-material/Home";
+import ActionSettings from "@mui/icons-material/Settings";
+import ActionJournals from "@mui/icons-material/LibraryBooks";
+import ActionBugReport from "@mui/icons-material/BugReport";
+import LogoutIcon from "@mui/icons-material/PowerSettingsNew";
+import IconImport from "@mui/icons-material/ImportExport";
+import IconInvitation from "@mui/icons-material/MailOutlined";
 
 import logo from "../images/logo.svg";
 
@@ -21,7 +20,7 @@ import { store } from "../store";
 import { logout } from "../store/actions";
 
 import * as C from "../constants";
-import { useTheme } from "@material-ui/core";
+import { useTheme } from "@mui/material";
 import { useCredentials } from "../credentials";
 import { useNavigate } from "react-router";
 
@@ -101,8 +100,6 @@ export default function SideMenu(props: PropsType) {
         {loggedInItems}
         <ListDivider />
         <ListSubheader>External Links</ListSubheader>
-        <ListItem primaryText="Website" leftIcon={<ActionHome />} href={C.homePage} />
-        <ListItem primaryText="FAQ" leftIcon={<ActionQuestionAnswer />} href={C.faq} />
         <ListItem primaryText="Source Code" leftIcon={<ActionCode />} href={C.sourceCode} />
         <ListItem primaryText="Report Issue" leftIcon={<ActionBugReport />} href={C.reportIssue} />
       </List>

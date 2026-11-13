@@ -3,9 +3,9 @@
 
 import * as React from "react";
 
-import ContactsIcon from "@material-ui/icons/Contacts";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 import { List, ListItem } from "../widgets/List";
 

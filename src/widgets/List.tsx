@@ -3,35 +3,26 @@
 
 import * as React from "react";
 
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import MuiList from "@material-ui/core/List";
-import MuiListItem from "@material-ui/core/ListItem";
-import MuiListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import MuiListSubheader from "@material-ui/core/ListSubheader";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
+import MuiList from "@mui/material/List";
+import MuiListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import MuiListSubheader from "@mui/material/ListSubheader";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 
 import ExternalLink from "./ExternalLink";
 
-const useStyles = makeStyles((theme) => (createStyles({
-  inset: {
-    marginLeft: 64,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-})));
+const insetStyle = { marginLeft: 64 };
+const nestedSx = { pl: 4 };
 
 export const List = MuiList;
 
 export const ListSubheader = MuiListSubheader;
 
 export const ListDivider = React.memo(function ListDivider(props: { inset?: boolean }) {
-  const classes = useStyles();
-  const insetClass = (props.inset) ? classes.inset : undefined;
   return (
-    <Divider className={insetClass} />
+    <Divider style={props.inset ? insetStyle : undefined} />
   );
 });
 
@@ -52,7 +43,6 @@ interface ListItemPropsType {
 }
 
 export const ListItem = React.memo(function ListItem(_props: ListItemPropsType) {
-  const classes = useStyles();
   const {
     leftIcon,
     rightIcon,
@@ -69,42 +59,54 @@ export const ListItem = React.memo(function ListItem(_props: ListItemPropsType) 
     secondaryAction,
   } = _props;
 
-  const extraProps = (onClick || href) ? {
-    button: true,
-    href,
-    onClick,
-    component: (href) ? ExternalLink : "div",
-  } : undefined;
+  const content = (
+    <>
+      {leftIcon && (
+        <ListItemIcon>
+          {leftIcon}
+        </ListItemIcon>
+      )}
+      <ListItemText inset={insetChildren} primary={primaryText} secondary={secondaryText} slotProps={{ secondary: { color: secondaryTextColor } }}>
+        {children}
+      </ListItemText>
+      {rightIcon && (
+        <ListItemIcon>
+          {rightIcon}
+        </ListItemIcon>
+      )}
+    </>
+  );
+
+  let item;
+  if (onClick || href) {
+    const button = (
+      <ListItemButton
+        style={secondaryAction ? undefined : style}
+        onClick={onClick}
+        selected={selected}
+        {...(href ? { component: ExternalLink, href } : { component: "div" })}
+      >
+        {content}
+      </ListItemButton>
+    );
+    item = secondaryAction ? (
+      <MuiListItem style={style} secondaryAction={secondaryAction} disablePadding>
+        {button}
+      </MuiListItem>
+    ) : button;
+  } else {
+    item = (
+      <MuiListItem style={style} secondaryAction={secondaryAction}>
+        {content}
+      </MuiListItem>
+    );
+  }
 
   return (
     <>
-      <MuiListItem
-        style={style}
-        onClick={onClick}
-        selected={selected}
-        {...(extraProps as any)}
-      >
-        {leftIcon && (
-          <ListItemIcon>
-            {leftIcon}
-          </ListItemIcon>
-        )}
-        <ListItemText inset={insetChildren} primary={primaryText} secondary={secondaryText} secondaryTypographyProps={{ color: secondaryTextColor }}>
-          {children}
-        </ListItemText>
-        {rightIcon && (
-          <ListItemIcon>
-            {rightIcon}
-          </ListItemIcon>
-        )}
-        {secondaryAction && (
-          <MuiListItemSecondaryAction>
-            {secondaryAction}
-          </MuiListItemSecondaryAction>
-        )}
-      </MuiListItem>
+      {item}
       {nestedItems && (
-        <List className={classes.nested} disablePadding>
+        <List sx={nestedSx} disablePadding>
           {nestedItems}
         </List>
       )}

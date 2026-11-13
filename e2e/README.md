@@ -2,7 +2,7 @@
 
 These tests use Ciphwren Web in a headless Chromium, against an Etebase test server, the way a
 person would: the first-run setup, adding, editing and deleting events, contacts (with groups) and
-tasks, importing files, the settings and logging out. What the app saves is checked on the server
+tasks, importing files, the settings, logging out and the links to other sites. What the app saves is checked on the server
 itself, through the Etebase client, not only on the page. Every check prints `ok` or `FAIL`, and a
 test fails when any of its checks does, or when there are errors on the page.
 
@@ -56,5 +56,5 @@ the page is saved as `failed-<test>.png`.
 The helpers are in `lib.js`. `open()` starts a browser with the app and collects the errors on the
 page; `loginToPim()` logs in (and goes through the setup when the account has no collections). Tests
 check the server's side with `itemsWith(type, text)`, which returns the content of the items that
-include the text, and add items with `api.addItem()`. Dates are typed in the default format of the
-app, DD/MM/YYYY (`day()`).
+include the text, and add items with `api.addItem()`. Dates are typed into the date fields
+(`dateFields()`) with `typeDate()`, in the default format of the app, DD/MM/YYYY (`day()`).

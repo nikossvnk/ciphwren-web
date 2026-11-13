@@ -1,15 +1,14 @@
 import * as React from "react";
 
-import Switch from "@material-ui/core/Switch";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import MenuItem from "@material-ui/core/MenuItem";
-import SortIcon from "@material-ui/icons/Sort";
-import SearchIcon from "@material-ui/icons/Search";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import Switch from "@mui/material/Switch";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MenuItem from "@mui/material/MenuItem";
+import SortIcon from "@mui/icons-material/Sort";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
 import { Transition } from "react-transition-group";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import InputAdornment from "@mui/material/InputAdornment";
 
 import { PimType } from "../pim-types";
 
@@ -19,7 +18,7 @@ import { setSettings } from "../store/actions";
 import { StoreState } from "../store";
 
 import Menu from "../widgets/Menu";
-import { ListItemText, ListItemSecondaryAction } from "@material-ui/core";
+import { ListItemText, ListItemSecondaryAction } from "@mui/material";
 import { CachedCollection } from "../Pim/helpers";
 
 const transitionTimeout = 300;
@@ -31,15 +30,11 @@ const transitionStyles: { [key: string]: React.CSSProperties } = {
   exited: { visibility: "hidden", width: "0%" },
 };
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    marginRight: theme.spacing(1),
-  },
-  textField: {
-    transition: `width ${transitionTimeout}ms`,
-    marginRight: theme.spacing(1),
-  },
-}));
+const textFieldSx = {
+  transition: `width ${transitionTimeout}ms`,
+  mr: 1,
+};
+const buttonStyle = { marginRight: 8 };
 
 interface PropsType {
   defaultCollection: CachedCollection;
@@ -59,7 +54,7 @@ export default function Toolbar(props: PropsType) {
   const [optionsAnchorEl, setOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const showSearchField = true;
-  const classes = useStyles();
+  const nodeRef = React.useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
   const taskSettings = useSelector((state: StoreState) => state.settings.taskSettings);
@@ -70,37 +65,40 @@ export default function Toolbar(props: PropsType) {
     setSortAnchorEl(null);
   };
 
-  const SortMenuItem = React.forwardRef(function SortMenuItem(props: { name: string, label: string }, ref) {
+  const SortMenuItem = React.forwardRef<HTMLLIElement, { name: string, label: string }>(function SortMenuItem(props, ref) {
     return (
-      <MenuItem innerRef={ref} selected={sortBy === props.name} onClick={() => handleSortChange(props.name)}>{props.label}</MenuItem>
+      <MenuItem ref={ref} selected={sortBy === props.name} onClick={() => handleSortChange(props.name)}>{props.label}</MenuItem>
     );
   });
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-      <Transition in={showSearchField} timeout={transitionTimeout}>
+      <Transition nodeRef={nodeRef} in={showSearchField} timeout={transitionTimeout}>
         {(state) => (
           <TextField
+            ref={nodeRef}
             fullWidth
             placeholder="Search"
             value={searchTerm}
             color="secondary"
             variant="standard"
-            className={classes.textField}
+            sx={textFieldSx}
             style={transitionStyles[state]}
             onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
         )}
       </Transition>
 
-      <div className={classes.button}>
+      <div style={buttonStyle}>
         <IconButton
           size="small"
           title="Sort"
@@ -126,7 +124,7 @@ export default function Toolbar(props: PropsType) {
         </Menu>
       </div>
 
-      <div className={classes.button}>
+      <div style={buttonStyle}>
         <IconButton
           size="small"
           title="Options"
