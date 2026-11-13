@@ -8,7 +8,6 @@ import ActionHome from "@mui/icons-material/Home";
 import ActionSettings from "@mui/icons-material/Settings";
 import ActionJournals from "@mui/icons-material/LibraryBooks";
 import ActionBugReport from "@mui/icons-material/BugReport";
-import ActionQuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import LogoutIcon from "@mui/icons-material/PowerSettingsNew";
 import IconImport from "@mui/icons-material/ImportExport";
 import IconInvitation from "@mui/icons-material/MailOutlined";
@@ -101,8 +100,6 @@ export default function SideMenu(props: PropsType) {
         {loggedInItems}
         <ListDivider />
         <ListSubheader>External Links</ListSubheader>
-        <ListItem primaryText="Website" leftIcon={<ActionHome />} href={C.homePage} />
-        <ListItem primaryText="FAQ" leftIcon={<ActionQuestionAnswer />} href={C.faq} />
         <ListItem primaryText="Source Code" leftIcon={<ActionCode />} href={C.sourceCode} />
         <ListItem primaryText="Report Issue" leftIcon={<ActionBugReport />} href={C.reportIssue} />
       </List>
