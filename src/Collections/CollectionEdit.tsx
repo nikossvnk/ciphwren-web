@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import IconDelete from "@material-ui/icons/Delete";
-import IconCancel from "@material-ui/icons/Clear";
-import IconSave from "@material-ui/icons/Save";
-import * as colors from "@material-ui/core/colors";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import IconDelete from "@mui/icons-material/Delete";
+import IconCancel from "@mui/icons-material/Clear";
+import IconSave from "@mui/icons-material/Save";
+import * as colors from "@mui/material/colors";
 
 import AppBarOverride from "../widgets/AppBarOverride";
 import Container from "../widgets/Container";
@@ -159,7 +159,7 @@ export default function CollectionEdit(props: PropsType) {
               name="type"
               required
               value={colType}
-              onChange={(event: React.ChangeEvent<{ value: string }>) => setColType(event.target.value)}
+              onChange={(event) => setColType(event.target.value)}
             >
               {Object.keys(colTypes).map((x) => (
                 <MenuItem key={x} value={x}>{colTypes[x]}</MenuItem>

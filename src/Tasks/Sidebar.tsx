@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import InboxIcon from "@material-ui/icons/Inbox";
-import LabelIcon from "@material-ui/icons/LabelOutlined";
-import TodayIcon from "@material-ui/icons/Today";
+import InboxIcon from "@mui/icons-material/Inbox";
+import LabelIcon from "@mui/icons-material/LabelOutlined";
+import TodayIcon from "@mui/icons-material/Today";
 
 import { setSettings } from "../store/actions";
 import { StoreState } from "../store";

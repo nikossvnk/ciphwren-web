@@ -6,17 +6,17 @@ import moment from "moment";
 import ICAL from "ical.js";
 
 import { List, ListItem, ListDivider as Divider } from "../widgets/List";
-import IconHome from "@material-ui/icons/Home";
-import IconDate from "@material-ui/icons/DateRange";
-import CommunicationCall from "@material-ui/icons/Call";
-import CommunicationChatBubble from "@material-ui/icons/ChatBubble";
-import CommunicationEmail from "@material-ui/icons/Email";
+import IconHome from "@mui/icons-material/Home";
+import IconDate from "@mui/icons-material/DateRange";
+import CommunicationCall from "@mui/icons-material/Call";
+import CommunicationChatBubble from "@mui/icons-material/ChatBubble";
+import CommunicationEmail from "@mui/icons-material/Email";
 import CopyIcon from "../icons/Copy";
 
 import PimItemHeader from "../components/PimItemHeader";
 
 import { ContactType } from "../pim-types";
-import { IconButton, Avatar } from "@material-ui/core";
+import { IconButton, Avatar } from "@mui/material";
 
 class Contact extends React.PureComponent {
   public props: {

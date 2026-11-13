@@ -28,10 +28,10 @@ run(async () => {
   await page.locator("input[name=title]").fill(title);
   await page.getByLabel("High").check();
   // The date fields: hide until, and due
-  await app.typeDate(page.locator("input[type=text]:not([name])").nth(1), day(5));
+  await app.typeDate(app.dateFields().nth(1), day(5));
   await page.locator("textarea[name=description]").fill("Before the deadline");
-  await page.getByRole("textbox", { name: "Tags" }).fill("home");
-  await page.getByRole("textbox", { name: "Tags" }).press("Enter");
+  await page.getByRole("combobox", { name: "Tags" }).fill("home");
+  await page.getByRole("combobox", { name: "Tags" }).press("Enter");
   await page.getByRole("button", { name: "Save" }).click();
   await page.waitForURL(/\/pim\/tasks$/);
   await app.synced();
@@ -87,7 +87,7 @@ run(async () => {
   await page.getByText(repeating).click();
   await page.waitForURL(/\/pim\/tasks\/[^/]+$/);
   await page.getByRole("button", { name: "Edit" }).click();
-  await page.getByRole("button", { name: "Needs action" }).click();
+  await page.locator("input[name=status]").locator("xpath=..").getByRole("combobox").click();
   await page.getByRole("option", { name: "Completed" }).click();
   await page.getByRole("button", { name: "Save" }).click();
   // Back to the task's page

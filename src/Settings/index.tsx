@@ -5,10 +5,10 @@ import * as React from "react";
 import * as Etebase from "etebase";
 import { useSelector, useDispatch } from "react-redux";
 
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 import { StoreState } from "../store";
 import { setSettings, login, pushMessage } from "../store/actions";
@@ -17,10 +17,10 @@ import Container from "../widgets/Container";
 import AppBarOverride from "../widgets/AppBarOverride";
 import PrettyFingerprint from "../widgets/PrettyFingerprint";
 import { useCredentials } from "../credentials";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import PasswordField from "../widgets/PasswordField";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import { PASSWORD_MIN_LENGTH, startTask, enforcePasswordRules } from "../helpers";
 
 function SecurityFingerprint() {

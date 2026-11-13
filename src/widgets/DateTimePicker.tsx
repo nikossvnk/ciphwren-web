@@ -3,8 +3,11 @@
 
 import * as React from "react";
 
-import MomentUtils from "@date-io/moment";
-import { MuiPickersUtilsProvider, KeyboardDatePicker, KeyboardDateTimePicker } from "@material-ui/pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker as MuiDateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { PickersActionBarAction } from "@mui/x-date-pickers/PickersActionBar";
 
 import moment from "moment";
 
@@ -15,41 +18,40 @@ interface PropsType {
   onChange: (date?: Date) => void;
 }
 
-class DateTimePicker extends React.PureComponent<PropsType> {
-  constructor(props: any) {
-    super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
+const actions: PickersActionBarAction[] = ["today", "cancel", "accept"];
 
-  public render() {
-    const Picker = (this.props.dateOnly) ? KeyboardDatePicker : KeyboardDateTimePicker;
-    // The input mask is made from the format by replacing each letter with a digit placeholder, so the
-    // format has to have exactly one letter per digit: "L" would only allow for typing a single digit.
-    const dayFormat = moment.localeData().longDateFormat("L");
-    const dateFormat = (this.props.dateOnly) ? dayFormat : `${dayFormat} HH:mm`;
-    return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Picker
-          value={this.props.value || null}
-          onChange={this.handleInputChange}
-          format={dateFormat}
-          ampm={false}
-          showTodayButton
-          KeyboardButtonProps={{
-            "aria-label": "change date",
-          }}
-        />
-      </MuiPickersUtilsProvider>
-    );
+export default function DateTimePicker(props: PropsType) {
+  const { value, dateOnly, onChange } = props;
+  // What the field has, which is invalid while a date is being typed (and unset for the parent)
+  const [current, setCurrent] = React.useState<moment.Moment | null>(null);
+  let shown: moment.Moment | null;
+  if (value) {
+    shown = (current?.isValid() && (current.valueOf() === value.getTime())) ? current : moment(value);
+  } else {
+    // Giving the field back null would clear what it has so far
+    shown = (current && !current.isValid()) ? current : null;
   }
+  // The locale's date format (moment.locale() is set from the settings), with a 24-hour time
+  const dayFormat = moment.localeData().longDateFormat("L");
+  const pickerProps = {
+    value: shown,
+    onChange: (date: moment.Moment | null) => {
+      setCurrent(date);
+      onChange(date?.isValid() ? date.toDate() : undefined);
+    },
+    slotProps: {
+      textField: { variant: "standard" as const },
+      actionBar: { actions },
+    },
+  };
 
-  private handleInputChange(date: moment.Moment) {
-    if (moment.isMoment(date)) {
-      this.props.onChange(date.toDate());
-    } else {
-      this.props.onChange(undefined);
-    }
-  }
+  return (
+    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale()}>
+      {dateOnly ? (
+        <DatePicker format={dayFormat} {...pickerProps} />
+      ) : (
+        <MuiDateTimePicker format={`${dayFormat} HH:mm`} ampm={false} {...pickerProps} />
+      )}
+    </LocalizationProvider>
+  );
 }
-
-export default DateTimePicker;

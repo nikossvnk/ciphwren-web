@@ -3,13 +3,13 @@
 
 import * as React from "react";
 
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export interface PropsType {
   open: boolean;
   children: React.ReactNode;
-  onClose?: (event?: React.SyntheticEvent, reason?: string) => void;
+  onClose?: (event?: React.SyntheticEvent | Event | null, reason?: string) => void;
   severity?: "error" | "info" | "success" | "warning";
   autoHideDuration?: number;
 }

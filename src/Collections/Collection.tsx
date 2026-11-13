@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import IconEdit from "@material-ui/icons/Edit";
-import IconMembers from "@material-ui/icons/People";
-import IconImport from "@material-ui/icons/ImportExport";
+import IconButton from "@mui/material/IconButton";
+import IconEdit from "@mui/icons-material/Edit";
+import IconMembers from "@mui/icons-material/People";
+import IconImport from "@mui/icons-material/ImportExport";
 
 import * as Etebase from "etebase";
 

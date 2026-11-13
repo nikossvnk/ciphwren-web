@@ -2,18 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
-import ExternalLink from "../widgets/ExternalLink";
 import PasswordField from "../widgets/PasswordField";
 
 import * as C from "../constants";
 import LoadingIndicator from "../widgets/LoadingIndicator";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/material/Alert";
 
 interface FormErrors {
   errorEmail?: string;
@@ -70,9 +69,6 @@ export default function LoginForm(props: PropsType) {
 
   const styles = {
     form: {
-    },
-    forgotPassword: {
-      paddingTop: 20,
     },
     infoAlert: {
       marginTop: 20,
@@ -142,9 +138,6 @@ export default function LoginForm(props: PropsType) {
           value={password}
           onChange={handleInputChange(setPassword)}
         />
-        <div style={styles.forgotPassword}>
-          <ExternalLink href={C.forgotPassword}>Forgot password?</ExternalLink>
-        </div>
         {C.defaultServerUrl && (
           <FormGroup>
             <FormControlLabel

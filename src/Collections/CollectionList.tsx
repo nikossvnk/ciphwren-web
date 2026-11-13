@@ -4,11 +4,11 @@
 
 import { Link, useNavigate } from "react-router-dom";
 
-import IconButton from "@material-ui/core/IconButton";
-import IconAdd from "@material-ui/icons/Add";
-import ContactsIcon from "@material-ui/icons/Contacts";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import IconButton from "@mui/material/IconButton";
+import IconAdd from "@mui/icons-material/Add";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 import { List, ListItem } from "../widgets/List";
 
