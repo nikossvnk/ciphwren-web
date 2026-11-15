@@ -42,8 +42,9 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.0",
-    "@stylistic/eslint-plugin": "^5.0.0",
+    "@eslint-react/eslint-plugin": "^5.30.2",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^6.0.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
     "@types/memoizee": "^0.4.12",
@@ -54,8 +55,7 @@
     "@types/redux-actions": "^2.6.5",
     "@types/redux-logger": "^3.0.13",
     "@vitejs/plugin-react": "^6.3.0",
-    "eslint": "^9.39.0",
-    "eslint-plugin-react": "^7.37.5",
+    "eslint": "^10.15.0",
     "globals": "^17.14.0",
     "jsdom": "^31.0.0",
     "typescript": "~5.9.3",

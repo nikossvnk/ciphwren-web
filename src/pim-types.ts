@@ -341,7 +341,8 @@ export class TaskType extends EventType {
 
     rrule.count = null; // clear count so we can iterate as many times as needed
     const recur = rrule.iterator(this.startDate ?? this.dueDate);
-    let nextRecurrence = recur.next();
+    recur.next(); // The first occurrence is the start itself
+    let nextRecurrence;
     while ((nextRecurrence = recur.next())) {
       if (nextRecurrence.compare(ICAL.Time.now()) > 0) {
         break;

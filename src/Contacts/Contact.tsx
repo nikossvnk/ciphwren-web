@@ -129,8 +129,7 @@ class Contact extends React.PureComponent {
       () => "Anniversary"
     ));
 
-    const skips = ["tel", "email", "impp", "adr", "bday", "anniversary", "rev",
-      "prodid", "uid", "fn", "n", "version", "photo", "note"];
+    const skips = ["tel", "email", "impp", "adr", "bday", "anniversary", "rev", "prodid", "uid", "fn", "n", "version", "photo", "note"];
     const theRest = contact.comp.getAllProperties().filter((prop) => (
       skips.indexOf(prop.name) === -1
     )).map((prop, idx) => {

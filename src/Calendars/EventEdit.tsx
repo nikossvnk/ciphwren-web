@@ -157,7 +157,7 @@ export default class EventEdit extends React.PureComponent<PropsType> {
   }
 
   public toggleAllDay() {
-    this.setState({ allDay: !this.state.allDay });
+    this.setState((state: this["state"]) => ({ allDay: !state.allDay }));
   }
   public toggleRecurring() {
     const value = this.state.rrule ? undefined : { freq: "WEEKLY", interval: 1 };
