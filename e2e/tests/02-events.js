@@ -39,6 +39,8 @@ run(async () => {
   check("at its time", (await page.locator("tr", { hasText: title }).innerText()).includes("10:00 – 11:30"), await page.locator("tr", { hasText: title }).innerText());
   await page.getByText(title).click();
   await page.waitForURL(/\/pim\/events\/[^/]+$/);
+  // The page renders after the URL changes
+  await page.getByRole("button", { name: "Edit" }).waitFor();
   const shown = await page.innerText("body");
   check("the event page shows its title", shown.includes(title), shown);
   check("the event page shows its location", shown.includes("Main street 1"), shown);

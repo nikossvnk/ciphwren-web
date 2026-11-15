@@ -32,9 +32,9 @@ export default defineConfig({
     environment: "jsdom",
     server: {
       deps: {
-        // MUI's ES modules import react/jsx-runtime, which Node can't resolve on its own in React 17
-        // (it has no "exports" map), so Vite resolves them instead
-        inline: [/@mui\//],
+        // react-virtualized's ES module imports a directory of dom-helpers (dom-helpers/scrollbarSize),
+        // which only bundlers resolve, so Vite resolves it instead of Node
+        inline: ["react-virtualized"],
       },
     },
   },

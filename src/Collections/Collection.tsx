@@ -16,7 +16,7 @@ import Container from "../widgets/Container";
 import CollectionChangeEntries from "./CollectionChangeEntries";
 import ImportDialog from "./ImportDialog";
 
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { routeResolver } from "../App";
 

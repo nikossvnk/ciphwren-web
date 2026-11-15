@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 
 import IconButton from "@mui/material/IconButton";
 import IconAdd from "@mui/icons-material/Add";

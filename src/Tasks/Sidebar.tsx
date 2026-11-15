@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import InboxIcon from "@mui/icons-material/Inbox";
 import LabelIcon from "@mui/icons-material/LabelOutlined";
 import TodayIcon from "@mui/icons-material/Today";
 
 import { setSettings } from "../store/actions";
-import { StoreState } from "../store";
+import { StoreState, useAppDispatch } from "../store";
 
 import { List, ListItem, ListSubheader } from "../widgets/List";
 import { TaskType, setTaskTags } from "../pim-types";
@@ -21,7 +21,7 @@ interface ListItemPropsType {
 
 function SidebarListItem(props: ListItemPropsType) {
   const { name, icon, primaryText, amount } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const taskSettings = useSelector((state: StoreState) => state.settings.taskSettings);
   const { filterBy } = taskSettings;
 

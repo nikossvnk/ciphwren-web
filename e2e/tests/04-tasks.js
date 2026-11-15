@@ -62,6 +62,8 @@ run(async () => {
   // The task page, and deleting from there
   await page.getByText(title).click();
   await page.waitForURL(/\/pim\/tasks\/[^/]+$/);
+  // The page renders after the URL changes
+  await page.getByRole("button", { name: "Edit" }).waitFor();
   const shown = await page.innerText("body");
   check("the task page shows the title", shown.includes(title), shown);
   check("the task page shows the description", shown.includes("Before the deadline"), shown);

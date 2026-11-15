@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import localforage from "localforage";
-import { combineReducers } from "redux";
+import {
+  combineReducers as reduxCombineReducers, Reducer, ReducersMapObject, StateFromReducersMapObject,
+  ActionFromReducersMapObject,
+} from "redux";
 import { createMigrate, persistReducer, createTransform } from "redux-persist";
 import session from "redux-persist/es/storage/session";
 
@@ -15,6 +18,15 @@ import {
   syncGeneral, syncCollections, collections, items,
   SyncGeneralData, SyncCollectionsData, CacheCollectionsData, CacheItemsData, CredentialsData, Message,
 } from "./reducers";
+
+// Redux 5 also types the state a combined reducer can start from. It infers it from the reducers, and
+// the reducers of redux-actions don't take an undefined state, so it comes out unusable. redux-persist and
+// createStore take a plain Reducer<S, A>.
+function combineReducers<M extends ReducersMapObject<any, any, any>>(
+  reducers: M
+): Reducer<StateFromReducersMapObject<M>, ActionFromReducersMapObject<M>> {
+  return reduxCombineReducers(reducers) as any;
+}
 
 export interface StoreState {
   fetchCount: number;

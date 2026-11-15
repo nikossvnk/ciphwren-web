@@ -12,10 +12,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 import { PimType } from "../pim-types";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { setSettings } from "../store/actions";
-import { StoreState } from "../store";
+import { StoreState, useAppDispatch } from "../store";
 
 import Menu from "../widgets/Menu";
 import { ListItemText, ListItemSecondaryAction } from "@mui/material";
@@ -56,7 +56,7 @@ export default function Toolbar(props: PropsType) {
   const showSearchField = true;
   const nodeRef = React.useRef<HTMLDivElement>(null);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const taskSettings = useSelector((state: StoreState) => state.settings.taskSettings);
   const { sortBy } = taskSettings;
 

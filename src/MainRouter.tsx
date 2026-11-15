@@ -12,8 +12,8 @@ import LoginPage from "./LoginPage";
 import WizardPage from "./WizardPage";
 import { Snackbar } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "./store";
+import { useSelector } from "react-redux";
+import { StoreState, useAppDispatch } from "./store";
 import { popMessage } from "./store/actions";
 
 
@@ -44,7 +44,7 @@ export default function MainRouter() {
 }
 
 function GlobalMessages() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const message = useSelector((state: StoreState) => state.messages.first(undefined));
 
   function handleClose() {

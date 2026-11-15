@@ -3,14 +3,14 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-import { StoreState } from "../store";
+import { StoreState, useAppDispatch } from "../store";
 import { setSettings, login, pushMessage } from "../store/actions";
 
 import Container from "../widgets/Container";
@@ -51,7 +51,7 @@ interface ChangePasswordFormErrors {
 
 function ChangePassword() {
   const etebase = useCredentials()!;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [showDialog, setShowDialog] = React.useState(false);
   const [oldPassword, setOldPassword] = React.useState("");
   const [newPassword, setNewPassword] = React.useState("");
@@ -171,7 +171,7 @@ function ChangePassword() {
 
 export default React.memo(function Settings() {
   const etebase = useCredentials();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const settings = useSelector((state: StoreState) => state.settings);
 
   function handleChange(event: React.ChangeEvent<any>) {

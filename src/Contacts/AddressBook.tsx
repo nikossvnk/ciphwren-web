@@ -6,7 +6,8 @@ import * as React from "react";
 import { createSelector } from "reselect";
 
 import * as colors from "@mui/material/colors";
-import { AutoSizer, List as VirtualizedList } from "react-virtualized";
+import { List as VirtualizedList } from "react-virtualized";
+import { AutoSizer } from "react-virtualized-auto-sizer";
 
 import { Avatar } from "../widgets/Avatar";
 import { List, ListItem } from "../widgets/List";
@@ -97,8 +98,8 @@ class AddressBook extends React.PureComponent<PropsType> {
 
     return (
       <List style={{ height: "calc(100vh - 350px)" }}>
-        <AutoSizer>
-          {({ height, width }) => (
+        <AutoSizer
+          renderProp={({ height, width }) => (width !== undefined) && (height !== undefined) && (
             <VirtualizedList
               width={width}
               height={height}
@@ -116,7 +117,7 @@ class AddressBook extends React.PureComponent<PropsType> {
               }}
             />
           )}
-        </AutoSizer>
+        />
       </List>
     );
   }

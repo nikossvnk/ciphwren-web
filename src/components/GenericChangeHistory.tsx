@@ -7,7 +7,8 @@ import moment from "moment";
 
 import * as Etebase from "etebase";
 
-import { AutoSizer, List as VirtualizedList } from "react-virtualized";
+import { List as VirtualizedList } from "react-virtualized";
+import { AutoSizer } from "react-virtualized-auto-sizer";
 
 import { List, ListItem } from "../widgets/List";
 import IconEdit from "@mui/icons-material/Edit";
@@ -97,8 +98,8 @@ export default function GenericChangeHistory(props: PropsType) {
   return (
     <List style={{ height: "100%" }}>
       {(entriesList.length > 0) ? (
-        <AutoSizer>
-          {({ height, width }) => (
+        <AutoSizer
+          renderProp={({ height, width }) => (width !== undefined) && (height !== undefined) && (
             <VirtualizedList
               width={width}
               height={height}
@@ -107,7 +108,7 @@ export default function GenericChangeHistory(props: PropsType) {
               rowRenderer={rowRenderer}
             />
           )}
-        </AutoSizer>
+        />
       ) : (
         <ListItem
           primaryText="No entries found"

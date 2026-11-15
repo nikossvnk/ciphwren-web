@@ -47,6 +47,8 @@ run(async () => {
   check("the contact is in the address book", await page.getByText(`Jane ${last}`).isVisible());
   await page.getByText(`Jane ${last}`).click();
   await page.waitForURL(/\/pim\/contacts\/[^/]+$/);
+  // The page renders after the URL changes
+  await page.getByRole("button", { name: "Edit" }).waitFor();
   const shown = await page.innerText("body");
   for (const [what, text] of [["name", `Jane ${last}`], ["phone", "+30 210 1234567"], ["email", "jane@example.invalid"], ["note", "Met at the conference"]]) {
     check(`the contact page shows the ${what}`, shown.includes(text), shown);

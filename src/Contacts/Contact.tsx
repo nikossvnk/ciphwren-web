@@ -156,13 +156,13 @@ class Contact extends React.PureComponent {
           insetChildren
           secondaryText="note"
         >
-          <pre style={{ wordWrap: "break-word", whiteSpace: "pre-wrap", overflowX: "auto" }}>{note}</pre>
+          <pre style={{ wordWrap: "break-word", whiteSpace: "pre-wrap", overflowX: "auto" }}>{note?.toString()}</pre>
         </ListItem>
       );
       theRest.push([item]);
     }
 
-    function listIfNotEmpty(items: JSX.Element[][]) {
+    function listIfNotEmpty(items: React.JSX.Element[][]) {
       if (items.length > 0) {
         return (
           <React.Fragment>

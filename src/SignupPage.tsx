@@ -17,12 +17,11 @@ import PasswordField from "./widgets/PasswordField";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import Alert from "@mui/material/Alert";
 import { CircularProgress } from "@mui/material";
-import { Navigate } from "react-router";
+import { Link, Navigate } from "react-router";
 import { useCredentials } from "./credentials";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "./store";
 import { startTask, PASSWORD_MIN_LENGTH, enforcePasswordRules } from "./helpers";
 import { login } from "./store/actions";
-import { Link } from "react-router-dom";
 
 import * as C from "./constants";
 
@@ -37,7 +36,7 @@ interface FormErrors {
 
 export default function SignupPage() {
   const credentials = useCredentials();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
