@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BrowserRouter } from "react-router";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { amber, grey, lightBlue } from "@mui/material/colors";
 import AppBar from "@mui/material/AppBar";
@@ -143,7 +143,7 @@ const IconRefreshWithSpin = withSpin(NavigationRefresh);
 export default function App() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [errorsDialog, setErrorsDialog] = React.useState(false);
-  const dispatch = useDispatch();
+  const dispatch = store.useAppDispatch();
   const etebase = useCredentials();
   const darkModeUserSelection = useSelector((state: store.StoreState) => state.settings.darkModeUserSelection);
   const fetchCount = useSelector((state: store.StoreState) => state.fetchCount);
@@ -159,7 +159,7 @@ export default function App() {
   }
 
   const [darkModeBrowserPreference, setDarkModeBrowserPreference] = React.useState(Boolean(window.matchMedia?.("(prefers-color-scheme: dark)").matches));
-  const handleBrowserDarkModePreferenceChange = React.useCallback((e) => {
+  const handleBrowserDarkModePreferenceChange = React.useCallback((e: MediaQueryListEvent) => {
     setDarkModeBrowserPreference(e.matches);
   }, []);
   React.useEffect(() => {
@@ -266,10 +266,7 @@ export default function App() {
   return (
     <ThemeProvider theme={muiTheme}>
       {/* Without the trailing slash of BASE_URL, so that the base path without a trailing slash also matches */}
-      <BrowserRouter
-        basename={import.meta.env.BASE_URL.replace(/\/$/, "")}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <div style={styles.main} className={darkMode ? "theme-dark" : "theme-light"}>
           <AppBarWitHistory
             toggleDrawerIcon={<IconButton onClick={toggleDrawer}><NavigationMenu /></IconButton>}

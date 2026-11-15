@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import App from "./App";
@@ -34,12 +34,11 @@ function MyPersistGate(props: React.PropsWithChildren<{}>) {
 
 import { store, persistor } from "./store";
 
-ReactDOM.render(
+createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <MyPersistGate>
       <App />
     </MyPersistGate>
-  </Provider>,
-  document.getElementById("root") as HTMLElement
+  </Provider>
 );
 unregisterServiceWorker();

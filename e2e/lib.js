@@ -141,6 +141,8 @@ exports.open = async () => {
     browser,
     page,
     async login() {
+      // The app renders a navigation after the URL changes (React transitions): wait for the login page
+      await page.getByRole("button", { name: "Log In" }).waitFor();
       await page.locator("input:not([type=password])").first().fill(config.username);
       await page.locator("input[type=password]").fill(config.password);
       await page.getByRole("button", { name: "Log In" }).click();

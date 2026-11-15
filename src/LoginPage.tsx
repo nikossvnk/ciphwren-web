@@ -3,7 +3,7 @@
 
 import * as React from "react";
 
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "./store";
 
 import Container from "./widgets/Container";
 import ExternalLink from "./widgets/ExternalLink";
@@ -18,13 +18,12 @@ import * as C from "./constants";
 import { useCredentials } from "./credentials";
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import { startTask } from "./helpers";
-import { Navigate, useLocation } from "react-router";
+import { Link, Navigate, useLocation } from "react-router";
 import { routeResolver } from "./App";
-import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const credentials = useCredentials();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const [loading, setLoading] = React.useState(false);
   const [fetchError, setFetchError] = React.useState<Error>();

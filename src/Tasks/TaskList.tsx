@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Fuse from "fuse.js";
 
@@ -19,7 +19,7 @@ import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import QuickAdd from "./QuickAdd";
 
-import { StoreState } from "../store";
+import { StoreState, useAppDispatch } from "../store";
 import { formatDate } from "../helpers";
 import { CachedCollection } from "../Pim/helpers";
 import { pushMessage } from "../store/actions";
@@ -109,7 +109,7 @@ export default function TaskList(props: PropsType) {
   const [searchTerm, setSearchTerm] = React.useState("");
   const settings = useSelector((state: StoreState) => state.settings.taskSettings);
   const { filterBy, sortBy } = settings;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const theme = useTheme();
 
   const { onItemClick } = props;

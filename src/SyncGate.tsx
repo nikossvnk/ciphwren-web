@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Route, Routes, Navigate, Outlet, useLocation } from "react-router";
 
 import moment from "moment";
@@ -26,7 +26,7 @@ import Debug from "./Debug";
 
 import { SyncManager } from "./sync/SyncManager";
 
-import { StoreState } from "./store";
+import { StoreState, useAppDispatch } from "./store";
 import { performSync } from "./store/actions";
 import { useCredentials } from "./credentials";
 import PimNavigationTabs from "./Pim/NavigationTabs";
@@ -35,7 +35,7 @@ import PageNotFound from "./PageNotFound";
 export default function SyncGate() {
   const etebase = useCredentials();
   const settings = useSelector((state: StoreState) => state.settings);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = React.useState(true);
 
   // Doing this so we refresh on route changes

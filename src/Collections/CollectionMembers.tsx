@@ -23,7 +23,7 @@ import { CachedCollection } from "../Pim/helpers";
 import CollectionMemberAddDialog from "./CollectionMemberAddDialog";
 import Alert from "@mui/material/Alert";
 import { pushMessage } from "../store/actions";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../store";
 
 interface PropsType {
   collection: CachedCollection;
@@ -31,7 +31,7 @@ interface PropsType {
 
 export default function CollectionMembers(props: PropsType) {
   const etebase = useCredentials()!;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [members, setMembers] = React.useState<Etebase.CollectionMember[]>();
   const [revokeUser, setRevokeUser] = React.useState<Etebase.CollectionMember | null>(null);
   const [addMemberOpen, setAddMemberOpen] = React.useState(false);
