@@ -246,6 +246,8 @@ class ContactEdit extends React.PureComponent<PropsType> {
     Object.values(this.state.collectionGroups).forEach((group: ContactType) => {
       if (group.members.includes(this.state.uid)) {
         this.state.newGroups.push(group.fn);
+        // The constructor fills in the initial state (before mounting), like the assignments above
+        // eslint-disable-next-line @eslint-react/no-direct-mutation-state
         this.state.originalGroups[group.fn] = undefined;
       }
     });
@@ -402,12 +404,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
 
     comp.updatePropertyWithValue("fn", fn);
 
-    const name = [lastName,
-      firstName,
-      middleName,
-      namePrefix,
-      nameSuffix,
-    ];
+    const name = [lastName, firstName, middleName, namePrefix, nameSuffix];
 
     comp.updatePropertyWithValue("n", name);
 

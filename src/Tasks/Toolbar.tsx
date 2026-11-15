@@ -36,6 +36,14 @@ const textFieldSx = {
 };
 const buttonStyle = { marginRight: 8 };
 
+const sortOptions: [string, string][] = [
+  ["smart", "Smart"],
+  ["dueDate", "Due Date"],
+  ["priority", "Priority"],
+  ["title", "Title"],
+  ["lastModifiedDate", "Last Modified"],
+];
+
 interface PropsType {
   defaultCollection: CachedCollection;
   onItemSave: (item: PimType, journalUid: string, originalItem?: PimType) => Promise<void>;
@@ -64,12 +72,6 @@ export default function Toolbar(props: PropsType) {
     dispatch(setSettings({ taskSettings: { ...taskSettings, sortBy: sort } }));
     setSortAnchorEl(null);
   };
-
-  const SortMenuItem = React.forwardRef<HTMLLIElement, { name: string, label: string }>(function SortMenuItem(props, ref) {
-    return (
-      <MenuItem ref={ref} selected={sortBy === props.name} onClick={() => handleSortChange(props.name)}>{props.label}</MenuItem>
-    );
-  });
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
@@ -116,11 +118,9 @@ export default function Toolbar(props: PropsType) {
           open={!!sortAnchorEl}
           onClose={() => setSortAnchorEl(null)}
         >
-          <SortMenuItem name="smart" label="Smart" />
-          <SortMenuItem name="dueDate" label="Due Date" />
-          <SortMenuItem name="priority" label="Priority" />
-          <SortMenuItem name="title" label="Title" />
-          <SortMenuItem name="lastModifiedDate" label="Last Modified" />
+          {sortOptions.map(([name, label]) => (
+            <MenuItem key={name} selected={sortBy === name} onClick={() => handleSortChange(name)}>{label}</MenuItem>
+          ))}
         </Menu>
       </div>
 

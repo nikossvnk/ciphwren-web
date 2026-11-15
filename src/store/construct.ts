@@ -3,7 +3,10 @@
 
 import localforage from "localforage";
 import {
-  combineReducers as reduxCombineReducers, Reducer, ReducersMapObject, StateFromReducersMapObject,
+  combineReducers as reduxCombineReducers, 
+  Reducer, 
+  ReducersMapObject, 
+  StateFromReducersMapObject,
   ActionFromReducersMapObject,
 } from "redux";
 import { createMigrate, persistReducer, createTransform } from "redux-persist";
@@ -14,9 +17,22 @@ import * as Etebase from "etebase";
 import { List, Map as ImmutableMap } from "immutable";
 import {
   SettingsType,
-  fetchCount, credentials, settingsReducer, encryptionKeyReducer, errorsReducer, messagesReducer,
-  syncGeneral, syncCollections, collections, items,
-  SyncGeneralData, SyncCollectionsData, CacheCollectionsData, CacheItemsData, CredentialsData, Message,
+  fetchCount, 
+  credentials, 
+  settingsReducer, 
+  encryptionKeyReducer, 
+  errorsReducer, 
+  messagesReducer,
+  syncGeneral, 
+  syncCollections, 
+  collections, 
+  items,
+  SyncGeneralData, 
+  SyncCollectionsData, 
+  CacheCollectionsData, 
+  CacheItemsData, 
+  CredentialsData, 
+  Message,
 } from "./reducers";
 
 // Redux 5 also types the state a combined reducer can start from. It infers it from the reducers, and

@@ -1,27 +1,18 @@
 // SPDX-FileCopyrightText: © 2017 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
+import { defineConfig, globalIgnores } from "eslint/config";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import react from "eslint-plugin-react";
+import react from "@eslint-react/eslint-plugin";
 import stylistic from "@stylistic/eslint-plugin";
 import globals from "globals";
 
-export default tseslint.config(
-  {
-    ignores: ["build/", "e2e/"],
-  },
+export default defineConfig(
+  globalIgnores(["build/", "e2e/"]),
   js.configs.recommended,
-  ...tseslint.configs.recommended,
-  react.configs.flat.recommended,
-  react.configs.flat["jsx-runtime"],
-  {
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-  },
+  tseslint.configs.recommended,
+  react.configs["recommended-typescript"],
   {
     files: ["src/**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
@@ -59,23 +50,19 @@ export default tseslint.config(
         "caughtErrors": "none",
       }],
 
-      "react/display-name": "off",
-      "react/prop-types": "off",
-      "react/no-unescaped-entities": "off",
       "@stylistic/jsx-tag-spacing": ["error", {
         "closingSlash": "never",
         "beforeSelfClosing": "always",
         "afterOpening": "never",
         "beforeClosing": "never",
       }],
-      "react/jsx-boolean-value": ["error", "never"],
+      "@stylistic/jsx-shorthand-boolean": "error",
       "@stylistic/jsx-curly-spacing": ["error", { "when": "never", "children": true }],
       "@stylistic/jsx-equals-spacing": ["error", "never"],
       "@stylistic/jsx-indent-props": ["error", 2],
-      "react/jsx-curly-brace-presence": ["error", "never"],
-      "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
-      "react/void-dom-elements-no-children": ["error"],
-      "react/no-unknown-property": ["error"],
+      "@stylistic/jsx-curly-brace-presence": ["error", "never"],
+      // no-missing-key (also for fragments) and dom-no-void-elements-with-children are in the recommended config
+      "@eslint-react/dom-no-unknown-property": "error",
 
       "@stylistic/quotes": ["error", "double", { "allowTemplateLiterals": "always", "avoidEscape": true }],
       "@stylistic/semi": ["error", "always", { "omitLastInOneLineBlock": true }],
@@ -95,7 +82,9 @@ export default tseslint.config(
         "SwitchCase": 1,
       }],
       "@stylistic/no-multi-spaces": "error",
-      "@stylistic/object-curly-spacing": ["error", "always"],
+      // Spaces inside { } but not inside [ ] (replaces object-curly-spacing and array-bracket-spacing). It
+      // also keeps the items of a multi-line list each on their own line, or all on the first one.
+      "@stylistic/list-style": ["error", { overrides: { "()": "off", "<>": "off" } }],
       "@stylistic/arrow-parens": "error",
       "@stylistic/arrow-spacing": "error",
       "@stylistic/key-spacing": "error",
@@ -112,7 +101,6 @@ export default tseslint.config(
       "@stylistic/space-infix-ops": "error",
       "consistent-return": "error",
       "@stylistic/jsx-quotes": ["error"],
-      "@stylistic/array-bracket-spacing": "error",
       "@stylistic/brace-style": [
         "error",
         "1tbs",

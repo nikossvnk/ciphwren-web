@@ -149,7 +149,7 @@ export default class TaskEdit extends React.PureComponent<PropsType> {
   }
 
   public toggleTime() {
-    this.setState({ includeTime: !this.state.includeTime });
+    this.setState((state: this["state"]) => ({ includeTime: !state.includeTime }));
   }
 
   public handleCloseToast(_event?: React.SyntheticEvent, reason?: string) {
