@@ -33,6 +33,7 @@ import * as actions from "./store/actions";
 import { useCredentials } from "./credentials";
 import { SyncManager } from "./sync/SyncManager";
 import MainRouter from "./MainRouter";
+import { AppBarSlotsContext } from "./widgets/AppBarOverride";
 
 export const routeResolver = new RouteResolver({
   home: "",
@@ -110,12 +111,16 @@ export const routeResolver = new RouteResolver({
 interface AppBarPropsType {
   toggleDrawerIcon: any;
   iconElementRight: any;
+  titleRef: (el: HTMLDivElement | null) => void;
+  buttonsRef: (el: HTMLDivElement | null) => void;
 }
 
 function AppBarWitHistory(props: AppBarPropsType) {
   const {
     toggleDrawerIcon,
     iconElementRight,
+    titleRef,
+    buttonsRef,
     ...rest
   } = props;
   return (
@@ -128,9 +133,9 @@ function AppBarWitHistory(props: AppBarPropsType) {
           {toggleDrawerIcon}
         </div>
 
-        <div style={{ flexGrow: 1, fontSize: "1.25em" }} id="appbar-title" />
+        <div style={{ flexGrow: 1, fontSize: "1.25em" }} id="appbar-title" ref={titleRef} />
 
-        <div style={{ marginRight: -12 }} id="appbar-buttons">
+        <div style={{ marginRight: -12 }} id="appbar-buttons" ref={buttonsRef}>
           {iconElementRight}
         </div>
       </Toolbar>
@@ -140,9 +145,25 @@ function AppBarWitHistory(props: AppBarPropsType) {
 
 const IconRefreshWithSpin = withSpin(NavigationRefresh);
 
+const DARK_MODE_QUERY = "(prefers-color-scheme: dark)";
+
+// Module-level, so that useSyncExternalStore gets the same functions on every render
+function subscribeToDarkModePreference(onChange: () => void) {
+  const query = window.matchMedia?.(DARK_MODE_QUERY);
+  query?.addEventListener("change", onChange);
+  return () => query?.removeEventListener("change", onChange);
+}
+
+function getDarkModePreference() {
+  return Boolean(window.matchMedia?.(DARK_MODE_QUERY).matches);
+}
+
 export default function App() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [errorsDialog, setErrorsDialog] = React.useState(false);
+  const [appBarTitle, setAppBarTitle] = React.useState<HTMLElement | null>(null);
+  const [appBarButtons, setAppBarButtons] = React.useState<HTMLElement | null>(null);
+  const appBarSlots = React.useMemo(() => ({ title: appBarTitle, buttons: appBarButtons }), [appBarTitle, appBarButtons]);
   const dispatch = store.useAppDispatch();
   const etebase = useCredentials();
   const darkModeUserSelection = useSelector((state: store.StoreState) => state.settings.darkModeUserSelection);
@@ -158,21 +179,9 @@ export default function App() {
     return false;
   }
 
-  const [darkModeBrowserPreference, setDarkModeBrowserPreference] = React.useState(Boolean(window.matchMedia?.("(prefers-color-scheme: dark)").matches));
-  const handleBrowserDarkModePreferenceChange = React.useCallback((e: MediaQueryListEvent) => {
-    setDarkModeBrowserPreference(e.matches);
-  }, []);
-  React.useEffect(() => {
-    window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener("change", handleBrowserDarkModePreferenceChange);
-    return () => {
-      window.matchMedia?.("(prefers-color-scheme: dark)").removeEventListener("change", handleBrowserDarkModePreferenceChange);
-    };
-  }, [handleBrowserDarkModePreferenceChange]);
-
-  const [darkMode, setDarkMode] = React.useState(() => shouldBeDark(darkModeUserSelection, darkModeBrowserPreference));
-  React.useEffect(() => {
-    setDarkMode(shouldBeDark(darkModeUserSelection, darkModeBrowserPreference));
-  }, [darkModeUserSelection, darkModeBrowserPreference]);
+  // The browser's dark mode preference, read and followed without an effect setting state
+  const darkModeBrowserPreference = React.useSyncExternalStore(subscribeToDarkModePreference, getDarkModePreference);
+  const darkMode = shouldBeDark(darkModeUserSelection, darkModeBrowserPreference);
 
   async function refresh() {
     const syncManager = SyncManager.getManager(etebase!);
@@ -181,17 +190,21 @@ export default function App() {
     await sync;
   }
 
-  function autoRefresh() {
-    if (navigator.onLine && etebase) {
-      refresh();
-    }
-  }
-
+  // Sync every 5 minutes. It depends on etebase: an interval set up once kept the first render's
+  // (logged out) account, so it never synced after logging in.
   React.useEffect(() => {
+    if (!etebase) {
+      return undefined;
+    }
     const interval = 5 * 60 * 1000;
-    const id = setInterval(autoRefresh, interval);
+    const id = setInterval(() => {
+      if (navigator.onLine) {
+        const sync = SyncManager.getManager(etebase).sync();
+        dispatch(actions.performSync(sync));
+      }
+    }, interval);
     return () => clearInterval(id);
-  }, []);
+  }, [etebase, dispatch]);
 
   function toggleDrawer() {
     setDrawerOpen(!drawerOpen);
@@ -269,6 +282,8 @@ export default function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <div style={styles.main} className={darkMode ? "theme-dark" : "theme-light"}>
           <AppBarWitHistory
+            titleRef={setAppBarTitle}
+            buttonsRef={setAppBarButtons}
             toggleDrawerIcon={<IconButton onClick={toggleDrawer}><NavigationMenu /></IconButton>}
             iconElementRight={
               <>
@@ -298,6 +313,7 @@ export default function App() {
             <List>
               {errors.map((error, index) => (
                 <ListItem
+                  // eslint-disable-next-line @eslint-react/no-array-index-key -- errors are only appended or all cleared
                   key={index}
                   style={{ height: "unset" }}
                   onClick={() => (window as any).navigator.clipboard.writeText(`${error.message}\n\n${error.stack}`)}
@@ -315,9 +331,11 @@ export default function App() {
             <SideMenu onCloseDrawerRequest={closeDrawer} />
           </Drawer>
 
-          <ErrorBoundary>
-            <MainRouter />
-          </ErrorBoundary>
+          <AppBarSlotsContext value={appBarSlots}>
+            <ErrorBoundary>
+              <MainRouter />
+            </ErrorBoundary>
+          </AppBarSlotsContext>
         </div>
       </BrowserRouter>
     </ThemeProvider>

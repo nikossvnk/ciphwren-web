@@ -22,8 +22,8 @@ const checkboxColor = {
 
 const TagsList = React.memo((props: { tags: string[] }) => (
   <ul>
-    {props.tags.map((tag, i) => tag && <Chip
-      key={i}
+    {[...new Set(props.tags)].map((tag) => tag && <Chip
+      key={tag}
       color="secondary"
       size="small"
       label={tag}

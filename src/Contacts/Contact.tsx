@@ -35,7 +35,7 @@ class Contact extends React.PureComponent {
     const lastModified = (revProp) ?
       "Modified: " + moment((revProp.getFirstValue() as ICAL.Time).toJSDate()).format("LLLL") : undefined;
 
-    const lists = [];
+    const lists: Array<{ name: string, items: React.JSX.Element[] }> = [];
 
     function getAllType(
       propName: string,
@@ -44,9 +44,11 @@ class Contact extends React.PureComponent {
       primaryTransform?: (value: string, type: string) => string,
       secondaryTransform?: (value: string, type: string) => string) {
 
-      return contact.comp.getAllProperties(propName).map((prop, idx) => {
+      // The rows are read-only and in the vCard's order, which is all that tells two equal values apart: the
+      // position is their identity. (Every value of a property had the property's index as its key.)
+      const items = contact.comp.getAllProperties(propName).flatMap((prop, idx) => {
         const type = prop.toJSON()[1].type;
-        const values = prop.getValues().map((val) => {
+        const values = prop.getValues().map((val, valIdx) => {
           const primaryText = primaryTransform ? primaryTransform(val, type) : val;
           const clipboardButton = (
             <IconButton
@@ -63,7 +65,8 @@ class Contact extends React.PureComponent {
 
           return (
             <ListItem
-              key={idx}
+              // eslint-disable-next-line @eslint-react/no-array-index-key
+              key={`${propName}-${idx}-${valIdx}`}
               href={valueToHref ? valueToHref(val, type) : undefined}
               primaryText={primaryText}
               rightIcon={clipboardButton}
@@ -74,6 +77,7 @@ class Contact extends React.PureComponent {
         });
         return values;
       });
+      return { name: propName, items };
     }
 
     lists.push(getAllType(
@@ -132,12 +136,13 @@ class Contact extends React.PureComponent {
     const skips = ["tel", "email", "impp", "adr", "bday", "anniversary", "rev", "prodid", "uid", "fn", "n", "version", "photo", "note"];
     const theRest = contact.comp.getAllProperties().filter((prop) => (
       skips.indexOf(prop.name) === -1
-    )).map((prop, idx) => {
-      const values = prop.getValues().map((_val) => {
+    )).flatMap((prop, idx) => {
+      const values = prop.getValues().map((_val, valIdx) => {
         const val = (_val instanceof String) ? _val : _val.toString();
         return (
           <ListItem
-            key={idx}
+            // eslint-disable-next-line @eslint-react/no-array-index-key -- read-only, in the vCard's order
+            key={`${prop.name}-${idx}-${valIdx}`}
             insetChildren
             primaryText={val}
             secondaryText={prop.name}
@@ -158,10 +163,10 @@ class Contact extends React.PureComponent {
           <pre style={{ wordWrap: "break-word", whiteSpace: "pre-wrap", overflowX: "auto" }}>{note?.toString()}</pre>
         </ListItem>
       );
-      theRest.push([item]);
+      theRest.push(item);
     }
 
-    function listIfNotEmpty(items: React.JSX.Element[][]) {
+    function listIfNotEmpty(items: React.JSX.Element[]) {
       if (items.length > 0) {
         return (
           <React.Fragment>
@@ -187,9 +192,9 @@ class Contact extends React.PureComponent {
             <span style={{ fontSize: "90%" }}>{lastModified}</span>
           )}
         </PimItemHeader>
-        {lists.map((list, idx) => (
-          <React.Fragment key={idx}>
-            {listIfNotEmpty(list)}
+        {lists.map((list) => (
+          <React.Fragment key={list.name}>
+            {listIfNotEmpty(list.items)}
           </React.Fragment>
         ))}
         <List>

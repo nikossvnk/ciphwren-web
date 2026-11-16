@@ -37,7 +37,7 @@ export default function ImportDialog(props: PropsType) {
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [itemsProcessed, setItemsProccessed] = React.useState<number>();
+  const [itemsProcessed, setItemsProcessed] = React.useState<number>();
 
   function onFileDropCommon(itemsCreator: (fileText: string) => PimType[], acceptedFiles: File[], rejectedFiles: FileRejection[]) {
     // XXX: implement handling of rejectedFiles
@@ -80,7 +80,7 @@ export default function ImportDialog(props: PropsType) {
           await dispatch(itemBatch(collection, itemMgr, chunk));
         }
 
-        setItemsProccessed(items.length);
+        setItemsProcessed(items.length);
       } catch (e) {
         console.error(e);
         alert("An error has occurred, please contact developers.");

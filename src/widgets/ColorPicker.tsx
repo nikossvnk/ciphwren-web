@@ -37,8 +37,8 @@ export default function ColorPicker(props: PropsType) {
 
   return (
     <div>
-      {colors.map((colorGroup, idx) => (
-        <div key={idx} style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+      {colors.map((colorGroup) => (
+        <div key={colorGroup[0]} style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
           {colorGroup.map((colorOption) => (
             <ButtonBase
               style={{ margin: 5, borderRadius: 36 / 2 }}

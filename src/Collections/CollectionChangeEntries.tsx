@@ -55,7 +55,7 @@ export default function CollectionChangeEntries(props: PropsType) {
       decryptItems(items)
         .then((entries) => setEntries(entries.get(collection.uid)));
     }
-  }, [items]);
+  }, [items, collection.uid]);
 
   if (!entries) {
     return (

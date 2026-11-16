@@ -65,13 +65,19 @@ const TypeSelector = (props: any) => {
   );
 };
 
+// The key of a field in the lists of phone numbers, emails, etc.: with the index as the key, removing a field
+// gave the next one the removed one's text field (and its focus and cursor)
+let nextValueTypeId = 0;
+
 class ValueType {
   public type: string;
   public value: string;
+  public readonly id: number;
 
   constructor(type?: string, value?: string) {
     this.type = type ? type : "home";
     this.value = value ? value : "";
+    this.id = nextValueTypeId++;
   }
 }
 
@@ -288,10 +294,10 @@ class ContactEdit extends React.PureComponent<PropsType> {
     });
   }
 
-  public handleValueTypeChange(name: string, idx: number, value: ValueType) {
+  public handleValueTypeChange(name: string, idx: number, value: { type: string, value: string }) {
     this.setState((prevState) => {
       const newArray = (prevState as any)[name].slice(0);
-      newArray[idx] = value;
+      newArray[idx] = { ...newArray[idx], ...value };
       return {
         ...prevState,
         [name]: newArray,
@@ -408,7 +414,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
 
     comp.updatePropertyWithValue("n", name);
 
-    function setProperties(name: string, source: ValueType[]) {
+    function setProperties(name: string, source: Array<{ type: string, value: string }>) {
       comp.removeAllProperties(name);
       source.forEach((x) => {
         if (x.value === "") {
@@ -542,7 +548,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
           </div>
           {this.state.phone.map((x, idx) => (
             <ValueTypeComponent
-              key={idx}
+              key={x.id}
               name="phone"
               placeholder="Phone"
               types={telTypes}
@@ -565,7 +571,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
           </div>
           {this.state.email.map((x, idx) => (
             <ValueTypeComponent
-              key={idx}
+              key={x.id}
               name="email"
               placeholder="Email"
               types={emailTypes}
@@ -588,7 +594,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
           </div>
           {this.state.impp.map((x, idx) => (
             <ValueTypeComponent
-              key={idx}
+              key={x.id}
               name="impp"
               placeholder="IMPP"
               types={imppTypes}
@@ -611,7 +617,7 @@ class ContactEdit extends React.PureComponent<PropsType> {
           </div>
           {this.state.address.map((x, idx) => (
             <ValueTypeComponent
-              key={idx}
+              key={x.id}
               name="address"
               placeholder="Address"
               types={addressTypes}

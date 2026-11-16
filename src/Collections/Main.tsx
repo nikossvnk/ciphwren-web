@@ -126,6 +126,7 @@ export default function CollectionsMain() {
                     path={routeResolver.getRelativeRoute("collections._id.edit", "collections._id")}
                     element={
                       <CollectionEdit
+                        key={collection.collection.uid}
                         collection={collection}
                         onSave={onSave}
                         onDelete={onDelete}

@@ -42,14 +42,16 @@ export default function SyncGate() {
   useLocation();
 
   React.useEffect(() => {
+    if (!etebase) {
+      return;
+    }
     (async () => {
-      const syncManager = SyncManager.getManager(etebase!);
-      const sync = syncManager.sync();
+      const sync = SyncManager.getManager(etebase).sync();
       dispatch(performSync(sync));
       await sync;
       setLoading(false);
     })();
-  }, []);
+  }, [etebase, dispatch]);
 
   if (loading) {
     return (<LoadingIndicator style={{ display: "block", margin: "40px auto" }} />);

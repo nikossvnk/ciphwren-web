@@ -114,11 +114,11 @@ export default function WizardPage() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setLoading(true);
-    setSyncError(undefined);
+    if (!etebase) {
+      return;
+    }
     (async () => {
-      const syncManager = SyncManager.getManager(etebase!);
-      const sync = syncManager.sync(true);
+      const sync = SyncManager.getManager(etebase).sync(true);
       try {
         await sync;
 
@@ -132,7 +132,7 @@ export default function WizardPage() {
       }
       setLoading(false);
     })();
-  }, [tryCount]);
+  }, [tryCount, etebase]);
 
   if (syncError) {
     return (
@@ -145,7 +145,12 @@ export default function WizardPage() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setTryCount(tryCount + 1)}
+            onClick={() => {
+              // Back to the loading screen while it tries again
+              setLoading(true);
+              setSyncError(undefined);
+              setTryCount(tryCount + 1);
+            }}
           >
             Retry
           </Button>
