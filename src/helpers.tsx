@@ -155,7 +155,8 @@ export function startTask<T = any>(func: () => Promise<T> | T, delay = 0): Promi
   });
 }
 
-export function usePromiseMemo<T>(promise: Promise<T> | undefined | null, deps: React.DependencyList, initial: T | undefined = undefined): T | undefined {
+// The promise is its own dependency: callers pass memoized promises, which are new only when their inputs change
+export function usePromiseMemo<T>(promise: Promise<T> | undefined | null, initial: T | undefined = undefined): T | undefined {
   const [val, setVal] = React.useState<T>((promise as any)._returnedValue ?? initial);
   React.useEffect(() => {
     let cancel = false;
@@ -171,7 +172,7 @@ export function usePromiseMemo<T>(promise: Promise<T> | undefined | null, deps: 
     return () => {
       cancel = true;
     };
-  }, [...deps, promise]);
+  }, [promise]);
   return val;
 }
 

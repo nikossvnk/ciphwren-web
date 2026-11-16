@@ -14,8 +14,8 @@ import { getCollectionManager } from "./etebase-helpers";
 
 export default function Debug() {
   const etebase = useCredentials()!;
-  const [stateCollectionUid, setCollectionUid] = React.useState("");
-  const [itemsUids, setEntriesUids] = React.useState("");
+  const [stateCollectionUid, setStateCollectionUid] = React.useState("");
+  const [itemsUids, setItemsUids] = React.useState("");
   const [result, setResult] = React.useState("");
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
@@ -34,7 +34,7 @@ export default function Debug() {
           type="text"
           label="Collection UID"
           value={stateCollectionUid}
-          onChange={handleInputChange(setCollectionUid)}
+          onChange={handleInputChange(setStateCollectionUid)}
         />
       </div>
       <div>
@@ -44,7 +44,7 @@ export default function Debug() {
           multiline
           label="Item UIDs"
           value={itemsUids}
-          onChange={handleInputChange(setEntriesUids)}
+          onChange={handleInputChange(setItemsUids)}
         />
       </div>
       <Button

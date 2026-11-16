@@ -22,5 +22,5 @@ export const credentialsSelector = createSelector(
 
 export function useCredentials() {
   const credentialsPromise = useSelector(credentialsSelector);
-  return usePromiseMemo(credentialsPromise, [credentialsPromise]);
+  return usePromiseMemo(credentialsPromise);
 }

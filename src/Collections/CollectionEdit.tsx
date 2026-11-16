@@ -40,30 +40,12 @@ interface FormErrors {
 export default function CollectionEdit(props: PropsType) {
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
-  const [colType, setColType] = React.useState("");
-  const [info, setInfo] = React.useState<Etebase.ItemMetadata>();
-  const [selectedColor, setSelectedColor] = React.useState("");
+  // The form starts from the collection and isn't reset when it changes (a sync gives a new object, and
+  // copying it in an effect threw away what was being typed). Main.tsx keys it by the collection's uid.
+  const [colType, setColType] = React.useState(props.collection?.collectionType ?? "etebase.vcard");
+  const [info, setInfo] = React.useState<Etebase.ItemMetadata>(props.collection?.metadata ?? { name: "", description: "" });
+  const [selectedColor, setSelectedColor] = React.useState(props.collection?.metadata.color ?? "");
   const etebase = useCredentials()!;
-
-  React.useEffect(() => {
-    if (props.collection !== undefined) {
-      setColType(props.collection.collectionType);
-      setInfo(props.collection.metadata);
-      if (props.collection.metadata.color) {
-        setSelectedColor(props.collection.metadata.color);
-      }
-    } else {
-      setColType("etebase.vcard");
-      setInfo({
-        name: "",
-        description: "",
-      });
-    }
-  }, [props.collection]);
-
-  if (info === undefined) {
-    return <React.Fragment />;
-  }
 
   async function onSubmit(e: React.FormEvent<any>) {
     e.preventDefault();
@@ -71,10 +53,6 @@ export default function CollectionEdit(props: PropsType) {
     const fieldRequired = "This field is required!";
 
     const { onSave } = props;
-
-    if (!info) {
-      throw new Error("Got undefined info. Should never happen.");
-    }
 
     const name = info.name;
     const color = selectedColor;

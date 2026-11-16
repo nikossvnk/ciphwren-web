@@ -62,8 +62,7 @@ export function useCollections(etebase: Etebase.Account, colType?: string) {
   return usePromiseMemo(
     (colType) ?
       getCollectionsByType(cachedCollections, colType, etebase) :
-      getCollections(cachedCollections, etebase),
-    [etebase, cachedCollections, colType]
+      getCollections(cachedCollections, etebase)
   );
 }
 
@@ -71,7 +70,6 @@ export function useItems(etebase: Etebase.Account, colType: string) {
   const cachedCollections = useSelector((state: StoreState) => state.cache.collections);
   const cachedItems = useSelector((state: StoreState) => state.cache.items);
   return usePromiseMemo(
-    getItemsByType(cachedCollections, cachedItems, colType, etebase),
-    [etebase, cachedCollections, cachedItems, colType]
+    getItemsByType(cachedCollections, cachedItems, colType, etebase)
   );
 }

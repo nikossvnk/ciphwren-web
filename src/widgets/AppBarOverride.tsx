@@ -4,9 +4,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+// The title and buttons areas of the app bar, given by App once they are mounted (instead of being looked up
+// in the DOM during render, which found nothing before the app bar was mounted)
+export const AppBarSlotsContext = React.createContext<{ title: HTMLElement | null, buttons: HTMLElement | null }>({
+  title: null,
+  buttons: null,
+});
+
 export default (props: { title: string, children?: React.ReactNode | React.ReactNode[] }) => {
-  const titleEl = document.querySelector("#appbar-title");
-  const buttonsEl = document.querySelector("#appbar-buttons");
+  const { title: titleEl, buttons: buttonsEl } = React.use(AppBarSlotsContext);
 
   return (
     <>

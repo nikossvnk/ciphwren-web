@@ -41,7 +41,7 @@ export default function CollectionMembers(props: PropsType) {
 
   const revokeUserIsAdmin = revokeUser?.accessLevel === Etebase.CollectionAccessLevel.Admin;
 
-  async function fetchMembers() {
+  const fetchMembers = React.useCallback(async () => {
     const colMgr = getCollectionManager(etebase);
     const memberManager = colMgr.getMemberManager(collection);
     try {
@@ -61,11 +61,11 @@ export default function CollectionMembers(props: PropsType) {
     } catch (e) {
       setError(e);
     }
-  }
+  }, [etebase, collection]);
 
   React.useEffect(() => {
     fetchMembers();
-  }, []);
+  }, [fetchMembers]);
 
   async function onRevokeDo() {
     const colMgr = getCollectionManager(etebase);
