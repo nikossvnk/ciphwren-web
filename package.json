@@ -9,7 +9,7 @@
     "@mui/material": "^9.5.0",
     "@mui/x-date-pickers": "^9.17.0",
     "@types/color": "^4.2.1",
-    "color": "^4.2.3",
+    "color": "^5.0.3",
     "etebase": "https://github.com/nikossvnk/etebase-js/releases/download/v0.44.3/etebase-0.44.3.tgz",
     "fuse.js": "^7.5.0",
     "ical.js": "^2.2.1",
