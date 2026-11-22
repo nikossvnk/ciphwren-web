@@ -73,7 +73,9 @@ export default function LoginPage() {
     return (
       <Container style={{ maxWidth: "30rem" }}>
         <h2 style={{ marginBottom: "0.1em" }}>Log In</h2>
-        <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("signup")}>create an account</Link></div>
+        <div style={{ fontSize: "90%" }}>
+          or {C.signupUrl ? <a href={C.signupUrl}>create an account</a> : <Link to={routeResolver.getRoute("signup")}>create an account</Link>}
+        </div>
         <LoginForm
           onSubmit={onFormSubmit}
           loading={loading}

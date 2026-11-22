@@ -53,6 +53,17 @@ export default function SignupPage() {
     );
   }
 
+  if (C.signupUrl) {
+    return (
+      <Container style={{ maxWidth: "30rem" }}>
+        <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
+        <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
+        <p>Accounts are created on the account dashboard.</p>
+        <Button variant="contained" color="secondary" href={C.signupUrl}>Create an account</Button>
+      </Container>
+    );
+  }
+
   async function signup(e: React.FormEvent<any>) {
     e.preventDefault();
     setLoading(true);

@@ -57,6 +57,14 @@ can still be entered under "Advanced settings"), e.g.:
 REACT_APP_DEFAULT_API_PATH=https://etebase.example.com/ npm run build
 ```
 
+A service that hosts the web app and creates accounts on its own site (e.g. an account dashboard) can also set
+`VITE_SIGNUP_URL`: the "create an account" links and the signup page then send people there instead of signing
+up on the server directly, e.g.:
+
+```
+REACT_APP_DEFAULT_API_PATH=https://etebase.example.com/ VITE_SIGNUP_URL=https://app.example.com/signup npm run build
+```
+
 ### Serving from a subdirectory
 
 In order to run your own version and serve it from a subdirectory rather than the top level of the domain,
