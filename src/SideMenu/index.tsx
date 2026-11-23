@@ -20,7 +20,6 @@ import { store } from "../store";
 import { logout } from "../store/actions";
 
 import * as C from "../constants";
-import { useTheme } from "@mui/material";
 import { useCredentials } from "../credentials";
 import { useNavigate } from "react-router";
 
@@ -29,7 +28,6 @@ interface PropsType {
 }
 
 export default function SideMenu(props: PropsType) {
-  const theme = useTheme();
   const etebase = useCredentials();
   const username = etebase?.user.username ?? C.appName;
   const navigate = useNavigate();
@@ -84,7 +82,7 @@ export default function SideMenu(props: PropsType) {
     <div style={{ overflowX: "hidden", width: 250 }}>
       <div className="App-drawer-header">
         <img alt="App logo" className="App-drawer-logo" src={logo} />
-        <div style={{ color: theme.palette.secondary.contrastText }}>
+        <div style={{ color: "#fff" }}>
           {username}
         </div>
       </div>

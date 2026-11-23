@@ -8,10 +8,18 @@
   }
 }
 
+/* Brand colors for today and days outside the month */
+.rbc-today {
+  background-color: #E6F9FA;
+}
+
 /* tweak some colors for dark theme */
 .theme-dark .rbc-toolbar button:not(:focus):not(:hover):not(.rbc-active) {
   color: #fff;
 }
-.theme-dark .rbc-now a, .theme-dark .rbc-today a {
-  color: #000;
+.theme-dark .rbc-today {
+  background-color: rgba(19, 194, 194, 0.18);
+}
+.theme-dark .rbc-off-range-bg {
+  background-color: #163A50;
 }

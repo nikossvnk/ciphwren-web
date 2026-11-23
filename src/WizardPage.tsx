@@ -20,6 +20,7 @@ import { useCredentials } from "./credentials";
 
 import wizardWelcome from "./images/wizard-welcome.svg";
 import wizardCreate from "./images/wizard-create.svg";
+import logo from "./images/logo.svg";
 
 interface LocationState {
   from: {
@@ -31,6 +32,7 @@ const wizardPages = [
   (props: PagePropsType) => (
     <>
       <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <img alt="Ciphwren" src={logo} style={{ width: 96, marginBottom: "1em" }} />
         <h2 style={{ textAlign: "center" }}>Welcome to Ciphwren!</h2>
         <p style={{ textAlign: "center" }}>
           Please follow these few quick steps to help you get started.

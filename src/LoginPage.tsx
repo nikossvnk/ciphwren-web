@@ -8,6 +8,7 @@ import { useAppDispatch } from "./store";
 import Container from "./widgets/Container";
 import ExternalLink from "./widgets/ExternalLink";
 import LoginForm from "./components/LoginForm";
+import BrandLogo from "./widgets/BrandLogo";
 
 import { login } from "./store/actions";
 
@@ -72,6 +73,7 @@ export default function LoginPage() {
 
     return (
       <Container style={{ maxWidth: "30rem" }}>
+        <BrandLogo />
         <h2 style={{ marginBottom: "0.1em" }}>Log In</h2>
         <div style={{ fontSize: "90%" }}>
           or {C.signupUrl ? <a href={C.signupUrl}>create an account</a> : <Link to={routeResolver.getRoute("signup")}>create an account</Link>}
