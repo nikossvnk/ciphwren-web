@@ -28,7 +28,7 @@ run(async () => {
   check("login page: no forgot password link", await page.getByText("Forgot password?").count() === 0);
 
   await page.getByRole("link", { name: "create an account" }).click();
-  await page.getByRole("heading", { name: "Signup" }).waitFor();
+  await page.getByRole("heading", { name: "Create your account" }).waitFor();
   checkLinks("signup page", await externalLinks(page));
   check("signup page: no free trial or pricing notice", await page.getByText(/free trial|pricing/i).count() === 0);
   check("signup page: no terms of service", await page.getByText(/terms of service/i).count() === 0);

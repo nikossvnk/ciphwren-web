@@ -8,7 +8,9 @@ import { useAppDispatch } from "./store";
 import Container from "./widgets/Container";
 import ExternalLink from "./widgets/ExternalLink";
 import LoginForm from "./components/LoginForm";
-import BrandLogo from "./widgets/BrandLogo";
+import AuthHeader from "./widgets/AuthHeader";
+import Divider from "@mui/material/Divider";
+import IconCode from "@mui/icons-material/Code";
 
 import { login } from "./store/actions";
 
@@ -60,33 +62,23 @@ export default function LoginPage() {
       <LoadingIndicator />
     );
   } else {
-    const style = {
-      isSafe: {
-        textDecoration: "none",
-        display: "block",
-      },
-      divider: {
-        margin: "30px 0",
-        color: "#00000025",
-      },
-    };
-
     return (
-      <Container style={{ maxWidth: "30rem" }}>
-        <BrandLogo />
-        <h2 style={{ marginBottom: "0.1em" }}>Log In</h2>
-        <div style={{ fontSize: "90%" }}>
+      <Container style={{ maxWidth: "28rem" }}>
+        <AuthHeader title="Log in to Ciphwren">
           or {C.signupUrl ? <a href={C.signupUrl}>create an account</a> : <Link to={routeResolver.getRoute("signup")}>create an account</Link>}
-        </div>
+        </AuthHeader>
         <LoginForm
           onSubmit={onFormSubmit}
           loading={loading}
           error={fetchError}
         />
-        <hr style={style.divider} />
-        <ul>
-          <li><ExternalLink style={style.isSafe} href={C.sourceCode}>Source code</ExternalLink></li>
-        </ul>
+        <Divider sx={{ mt: 3, mb: 2 }} />
+        <ExternalLink
+          href={C.sourceCode}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontSize: "0.875rem", textDecoration: "none" }}
+        >
+          <IconCode fontSize="small" /> Source code
+        </ExternalLink>
       </Container>
     );
   }

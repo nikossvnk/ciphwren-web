@@ -75,11 +75,10 @@ export default function LoginForm(props: PropsType) {
     },
     textField: {
       marginTop: 20,
-      width: "18em",
+      width: "100%",
     },
     submit: {
-      marginTop: 40,
-      textAlign: "right" as any,
+      marginTop: 32,
     },
   };
 
@@ -162,7 +161,9 @@ export default function LoginForm(props: PropsType) {
           <Button
             variant="contained"
             type="submit"
-            color="secondary"
+            color="primary"
+            size="large"
+            fullWidth
             disabled={props.loading}
           >
             {props.loading ? "Loading…" : "Log In"}

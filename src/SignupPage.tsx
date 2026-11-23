@@ -13,7 +13,7 @@ import { routeResolver } from "./App";
 
 import Container from "./widgets/Container";
 import PasswordField from "./widgets/PasswordField";
-import BrandLogo from "./widgets/BrandLogo";
+import AuthHeader from "./widgets/AuthHeader";
 
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import Alert from "@mui/material/Alert";
@@ -56,12 +56,12 @@ export default function SignupPage() {
 
   if (C.signupUrl) {
     return (
-      <Container style={{ maxWidth: "30rem" }}>
-        <BrandLogo />
-        <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
-        <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
+      <Container style={{ maxWidth: "28rem" }}>
+        <AuthHeader title="Create your account">
+          or <Link to={routeResolver.getRoute("home")}>log in to your account</Link>
+        </AuthHeader>
         <p>Accounts are created on the account dashboard.</p>
-        <Button variant="contained" color="secondary" href={C.signupUrl}>Create an account</Button>
+        <Button variant="contained" color="primary" size="large" fullWidth href={C.signupUrl}>Create an account</Button>
       </Container>
     );
   }
@@ -149,11 +149,10 @@ export default function SignupPage() {
     },
     textField: {
       marginTop: 20,
-      width: "18em",
+      width: "100%",
     },
     submit: {
-      marginTop: 20,
-      textAlign: "right" as any,
+      marginTop: 24,
     },
   };
 
@@ -191,10 +190,10 @@ export default function SignupPage() {
   }
 
   return (
-    <Container style={{ maxWidth: "30rem" }}>
-      <BrandLogo />
-      <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
-      <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
+    <Container style={{ maxWidth: "28rem" }}>
+      <AuthHeader title="Create your account">
+        or <Link to={routeResolver.getRoute("home")}>log in to your account</Link>
+      </AuthHeader>
 
       <form style={styles.form} onSubmit={signup}>
         <TextField
@@ -257,7 +256,9 @@ export default function SignupPage() {
           <Button
             variant="contained"
             type="submit"
-            color="secondary"
+            color="primary"
+            size="large"
+            fullWidth
             disabled={loading}
           >
             {loading ? (

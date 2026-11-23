@@ -32,5 +32,9 @@ body:before {
 }
 
 a {
-  color: #00b0ff;
+  color: #0E7C86;
+}
+
+.theme-dark a {
+  color: #13C2C2;
 }
