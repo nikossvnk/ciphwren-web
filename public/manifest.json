@@ -12,8 +12,8 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#ffc107",
-  "background_color": "#03a9f4",
+  "theme_color": "#0B1F33",
+  "background_color": "#0B1F33",
   "categories": [
     "productivity",
     "utilities"

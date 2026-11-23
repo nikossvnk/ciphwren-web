@@ -16,6 +16,7 @@ import IconDelete from "@mui/icons-material/Delete";
 import IconError from "@mui/icons-material/Error";
 
 import { TaskType, EventType, ContactType, parseString } from "../pim-types";
+import { brand } from "../brand";
 
 export interface CachedItem {
   item: Etebase.Item;
@@ -60,9 +61,9 @@ export default function GenericChangeHistory(props: PropsType) {
 
     let icon;
     if (!cacheItem.item.isDeleted) {
-      icon = (<IconEdit style={{ color: "#16B14B" }} />);
+      icon = (<IconEdit style={{ color: brand.success }} />);
     } else {
-      icon = (<IconDelete style={{ color: "#F20C0C" }} />);
+      icon = (<IconDelete style={{ color: brand.error }} />);
     }
 
     let name;

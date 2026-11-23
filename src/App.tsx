@@ -4,8 +4,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter } from "react-router";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { amber, grey, lightBlue } from "@mui/material/colors";
+import { ThemeProvider, alpha, createTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
@@ -19,6 +18,7 @@ import ErrorsIcon from "@mui/icons-material/Error";
 import "react-virtualized/styles.css"; // only needs to be imported once
 
 import "./App.css";
+import { brand } from "./brand";
 
 import ConfirmationDialog from "./widgets/ConfirmationDialog";
 import { List, ListItem } from "./widgets/List";
@@ -221,37 +221,47 @@ export default function App() {
   const muiTheme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
-      primary: amber,
-      secondary: {
-        light: lightBlue.A200,
-        main: lightBlue.A400,
-        dark: lightBlue.A700,
-        contrastText: "#fff",
-      },
-      // The background colors of MUI 4
-      background: darkMode ? { default: "#303030", paper: grey[800] } : { default: grey[50] },
+      primary: darkMode
+        ? { main: brand.cyan, dark: brand.teal, contrastText: brand.navy }
+        : { main: brand.teal, light: brand.cyan, dark: "#0A5F67", contrastText: "#fff" },
+      secondary: { main: brand.cyan, dark: brand.teal, contrastText: brand.navy },
+      error: { main: brand.error },
+      warning: { main: brand.warning },
+      success: { main: brand.success },
+      ...(darkMode ? {} : { text: { primary: brand.ink, secondary: brand.body }, divider: brand.border }),
+      background: darkMode ? { default: brand.navy, paper: brand.darkSurface } : { default: brand.surface, paper: brand.white },
     },
     // Keeps the look of MUI 4 where newer versions changed the defaults
     components: {
       MuiAppBar: {
         defaultProps: { enableColorOnDark: true },
-        // Also when static, so that its shadow is over what comes below it
-        styleOverrides: { root: ({ theme }) => ({ zIndex: theme.zIndex.appBar }) },
+        // Also when static, so that its shadow is over what comes below it. Light icons on the navy bar.
+        styleOverrides: {
+          root: ({ theme }) => ({
+            zIndex: theme.zIndex.appBar,
+            backgroundColor: brand.navy,
+            color: "#fff",
+            "& .MuiIconButton-root": { color: "inherit" },
+            "& .MuiIconButton-root.Mui-disabled": { color: "rgba(255, 255, 255, 0.4)" },
+          }),
+        },
       },
       // No lighter surfaces with elevation in the dark theme
       MuiPaper: { styleOverrides: { root: { backgroundImage: "none" } } },
       MuiListItemIcon: { styleOverrides: { root: { minWidth: 56 } } },
-      // Grey instead of the primary color for selected items
-      MuiListItemButton: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: theme.palette.action.selected } }) } },
-      MuiMenuItem: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: theme.palette.action.selected } }) } },
-      // Grey buttons when no color is set, also in the dark theme
+      // Cyan-tinted selected items
+      MuiListItemButton: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: alpha(theme.palette.secondary.main, 0.16) } }) } },
+      MuiMenuItem: { styleOverrides: { root: ({ theme }) => ({ "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: alpha(theme.palette.secondary.main, 0.16) } }) } },
+      // Neutral brand buttons when no color is set
       MuiButton: {
         defaultProps: { color: "inherit" },
         styleOverrides: {
           root: {
             variants: [{
               props: { variant: "contained", color: "inherit" },
-              style: { color: "rgba(0, 0, 0, 0.87)", backgroundColor: grey[300], "&:hover": { backgroundColor: grey.A100 } },
+              style: darkMode
+                ? { color: "#fff", backgroundColor: brand.darkElevated, "&:hover": { backgroundColor: brand.darkSurface } }
+                : { color: brand.ink, backgroundColor: brand.surfaceAlt, "&:hover": { backgroundColor: brand.ice } },
             }],
           },
         },

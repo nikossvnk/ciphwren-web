@@ -13,6 +13,7 @@ import { routeResolver } from "./App";
 
 import Container from "./widgets/Container";
 import PasswordField from "./widgets/PasswordField";
+import BrandLogo from "./widgets/BrandLogo";
 
 import LoadingIndicator from "./widgets/LoadingIndicator";
 import Alert from "@mui/material/Alert";
@@ -56,6 +57,7 @@ export default function SignupPage() {
   if (C.signupUrl) {
     return (
       <Container style={{ maxWidth: "30rem" }}>
+        <BrandLogo />
         <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
         <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
         <p>Accounts are created on the account dashboard.</p>
@@ -190,6 +192,7 @@ export default function SignupPage() {
 
   return (
     <Container style={{ maxWidth: "30rem" }}>
+      <BrandLogo />
       <h2 style={{ marginBottom: "0.1em" }}>Signup</h2>
       <div style={{ fontSize: "90%" }}>or <Link to={routeResolver.getRoute("home")}>log in to your account</Link></div>
 

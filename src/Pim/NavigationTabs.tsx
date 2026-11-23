@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: © 2020 EteSync Authors
 // SPDX-License-Identifier: AGPL-3.0-only
 
-import { Tabs, Tab, useTheme } from "@mui/material";
+import { Tabs, Tab } from "@mui/material";
 import { useNavigate } from "react-router";
 import { routeResolver } from "../App";
+import { brand } from "../brand";
 
 export type TabValue = "contacts" | "events" | "tasks";
 
@@ -12,7 +13,6 @@ interface PropsType {
 }
 
 export default function PimNavigationTabs(props: PropsType) {
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const tabs = [
@@ -42,7 +42,8 @@ export default function PimNavigationTabs(props: PropsType) {
       variant="fullWidth"
       indicatorColor="secondary"
       textColor="inherit"
-      style={{ backgroundColor: theme.palette.primary.main }}
+      // Continues the navy app bar; cyan indicator for the current tab
+      style={{ backgroundColor: brand.navy, color: "#fff" }}
       value={selected}
     >
       {tabs.map((x) => (
