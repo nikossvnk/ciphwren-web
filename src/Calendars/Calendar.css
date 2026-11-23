@@ -23,3 +23,23 @@
 .theme-dark .rbc-off-range-bg {
   background-color: #163A50;
 }
+.theme-dark .rbc-calendar,
+.theme-dark .rbc-calendar * {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.theme-dark .rbc-toolbar button {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.theme-dark .rbc-toolbar button:hover,
+.theme-dark .rbc-toolbar button:focus {
+  background-color: #163A50;
+  color: #fff;
+}
+.theme-dark .rbc-toolbar button.rbc-active,
+.theme-dark .rbc-toolbar button.rbc-active:hover,
+.theme-dark .rbc-toolbar button.rbc-active:focus {
+  background-color: rgba(19, 194, 194, 0.3);
+  border-color: #13C2C2;
+  color: #fff;
+  box-shadow: none;
+}
