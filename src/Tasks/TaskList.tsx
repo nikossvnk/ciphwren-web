@@ -8,7 +8,7 @@ import { List } from "../widgets/List";
 import { TaskType, PimType, TaskStatusType } from "../pim-types";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
-import { useTheme } from "@mui/material/styles";
+import { Theme, useTheme } from "@mui/material/styles";
 
 import { useSelector } from "react-redux";
 
@@ -23,6 +23,7 @@ import { StoreState, useAppDispatch } from "../store";
 import { formatDate } from "../helpers";
 import { CachedCollection } from "../Pim/helpers";
 import { pushMessage } from "../store/actions";
+import { brand } from "../brand";
 
 function sortCompleted(a: TaskType, b: TaskType) {
   return (!!a.finished === !!b.finished) ? 0 : (a.finished) ? 1 : -1;
@@ -94,7 +95,7 @@ function getSortFunction(sortOrder: string) {
 
 // The spacing of MUI 4's Grid: padded items in a container with negative margins
 const containerSx = { m: -2, width: "calc(100% + 32px)" };
-const topBarSx = { p: 2, bgcolor: "primary.main" };
+const topBarSx = { p: 2, bgcolor: (theme: Theme) => (theme.palette.mode === "dark" ? brand.darkElevated : brand.surfaceAlt) };
 
 interface PropsType {
   entries: TaskType[];

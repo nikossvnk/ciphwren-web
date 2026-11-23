@@ -12,6 +12,16 @@
 .rbc-today {
   background-color: #E6F9FA;
 }
+.rbc-off-range-bg {
+  background-color: #EEF7F8;
+}
+.rbc-toolbar button.rbc-active,
+.rbc-toolbar button.rbc-active:hover,
+.rbc-toolbar button.rbc-active:focus {
+  background-color: rgba(14, 124, 134, 0.12);
+  border-color: #0E7C86;
+  box-shadow: none;
+}
 
 /* tweak some colors for dark theme */
 .theme-dark .rbc-toolbar button:not(:focus):not(:hover):not(.rbc-active) {

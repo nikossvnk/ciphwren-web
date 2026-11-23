@@ -9,13 +9,15 @@ import Grid from "@mui/material/Grid";
 
 import { ContactType } from "../pim-types";
 
+import { Theme } from "@mui/material/styles";
 import Sidebar from "./Sidebar";
 import Toolbar from "./Toolbar";
 import AddressBook from "./AddressBook";
+import { brand } from "../brand";
 
 // The spacing of MUI 4's Grid: padded items in a container with negative margins
 const containerSx = { m: -2, width: "calc(100% + 32px)" };
-const topBarSx = { p: 2, bgcolor: "primary.main" };
+const topBarSx = { p: 2, bgcolor: (theme: Theme) => (theme.palette.mode === "dark" ? brand.darkElevated : brand.surfaceAlt) };
 
 interface PropsType {
   entries: ContactType[];
